@@ -1,0 +1,288 @@
+<!--create a modal using ng-template directive -->
+<ng-template #contents let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">view workout</h4>
+    </div>
+    <div class="container">
+      <br>
+      <div class="row">
+        <div class="col-md-3">
+          <div class="row">
+            <div class="col-md-12" style="width: 250px; height: 250px">
+              <img src="https://www.gannett-cdn.com/presto/2018/09/05/USAT/c95a0f2e-2c7a-48ca-bd5d-6de52229674a-GettyImages-862317986.jpg" alt="man running" style="width: 100%; height: 100%">
+            </div>
+          </div>
+          <br>
+          <div class="row border">
+            <div class="col-md-12">
+              <div class="row">
+                <div class="col-md-12 border">
+                  <h6>
+                    1st workout
+                  </h6>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <h6>
+                    rep:
+                    <input type="text">
+                  </h6>
+
+                </div>
+                <div class="col-md-12">
+                  <h6>
+                    set:
+                    <input type="text">
+                  </h6>
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-md-12 text-center">
+              <button class="rounded-circle"><span>&#43;</span></button>
+
+            </div>
+          </div>
+          <br>
+        </div>
+        <div class="col-md-9">
+          <div class="row">
+            <div class="col-md-4">
+              <h6>
+                summary of workout
+              </h6>
+            </div>
+            <div class="col-md-8">
+              <input type="text">
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-md-4">
+              <h6>
+                calories burnt
+              </h6>
+            </div>
+            <div class="col-md-8">
+              <input type="text">
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-md-4">
+              <h6>
+                type of workout
+              </h6>
+            </div>
+            <div class="col-md-8">
+              <input type="text">
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-md-4">
+              <h6>
+                duration of workout
+              </h6>
+            </div>
+            <div class="col-md-8">
+              <input type="text">
+            </div>
+          </div>
+          <br>
+        </div>
+      </div>
+    </div>
+</ng-template>
+
+<ng-template #add let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Add workout</h4>
+    </div>
+    <form [formGroup]="createWorkout" (ngSubmit)="onSubmit"></form>
+    <div class="container">
+      <br>
+
+      <div class="row">
+        <div class="col-md-3">
+          <div class="row">
+            <div class="col-md-12" style="width: 250px; height: 250px">
+              <img src="https://www.gannett-cdn.com/presto/2018/09/05/USAT/c95a0f2e-2c7a-48ca-bd5d-6de52229674a-GettyImages-862317986.jpg" alt="man running" style="width: 100%; height: 100%">
+            </div>
+          </div>
+          <br>
+          <div class="row border">
+            <div class="col-md-12">
+              <div class="row">
+                <div class="col-md-12 border">
+                  <h6>
+                    1st workout
+                  </h6>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <h6>
+                    rep:
+                    <input type="text">
+                  </h6>
+
+                </div>
+                <div class="col-md-12">
+                  <h6>
+                    set:
+                    <input type="text">
+                  </h6>
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-md-12 text-center">
+              <button class="rounded-circle"><span>&#43;</span></button>
+
+            </div>
+          </div>
+          <br>
+        </div>
+        <div class="col-md-9">
+          <div class="row">
+            <div class="col-md-4">
+              <h6>
+                summary of workout
+              </h6>
+            </div>
+            <div class="col-md-8">
+              <input type="text">
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-md-4">
+              <h6>
+                calories burnt
+              </h6>
+            </div>
+            <div class="col-md-8">
+              <input type="text">
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-md-4">
+              <h6>
+                type of workout
+              </h6>
+            </div>
+            <div class="col-md-8">
+              <input type="text">
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-md-4">
+              <h6>
+                duration of workout
+              </h6>
+            </div>
+            <div class="col-md-8">
+              <input type="text">
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-md-4">
+              <h6>
+                Equipment needed:
+              </h6>
+            </div>
+            <div class="col-md-8">
+              <input type="text">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</ng-template>
+
+<div class="container">
+  <h6>Workout List</h6>
+  <div class="row">
+    <div class="col-md-1">
+      <button type="button" class="btn btn-success">Core</button>
+    </div>
+    <div class="col-md-2">
+      <button type="button" class="btn btn-success">Lower Body</button>
+    </div>
+    <div class="col-md-2">
+      <button type="button" class="btn btn-success">Total Body</button>
+    </div>
+    <div class="col-md-2">
+      <button type="button" class="btn btn-success">Upper Body</button>
+    </div>
+    <div class="col-md-2">
+      <form class="form-inline">
+        <input
+          class="form-control mr-sm-0"
+          type="search"
+          placeholder="Search"
+          aria-label="Search"
+        />
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+          Search
+        </button>
+      </form>
+    </div>
+    <div class="col-md-2 text-right">
+      <button type="button" class="btn btn-success" (click)="openModal(add)">Add Workout</button>
+    </div>
+  </div>
+  <br />
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card" style="width: 18rem">
+        <img
+          src="https://www.gannett-cdn.com/presto/2018/09/05/USAT/c95a0f2e-2c7a-48ca-bd5d-6de52229674a-GettyImages-862317986.jpg"
+          class="card-img-top"
+          alt="guy running"
+        />
+        <div class="card-body">
+          <div class="row">
+            <h5 class="card-title col-md-8">Core - 30 mins</h5>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="25"
+              height="25"
+              fill="currentColor"
+              class="bi bi-heart col-md-4"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"
+              />
+            </svg>
+          </div>
+
+          <p class="card-text">Description :</p>
+          <p>Calorie Burned: 200</p>
+          <p>Equipment: Yoga Mat</p>
+          <button
+          type="button"
+          (click)="openModal(contents)"
+          data-toggle="modal"
+          data-target="#Modal1"
+        >
+          View
+        </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

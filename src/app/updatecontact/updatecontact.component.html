@@ -1,0 +1,83 @@
+<div class="text-align:center">
+  <h1>List of Contacts</h1>
+</div>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>NAME</th>
+      <th>TEL</th>
+      <th>EMAIL</th>
+      <th>Delete</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let c of listOfContacts">
+      <td>{{ c._id }}</td>
+      <td>{{ c.name }}</td>
+      <td>{{ c.tel }}</td>
+      <td>{{ c.email }}</td>
+      <td>
+        <button
+          type="button"
+          (click)="onUpdate(content, c._id, c.name, c.tel,c.email)"
+          data-toggle="modal"
+          data-target="#exampleModal"
+        >
+          Update
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<!--create a modal using ng-template directive -->
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Terms and Conditions</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <form [formGroup]="createForm" (ngSubmit)="onSubmit()">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-6 col-sm-offset-3">
+          <p><input formControlName="_id" id="id" placeholder="ID" readonly="true" style="background-color: rgb(151, 135, 135);"/></p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-6 col-sm-offset-3">
+          <p><input formControlName="name" id="name" placeholder="NAME" /></p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-6 col-sm-offset-3">
+          <p><input formControlName="tel" id="tel" placeholder="TEL" /></p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-6 col-sm-offset-3">
+          <p>
+            <input formControlName="email" id="email" placeholder="EMAIL" />
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-6 col-sm-offset-3">
+          <p></p>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" type="submit" (click)="modal.close('Update Click')">Update</button>
+    </div>
+  </form>
+</ng-template>

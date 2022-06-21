@@ -1,0 +1,23 @@
+<div class="text-align:center">
+  <h1> List of Contacts</h1>
+</div>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>NAME</th>
+      <th>TEL</th>
+      <th>EMAIL</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let c of listOfContacts">
+      <td>{{c._id}}</td>
+      <td>{{c.name}}</td>
+      <td>{{c.tel}}</td>
+      <td>{{c.email}}</td>
+    </tr>
+  </tbody>
+</table>
