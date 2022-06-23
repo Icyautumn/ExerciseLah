@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ContactsService } from '../contacts.service';
-import { Contacts } from '../contacts';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Workouts } from '../workout';
+import { WorkoutService } from '../workout.service';
+import { listofworkout } from '../workout';
 
 @Component({
   selector: 'app-workout',
@@ -11,44 +12,40 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 })
 export class WorkoutComponent implements OnInit {
 
-  listOfContacts: Contacts[] = [];
+  listOfWorkouts: Workouts[] = [];
 
-  constructor(private contactService: ContactsService,
+  image: string;
+  summary: string;
+  calories_burnt: number;
+  workout_type: string;
+  duration: number;
+  workout: listofworkout[];
+
+
+  constructor(private workoutService: WorkoutService,
     private modalService: NgbModal,
     private fb: FormBuilder) {
-    this.listOfContacts = this.contactService.getContacts();
+      this.listOfWorkouts = this.workoutService.getWorkouts();
    }
 
-   createForm: FormGroup;
+   createWorkout: FormGroup;
 
-   newContact: Contacts;
+   newWorkout: Workouts;
 
   ngOnInit(): void {
   }
 
-  // onUpdate(contents: any, id: number, name: String, telephone: String, email: String){
-  //   this.modalService.open(contents);
-  //   this.createForm = this.fb.group({
-  //     _id: id,
-  //     name: name,
-  //     tel: telephone,
-  //     email: email,
-  //   });
-  // }
 
-  onSubmit(){
-    this.newContact = new Contacts();
-    this.newContact._id = this.createForm.value._id;
-    this.newContact.name = this.createForm.value.name;
-    this.newContact.tel = this.createForm.value.tel;
-    this.newContact.email = this.createForm.value.email;
-    this.contactService.addContact(this.newContact);
-    this.createForm.reset();
 
-  }
 
-  openModal(contents:any){
+  openModal(contents:any, workout: Workouts){
     this.modalService.open(contents,  { windowClass: 'my-class'});
+    this.image = workout.workout_photo;
+    this.summary = workout.summary;
+    this.calories_burnt = workout.calories_burnt;
+    this.workout_type = workout.workout_type;
+    this.duration = workout.duration;
+    this.workout = workout.workout;
   }
 
 }
