@@ -12,6 +12,9 @@ import { DeletecontactComponent } from './deletecontact/deletecontact.component'
 import { ReactiveFormsModule } from '@angular/forms';
 import { ContactsService } from './contacts.service';
 import { WorkoutComponent } from './workout/workout.component';
+import { WorkoutService } from './workout.service';
+import { CommonModule } from '@angular/common';
+import { NgxDropzoneModule } from 'ngx-dropzone';
 
 @NgModule({
   declarations: [
@@ -28,9 +31,11 @@ import { WorkoutComponent } from './workout/workout.component';
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    NgbModule
+    NgbModule,
+    CommonModule,
+    NgxDropzoneModule
   ],
-  providers: [ContactsService],
+  providers: [ContactsService, WorkoutService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

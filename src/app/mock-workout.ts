@@ -10,14 +10,14 @@ export const listOfWorkouts: Workouts[] = [
     duration: 30,
     equipment: "Yoga Mat",
     workout: [{
-      workout: "burpess",
-      set: 4,
+      workout: "jumping jacks",
+      set: 8,
       rep: 12
     },
     {
-      workout: "pushups",
-      set: 5,
-      rep: 13
+      workout: "running",
+      set: 8,
+      rep: 15
     },
   ]
   },

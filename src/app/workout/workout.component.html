@@ -10,39 +10,35 @@
         <div class="col-md-3">
           <div class="row">
             <div class="col-md-12" style="width: 250px; height: 250px">
-              <img alt="man running" style="width: 100%; height: 100%" src="{{image}}" />
+              <img
+                alt="man running"
+                style="width: 100%; height: 100%"
+                src="{{ image }}"
+              />
             </div>
           </div>
           <br />
           <div class="row border">
-            <div class="col-md-12" *ngIf="let workoutList of workout">
+            <div
+              class="col-md-12"
+              *ngFor="let workoutDetail of this.workoutDetails"
+            >
               <div class="row">
                 <div class="col-md-12 border">
-                  <h6>{{workoutList}} hello</h6>
+                  <h6>{{ workoutDetail.workout }}</h6>
                 </div>
               </div>
               <div class="row">
                 <div class="col-md-12">
-                  <h6>
-                    <!-- rep: {{workoutList.rep}} -->
-                    <input type="text" />
-                  </h6>
+                  <h6>rep: {{ workoutDetail.rep }}</h6>
                 </div>
                 <div class="col-md-12">
-                  <h6>
-                    <!-- set: {{workoutList.set}} -->
-                    <input type="text" />
-                  </h6>
+                  <h6>set: {{ workoutDetail.set }}</h6>
                 </div>
               </div>
             </div>
           </div>
           <br />
-          <div class="row">
-            <div class="col-md-12 text-center">
-              <button class="rounded-circle"><span>&#43;</span></button>
-            </div>
-          </div>
           <br />
         </div>
         <div class="col-md-9">
@@ -51,7 +47,7 @@
               <h6>summary of workout</h6>
             </div>
             <div class="col-md-8">
-              <p id="view_summary">{{summary}}</p>
+              <p id="view_summary">{{ summary }}</p>
             </div>
           </div>
           <br />
@@ -60,7 +56,7 @@
               <h6>calories burnt</h6>
             </div>
             <div class="col-md-8">
-              <p id="view_calories_burnt">{{calories_burnt}}</p>
+              <p id="view_calories_burnt">{{ calories_burnt }}</p>
             </div>
           </div>
           <br />
@@ -69,7 +65,7 @@
               <h6>type of workout</h6>
             </div>
             <div class="col-md-8">
-              <p id="view_workout_type">{{workout_type}}</p>
+              <p id="view_workout_type">{{ workout_type }}</p>
             </div>
           </div>
           <br />
@@ -78,7 +74,7 @@
               <h6>duration of workout</h6>
             </div>
             <div class="col-md-8">
-              <p id="view_duration">{{duration}}</p>
+              <p id="view_duration">{{ duration }}</p>
             </div>
           </div>
           <br />
@@ -99,35 +95,54 @@
       <div class="row">
         <div class="col-md-3">
           <div class="row">
-            <div class="col-md-12" style="width: 250px; height: 250px">
-              <img
-                src="https://www.gannett-cdn.com/presto/2018/09/05/USAT/c95a0f2e-2c7a-48ca-bd5d-6de52229674a-GettyImages-862317986.jpg"
-                alt="man running"
-                style="width: 100%; height: 100%"
-                id="workout_photo"
-              />
+            <div class="col-md-12">
+              <div
+                class="custom-dropzone"
+                ngx-dropzone
+                [accept]="'image/*'"
+                (change)="onSelect($event)"
+              >
+                <ngx-dropzone-label>
+                  <div>
+                    <h2>Add a picture here</h2>
+                  </div>
+                </ngx-dropzone-label>
+                <ngx-dropzone-image-preview
+                  ngProjectAs="ngx-dropzone-preview"
+                  *ngFor="let f of files"
+                  [file]="f"
+                  [removable]="true"
+                  (removed)="onRemove(f)"
+                >
+                  <!-- <ngx-dropzone-label
+                    >{{ f.name }} ({{ f.type }})</ngx-dropzone-label
+                  > -->
+                </ngx-dropzone-image-preview>
+              </div>
             </div>
           </div>
           <br />
           <div class="row border">
-            <!-- <div class="col-md-12" *ngFor="w of listOfWorkouts.listOfWorkout"> -->
-            <div class="col-md-12">
+            <ng-container formArrayName="workout_details">
+
+            </ng-container>
+            <div class="col-md-12" >
               <div class="row">
                 <div class="col-md-12 border">
-                  <h6>1st workout</h6>
+                  <input type="text" placeholder="workout name"  id="workout_name">
                 </div>
               </div>
               <div class="row">
                 <div class="col-md-12">
                   <h6>
                     rep:
-                    <input type="text" id="rep" />
+                    <input type="text" id="rep"  id='create_rep'/>
                   </h6>
                 </div>
                 <div class="col-md-12">
                   <h6>
                     set:
-                    <input type="text" id="set" />
+                    <input type="text" id="set" id='create_set'/>
                   </h6>
                 </div>
               </div>
@@ -136,7 +151,7 @@
           <br />
           <div class="row">
             <div class="col-md-12 text-center">
-              <button class="rounded-circle"><span>&#43;</span></button>
+              <button class="rounded-circle" (click)="addWorkoutDetails()"><span>&#43;</span></button>
             </div>
           </div>
           <br />
@@ -221,12 +236,12 @@
       </form>
     </div>
     <div class="col-md-2 text-right">
-      <button type="button" class="btn btn-success">Add Workout</button>
+      <button type="button" class="btn btn-success" (click)="openCreateModal(add)">Add Workout</button>
     </div>
   </div>
   <br />
   <div class="row">
-    <div class="col-md-4" *ngFor="let workout of listOfWorkouts">
+    <div class="col-md-4" *ngFor="let workout of this.listOfWorkouts">
       <div class="card" style="width: 18rem">
         <img
           src="{{ workout.workout_photo }}"
