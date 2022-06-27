@@ -262,7 +262,7 @@
   </div>
   <br />
   <div class="row">
-    <div class="col-md-4" *ngFor="let workout of this.listOfWorkouts">
+    <div class="col-md-4" *ngFor="let workout of this.listOfWorkouts; let i = index ">
       <div class="card" style="width: 18rem">
         <ngx-dropzone-image-preview
         ngProjectAs="ngx-dropzone-preview"
@@ -298,6 +298,7 @@
           >
             View
           </button>
+          <button><fa-icon [icon]="trashcan"></fa-icon></button>
         </div>
       </div>
     </div>

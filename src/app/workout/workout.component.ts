@@ -7,6 +7,7 @@ import { listofworkout } from '../workout';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
+// import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 
 
 @Component({
@@ -18,6 +19,8 @@ import { NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 export class WorkoutComponent implements OnInit {
 
   listOfWorkouts: Workouts[] = [];
+
+  // trashcan = faTrashCan;
 
   image: File[];
   summary: string;
