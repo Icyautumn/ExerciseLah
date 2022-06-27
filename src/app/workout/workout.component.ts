@@ -75,6 +75,7 @@ export class WorkoutComponent implements OnInit {
     this.workoutService.addWorkout(this.newWorkout);
     this.createWorkout.reset();
     this.files = [];
+    this.workouts.clear();
 
   }
 
@@ -89,7 +90,6 @@ export class WorkoutComponent implements OnInit {
     this.workout_type = workout.workout_type;
     this.duration = workout.duration;
     this.workoutDetails = workout.workout;
-    console.log(this.workoutDetails);
   }
 
   createWorkout = this.fb.group({
@@ -114,7 +114,6 @@ export class WorkoutComponent implements OnInit {
       rep: ['', Validators.required]
     });
     this.workouts.push(workoutDetailsForm);
-    console.log(this.files);
   }
 
   deleteWorkout(workoutIndex: number){
