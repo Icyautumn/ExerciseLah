@@ -12,4 +12,8 @@ export class WorkoutService {
   getWorkouts(): Workouts[] {
     return listOfWorkouts;
   }
+
+  addWorktou(item: Workouts): void{
+    listOfWorkouts.push(item);
+  }
 }

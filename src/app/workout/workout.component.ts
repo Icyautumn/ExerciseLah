@@ -1,16 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Workouts } from '../workout';
 import { WorkoutService } from '../workout.service';
 import { listofworkout } from '../workout';
 import { NgxDropzoneModule } from 'ngx-dropzone';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
   selector: 'app-workout',
   templateUrl: './workout.component.html',
-  styleUrls: ['./workout.component.css']
+  styleUrls: ['./workout.component.css'],
+  providers: [NgbModalConfig, NgbModal]
 })
 export class WorkoutComponent implements OnInit {
 
@@ -31,7 +34,7 @@ export class WorkoutComponent implements OnInit {
       console.log(this.listOfWorkouts);
    }
 
-   createWorkout: FormGroup;
+
 
    newWorkout: Workouts;
 
@@ -52,16 +55,25 @@ export class WorkoutComponent implements OnInit {
 
   openCreateModal(contents: any){
     this.modalService.open(contents,  { windowClass: 'my-class'});
-    this.createWorkout = this.fb.group({
-      _id: '',
-      workout_photo: '',
-      summary: '',
-      calories_burnt: '',
-      workout_type: '',
-      duration: '',
-      equipment: '',
-      workout: this.fb.array([])
-    });
+
+  }
+
+  onSubmit(){
+    this.newWorkout = new Workouts();
+    this.newWorkout._id = 1;
+    this.newWorkout.summary = this.createWorkout.value.summary;
+    this.newWorkout.calories_burnt = this.createWorkout.value.calories_burnt;
+    this.newWorkout.workout_type = this.createWorkout.value.workout_type;
+    this.newWorkout.duration = this.createWorkout.value.duration;
+    this.newWorkout.equipment = this.createWorkout.value.equipment;
+    this.newWorkout.workout = this.createWorkout.value.workout;
+    console.log(this.newWorkout);
+    console.log("hi");
+
+  }
+
+  sayhi(){
+    console.log("hi");
   }
 
 
@@ -78,18 +90,32 @@ export class WorkoutComponent implements OnInit {
     console.log(this.workoutDetails);
   }
 
-  get workout(){
-    return this.createWorkout.controls["workout_details"] as FormArray;
+  createWorkout = this.fb.group({
+    _id: '',
+    workout_photo: '',
+    summary: '',
+    calories_burnt: '',
+    workout_type: '',
+    duration: '',
+    equipment: '',
+    workout: this.fb.array([])
+  });
+
+  get workouts(){
+    return this.createWorkout.controls["workout"] as FormArray;
   }
 
   addWorkoutDetails(){
     const workoutDetailsForm = this.fb.group({
       workout_name: ['', Validators.required],
-      set: ['3', Validators.required],
-      rep: ['12', Validators.required]
+      set: ['', Validators.required],
+      rep: ['', Validators.required]
     });
-    this.workout.push(workoutDetailsForm);
+    this.workouts.push(workoutDetailsForm);
+  }
 
+  deleteWorkout(workoutIndex: number){
+    this.workouts.removeAt(workoutIndex);
   }
 
 }
