@@ -61,6 +61,7 @@ export class WorkoutComponent implements OnInit {
   onSubmit(){
     this.newWorkout = new Workouts();
     this.newWorkout._id = 1;
+    this.newWorkout.workout_photo = "https://www.gannett-cdn.com/presto/2018/09/05/USAT/c95a0f2e-2c7a-48ca-bd5d-6de52229674a-GettyImages-862317986.jpg";
     this.newWorkout.summary = this.createWorkout.value.summary;
     this.newWorkout.calories_burnt = this.createWorkout.value.calories_burnt;
     this.newWorkout.workout_type = this.createWorkout.value.workout_type;
@@ -68,12 +69,9 @@ export class WorkoutComponent implements OnInit {
     this.newWorkout.equipment = this.createWorkout.value.equipment;
     this.newWorkout.workout = this.createWorkout.value.workout;
     console.log(this.newWorkout);
-    console.log("hi");
+    this.workoutService.addWorkout(this.newWorkout);
+    this.createWorkout.reset();
 
-  }
-
-  sayhi(){
-    console.log("hi");
   }
 
 
@@ -107,7 +105,7 @@ export class WorkoutComponent implements OnInit {
 
   addWorkoutDetails(){
     const workoutDetailsForm = this.fb.group({
-      workout_name: ['', Validators.required],
+      workout: ['', Validators.required],
       set: ['', Validators.required],
       rep: ['', Validators.required]
     });

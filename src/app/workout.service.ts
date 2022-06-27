@@ -13,7 +13,7 @@ export class WorkoutService {
     return listOfWorkouts;
   }
 
-  addWorktou(item: Workouts): void{
+  addWorkout(item: Workouts): void{
     listOfWorkouts.push(item);
   }
 }
