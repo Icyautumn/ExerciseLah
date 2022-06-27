@@ -19,7 +19,7 @@ export class WorkoutComponent implements OnInit {
 
   listOfWorkouts: Workouts[] = [];
 
-  image: string;
+  image: File[];
   summary: string;
   calories_burnt: number;
   workout_type: string;
@@ -45,6 +45,9 @@ export class WorkoutComponent implements OnInit {
 
   onSelect(event) {
     console.log(event);
+    if(this.files && this.files.length == 1) {
+      this.onRemove(this.files[0]);
+    }
     this.files.push(...event.addedFiles);
   }
 
@@ -61,7 +64,7 @@ export class WorkoutComponent implements OnInit {
   onSubmit(){
     this.newWorkout = new Workouts();
     this.newWorkout._id = 1;
-    this.newWorkout.workout_photo = "https://www.gannett-cdn.com/presto/2018/09/05/USAT/c95a0f2e-2c7a-48ca-bd5d-6de52229674a-GettyImages-862317986.jpg";
+    this.newWorkout.workout_photo = this.files;
     this.newWorkout.summary = this.createWorkout.value.summary;
     this.newWorkout.calories_burnt = this.createWorkout.value.calories_burnt;
     this.newWorkout.workout_type = this.createWorkout.value.workout_type;
@@ -71,6 +74,7 @@ export class WorkoutComponent implements OnInit {
     console.log(this.newWorkout);
     this.workoutService.addWorkout(this.newWorkout);
     this.createWorkout.reset();
+    this.files = [];
 
   }
 
@@ -110,6 +114,7 @@ export class WorkoutComponent implements OnInit {
       rep: ['', Validators.required]
     });
     this.workouts.push(workoutDetailsForm);
+    console.log(this.files);
   }
 
   deleteWorkout(workoutIndex: number){
