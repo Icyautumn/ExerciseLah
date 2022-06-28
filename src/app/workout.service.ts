@@ -16,4 +16,8 @@ export class WorkoutService {
   addWorkout(item: Workouts): void{
     listOfWorkouts.push(item);
   }
+
+  deleteWorkout(id: number){
+    listOfWorkouts.splice(id, 1);
+  }
 }

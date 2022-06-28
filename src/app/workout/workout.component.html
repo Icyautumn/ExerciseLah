@@ -115,9 +115,6 @@
                   [removable]="true"
                   (removed)="onRemove(f)"
                 >
-                  <!-- <ngx-dropzone-label
-                    >{{ f.name }} ({{ f.type }})</ngx-dropzone-label
-                  > -->
                 </ngx-dropzone-image-preview>
               </div>
             </div>
@@ -222,6 +219,144 @@
   </form>
 </ng-template>
 
+
+<ng-template #edit let-modal let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Add workout</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="d('Cross click')">close</button>
+  </div>
+  <!-- <form [formGroup]="createWorkout" (ngSubmit)="(onSubmit)"> -->
+  <form [formGroup]="createWorkout" >
+    <div class="container">
+      <br />
+      <div class="row">
+        <div class="col-md-3">
+          <div class="row">
+            <div class="col-md-12">
+              <div
+                class="custom-dropzone"
+                ngx-dropzone
+                [accept]="'image/*'"
+                (change)="onSelect($event)"
+              >
+                <ngx-dropzone-label [multiple]="false">
+                  <div>
+                    <h2>Add a picture here</h2>
+                  </div>
+                </ngx-dropzone-label>
+                <ngx-dropzone-image-preview
+                  ngProjectAs="ngx-dropzone-preview"
+                  *ngFor="let f of files"
+                  [multiple]="false"
+                  [file]="f"
+                  [removable]="true"
+                  (removed)="onRemove(f)"
+                >
+                </ngx-dropzone-image-preview>
+              </div>
+            </div>
+          </div>
+          <br />
+          <div class="row border">
+            <h2>Add workout Details here</h2>
+            <ng-container formArrayName="workout">
+              <ng-container *ngFor="let workoutdetailform of workouts.controls; let i = index">
+                <div class="col-md-12" [formGroup] ="workoutdetailform">
+                  <div class="row">
+                    <div class="col-md-12 border">
+                      <input
+                        type="text"
+                        placeholder="workout name"
+                        formControlName = "workout"
+                      />
+                      <i class="bi bi-x-circle" (click)="deleteWorkout(i)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+                      </svg></i>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <h6>
+                        rep:
+                        <input type="text" id="rep" formControlName = "rep" />
+                      </h6>
+                    </div>
+                    <div class="col-md-12">
+                      <h6>
+                        set:
+                        <input type="text" id="create_set" formControlName = "set" />
+                      </h6>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+            </ng-container>
+          </div>
+          <br />
+          <div class="row">
+            <div class="col-md-12 text-center">
+              <button class="rounded-circle" (click)="addWorkoutDetails()">
+                <span>&#43;</span>
+              </button>
+            </div>
+          </div>
+          <br />
+        </div>
+        <div class="col-md-9">
+          <div class="row">
+            <div class="col-md-4">
+              <h6>summary of workout</h6>
+            </div>
+            <div class="col-md-8">
+              <input type="text" formControlName="summary" />
+            </div>
+          </div>
+          <br />
+          <div class="row">
+            <div class="col-md-4">
+              <h6>calories burnt</h6>
+            </div>
+            <div class="col-md-8">
+              <input type="text" formControlName="calories_burnt" />
+            </div>
+          </div>
+          <br />
+          <div class="row">
+            <div class="col-md-4">
+              <h6>type of workout</h6>
+            </div>
+            <div class="col-md-8">
+              <input type="text" formControlName="workout_type" />
+            </div>
+          </div>
+          <br />
+          <div class="row">
+            <div class="col-md-4">
+              <h6>duration of workout</h6>
+            </div>
+            <div class="col-md-8">
+              <input type="text" formControlName="duration" />
+            </div>
+          </div>
+          <br />
+          <div class="row">
+            <div class="col-md-4">
+              <h6>Equipment needed:</h6>
+            </div>
+            <div class="col-md-8">
+              <input type="text" formControlName="equipment" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" type="submit" (click)="onSubmit(); modal.close()">add workout</button>
+      </div>
+    </div>
+  </form>
+</ng-template>
+
+
 <div class="container">
   <h6>Workout List</h6>
   <div class="row">
@@ -292,13 +427,14 @@
           <p>Equipment: {{ workout.equipment }}</p>
           <button
             type="button"
-            (click)="openModal(contents, workout)"
+            (click)="openModalview(contents, workout)"
             data-toggle="modal"
             data-target="#Modal1"
           >
             View
           </button>
-          <button><fa-icon [icon]="trashcan"></fa-icon></button>
+          <button type="button" (click)="deleteEntireWorkout(i)">delete</button>
+          <button type="button" (click)="openModalupdate(edit, workout)">Edit</button>
         </div>
       </div>
     </div>

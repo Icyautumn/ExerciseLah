@@ -15,6 +15,7 @@ import { WorkoutComponent } from './workout/workout.component';
 import { WorkoutService } from './workout.service';
 import { CommonModule } from '@angular/common';
 import { NgxDropzoneModule } from 'ngx-dropzone';
+import { CalorieTrackerComponent } from './calorie-tracker/calorie-tracker.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { NgxDropzoneModule } from 'ngx-dropzone';
     DisplaycontactComponent,
     UpdatecontactComponent,
     DeletecontactComponent,
-    WorkoutComponent
+    WorkoutComponent,
+    CalorieTrackerComponent
   ],
   imports: [
     BrowserModule,

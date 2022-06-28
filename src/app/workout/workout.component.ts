@@ -34,7 +34,6 @@ export class WorkoutComponent implements OnInit {
     private modalService: NgbModal,
     private fb: FormBuilder) {
       this.listOfWorkouts = this.workoutService.getWorkouts();
-      console.log(this.listOfWorkouts);
    }
 
 
@@ -61,7 +60,6 @@ export class WorkoutComponent implements OnInit {
 
   openCreateModal(contents: any){
     this.modalService.open(contents,  { windowClass: 'my-class'});
-
   }
 
   onSubmit(){
@@ -77,15 +75,14 @@ export class WorkoutComponent implements OnInit {
     console.log(this.newWorkout);
     this.workoutService.addWorkout(this.newWorkout);
     this.createWorkout.reset();
+    // clear the image
     this.files = [];
+    // clear workout details form
     this.workouts.clear();
 
   }
 
-
-
-
-  openModal(contents:any, workout: Workouts){
+  openModalview(contents:any, workout: Workouts){
     this.modalService.open(contents,  { windowClass: 'my-class'});
     this.image = workout.workout_photo;
     this.summary = workout.summary;
@@ -94,6 +91,25 @@ export class WorkoutComponent implements OnInit {
     this.duration = workout.duration;
     this.workoutDetails = workout.workout;
   }
+
+
+  openModalupdate(contents:any, workout: Workouts){
+    this.modalService.open(contents,  { windowClass: 'my-class'});
+    this.createWorkout = this.fb.group({
+      _id: workout._id,
+      workout_photo: workout.workout_photo,
+      summary: workout.summary,
+      calories_burnt: workout.calories_burnt,
+      workout_type: workout.workout_type,
+      duration: workout.duration,
+      equipment: workout.equipment,
+      workout: [workout.workout]
+    });
+    console.log(this.createWorkout.value);
+    this.createWorkout = this.createWorkout.value;
+  }
+
+
 
   createWorkout = this.fb.group({
     _id: '',
@@ -122,5 +138,11 @@ export class WorkoutComponent implements OnInit {
   deleteWorkout(workoutIndex: number){
     this.workouts.removeAt(workoutIndex);
   }
+
+  deleteEntireWorkout(EntireWorkout: number){
+    this.workoutService.deleteWorkout(EntireWorkout);
+  }
+
+
 
 }
