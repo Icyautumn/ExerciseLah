@@ -141,13 +141,13 @@
                     <div class="col-md-12">
                       <h6>
                         rep:
-                        <input type="text" id="rep" formControlName = "rep" />
+                        <input type="number" id="rep" formControlName = "rep" />
                       </h6>
                     </div>
                     <div class="col-md-12">
                       <h6>
                         set:
-                        <input type="text" id="create_set" formControlName = "set" />
+                        <input type="number" id="create_set" formControlName = "set" />
                       </h6>
                     </div>
                   </div>
@@ -180,7 +180,7 @@
               <h6>calories burnt</h6>
             </div>
             <div class="col-md-8">
-              <input type="text" formControlName="calories_burnt" />
+              <input type="number" formControlName="calories_burnt" />
             </div>
           </div>
           <br />
@@ -189,7 +189,12 @@
               <h6>type of workout</h6>
             </div>
             <div class="col-md-8">
-              <input type="text" formControlName="workout_type" />
+              <select formControlName="workout_type" id="workout_type">
+                <option value="core" selected="selected">Core</option>
+                <option value="lowerbody">Lower Body</option>
+                <option value="totalbody">Total Body</option>
+                <option value="totalbody">Upper Body</option>
+              </select>
             </div>
           </div>
           <br />
@@ -198,7 +203,7 @@
               <h6>duration of workout</h6>
             </div>
             <div class="col-md-8">
-              <input type="text" formControlName="duration" />
+              <input type="number" formControlName="duration" />
             </div>
           </div>
           <br />
