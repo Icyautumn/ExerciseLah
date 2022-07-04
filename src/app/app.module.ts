@@ -16,6 +16,14 @@ import { WorkoutService } from './workout.service';
 import { CommonModule } from '@angular/common';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { CalorieTrackerComponent } from './calorie-tracker/calorie-tracker.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule } from '@angular/forms';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import {MatInputModule} from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
+import {MatMenuModule} from '@angular/material/menu';
 
 @NgModule({
   declarations: [
@@ -27,16 +35,25 @@ import { CalorieTrackerComponent } from './calorie-tracker/calorie-tracker.compo
     UpdatecontactComponent,
     DeletecontactComponent,
     WorkoutComponent,
-    CalorieTrackerComponent
+    CalorieTrackerComponent,
   ],
   imports: [
+    FormsModule,
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
     NgbModule,
     CommonModule,
-    NgxDropzoneModule
+    NgxDropzoneModule,
+    BrowserAnimationsModule,
+    NoopAnimationsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatMenuModule,
+    
   ],
+  schemas:[CUSTOM_ELEMENTS_SCHEMA],
   providers: [ContactsService, WorkoutService],
   bootstrap: [AppComponent]
 })

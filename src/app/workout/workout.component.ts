@@ -7,6 +7,8 @@ import { listofworkout } from '../workout';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
+import {MatFormFieldModule} from '@angular/material/form-field';
+
 // import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 
 
@@ -19,6 +21,7 @@ import { NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 export class WorkoutComponent implements OnInit {
 
   listOfWorkouts: Workouts[] = [];
+  filteredWorkout: Workouts[] = [];
 
   // trashcan = faTrashCan;
 
@@ -38,6 +41,7 @@ export class WorkoutComponent implements OnInit {
     private modalService: NgbModal,
     private fb: FormBuilder) {
     this.listOfWorkouts = this.workoutService.getWorkouts();
+    this.filteredWorkout = this.listOfWorkouts;
     this.setid = this.listOfWorkouts.length;
   }
 
@@ -76,6 +80,13 @@ export class WorkoutComponent implements OnInit {
       this.onRemove(this.files[0]);
     }
     this.files.push(...event.addedFiles);
+
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+        console.log(reader.result);
+    };
   }
 
   onRemove(event) {
@@ -91,6 +102,8 @@ export class WorkoutComponent implements OnInit {
   openCreateModal(contents: any) {
     this.modalService.open(contents, { windowClass: 'my-class' });
   }
+
+  
 
   onSubmit() {
     this.newWorkout = new Workouts();
@@ -125,16 +138,6 @@ export class WorkoutComponent implements OnInit {
 
 
 
-
-
-
-
-
-
-
-
-
-
   get workouts() {
     // console.log("get workouts",this.createWorkout);
     return this.createWorkout.controls["workout"] as FormArray;
@@ -161,6 +164,10 @@ export class WorkoutComponent implements OnInit {
   deleteEntireWorkout(EntireWorkout: number) {
     this.workoutService.deleteWorkout(EntireWorkout);
   }
+
+
+
+  // Update method starts here
 
   openModalupdate(contents: any, workoutchosen: Workouts) {
     console.log("Workout details", workoutchosen.workout);
@@ -225,14 +232,28 @@ export class WorkoutComponent implements OnInit {
     this.newWorkout.duration = this.updateForm.value.duration;
     this.newWorkout.equipment = this.updateForm.value.equipment;
     this.newWorkout.workout = this.updateForm.value.workout;
-    // console.log("created workout", this.newWorkout);
+
     this.workoutService.updateWorkout(this.newWorkout, this.newWorkout._id);
     this.updateForm.reset();
     // clear the image
     this.updateimage = [];
-    // clear workout details form
+    // clear workoutupdate details form
     this.updateworkouts.clear();
 
+  }
+
+
+
+  // filter
+
+  filter(name: string){
+    this.filteredWorkout = this.listOfWorkouts.filter((obj) =>{
+      return obj.workout_type === name;
+    })
+  }
+
+  noFilter(){
+    this.filteredWorkout = this.listOfWorkouts;
   }
 
 }
