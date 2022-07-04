@@ -8,6 +8,8 @@ import { NgxDropzoneModule } from 'ngx-dropzone';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import { Observable, observable, Subscriber } from 'rxjs';
+import { DomSanitizer } from '@angular/platform-browser';
 
 // import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 
@@ -24,8 +26,12 @@ export class WorkoutComponent implements OnInit {
   filteredWorkout: Workouts[] = [];
 
   // trashcan = faTrashCan;
+  createdImage! : Observable<any>;
+  createdImageBase64: string;
+  updateImage! : Observable<any>;
+  updateImageBase64: string;
+  image: any;
 
-  image: File[];
   summary: string;
   calories_burnt: number;
   workout_type: string;
@@ -33,13 +39,13 @@ export class WorkoutComponent implements OnInit {
   workoutDetails: listofworkout[];
   updateForm: FormGroup;
   createWorkout: FormGroup;
-  updateimage: File[];
+
   setid: number;
 
 
   constructor(private workoutService: WorkoutService,
     private modalService: NgbModal,
-    private fb: FormBuilder) {
+    private fb: FormBuilder, private sanitizer: DomSanitizer) {
     this.listOfWorkouts = this.workoutService.getWorkouts();
     this.filteredWorkout = this.listOfWorkouts;
     this.setid = this.listOfWorkouts.length;
@@ -72,43 +78,67 @@ export class WorkoutComponent implements OnInit {
     });
   }
 
-  files: File[] = []
+  // user selects an image
+  onChange = (event: Event, create_or_edit: string) => {
+    const target= event.target as HTMLInputElement;
+    const file: File = (target.files as FileList)[0];
+    this.convertToBase64(file, create_or_edit);
+  }
 
-  onSelect(event) {
-    // console.log(event);
-    if (this.files && this.files.length == 1) {
-      this.onRemove(this.files[0]);
+  convertToBase64(file: File, create_or_edit: string) {
+    if(create_or_edit == 'create'){
+      this.createdImage = new Observable((subscriber: Subscriber<any>) => {
+        this.readFile(file, subscriber, 'create');
+      });
+    }else if(create_or_edit == 'edit'){
+      this.updateImage = new Observable((subscriber: Subscriber<any>) => {
+        this.readFile(file, subscriber, 'edit');
+      });
+    } else{
+
     }
-    this.files.push(...event.addedFiles);
 
-    const file = event.target.files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-        console.log(reader.result);
+
+  }
+
+  readFile(file: File, subscriber: Subscriber<any>, create_or_edit: string) {
+    const filereader = new FileReader();
+    filereader.readAsDataURL(file);
+
+    filereader.onload = () => {
+      if(create_or_edit == "create"){
+        this.createdImageBase64 = filereader.result.toString();
+      } else{
+        this.updateImageBase64 = filereader.result.toString();
+      }
+
+
+      subscriber.next(filereader.result);
+
+      subscriber.complete();
+    };
+    filereader.onerror = (error) => {
+      subscriber.error(error);
+      subscriber.complete();
     };
   }
 
-  onRemove(event) {
-    // console.log(event);
-    this.files.splice(this.files.indexOf(event), 1);
+  changeToImage(base64String: any){
+    return this.sanitizer.bypassSecurityTrustResourceUrl(base64String);
   }
 
-  onUpdateRemove(event) {
-    // console.log(event);
-    this.updateimage.splice(this.updateimage.indexOf(event), 1);
-  }
+
 
   openCreateModal(contents: any) {
     this.modalService.open(contents, { windowClass: 'my-class' });
   }
 
-  
+
 
   onSubmit() {
     this.newWorkout = new Workouts();
     this.newWorkout._id = this.setid;
-    this.newWorkout.workout_photo = this.files;
+    this.newWorkout.workout_photo = this.createdImageBase64;
     this.newWorkout.summary = this.createWorkout.value.summary;
     this.newWorkout.calories_burnt = this.createWorkout.value.calories_burnt;
     this.newWorkout.workout_type = this.createWorkout.value.workout_type;
@@ -119,7 +149,9 @@ export class WorkoutComponent implements OnInit {
     this.workoutService.addWorkout(this.newWorkout);
     this.createWorkout.reset();
     // clear the image
-    this.files = [];
+    this.createdImageBase64= '';
+    // this.readFile(null, null);
+    this.convertToBase64(null, null);
     // clear workout details form
     this.workouts.clear();
 
@@ -127,7 +159,7 @@ export class WorkoutComponent implements OnInit {
 
   openModalview(contents: any, workout: Workouts) {
     this.modalService.open(contents, { windowClass: 'my-class' });
-    this.image = workout.workout_photo;
+    this.image = this.changeToImage(workout.workout_photo);
     this.summary = workout.summary;
     this.calories_burnt = workout.calories_burnt;
     this.workout_type = workout.workout_type;
@@ -165,12 +197,15 @@ export class WorkoutComponent implements OnInit {
     this.workoutService.deleteWorkout(EntireWorkout);
   }
 
-
-
   // Update method starts here
 
   openModalupdate(contents: any, workoutchosen: Workouts) {
     console.log("Workout details", workoutchosen.workout);
+
+    
+
+    this.updateImage = this.changeToImage(workoutchosen.workout_photo);
+    // fill in the details in the formarray
     for(const workout of workoutchosen.workout){
       console.log("workout workout",workout.workout);
       console.log("workout.set",workout.set);
@@ -178,11 +213,11 @@ export class WorkoutComponent implements OnInit {
       this.addUpdateWorkoutDetailsmodal(workout.workout, workout.set, workout.rep);
     }
     this.modalService.open(contents, { windowClass: 'my-class' });
-    this.updateimage = workoutchosen.workout_photo;
+    // this.updateimage = workoutchosen.workout_photo;
     // console.log("before", this.updateForm);
     this.updateForm.patchValue({
       _id: workoutchosen._id,
-      workout_photo: this.updateimage,
+      // workout_photo: this.updateimage,
       summary: workoutchosen.summary,
       calories_burnt: workoutchosen.calories_burnt,
       workout_type: workoutchosen.workout_type,
@@ -225,7 +260,7 @@ export class WorkoutComponent implements OnInit {
   onUpdate() {
     this.newWorkout = new Workouts();
     this.newWorkout._id = this.updateForm.value._id;
-    this.newWorkout.workout_photo = this.updateimage;
+    // this.newWorkout.workout_photo = this.updateimage;
     this.newWorkout.summary = this.updateForm.value.summary;
     this.newWorkout.calories_burnt = this.updateForm.value.calories_burnt;
     this.newWorkout.workout_type = this.updateForm.value.workout_type;
@@ -236,7 +271,7 @@ export class WorkoutComponent implements OnInit {
     this.workoutService.updateWorkout(this.newWorkout, this.newWorkout._id);
     this.updateForm.reset();
     // clear the image
-    this.updateimage = [];
+    // this.updateimage = [];
     // clear workoutupdate details form
     this.updateworkouts.clear();
 

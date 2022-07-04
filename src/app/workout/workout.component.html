@@ -9,10 +9,7 @@
       <div class="row">
         <div class="col-md-3">
           <div class="row">
-            <div class="col-md-12" style="width: 250px; height: 250px">
-              <ngx-dropzone-image-preview [file]="image[0]">
-              </ngx-dropzone-image-preview>
-            </div>
+            <img [src]="image" width="250" height="250">
           </div>
           <br />
           <div class="row border">
@@ -101,26 +98,9 @@
         <div class="col-md-3">
           <div class="row">
             <div class="col-md-12">
-              <div
-                class="custom-dropzone"
-                ngx-dropzone
-                [accept]="'image/*'"
-                (change)="onSelect($event)"
-              >
-                <ngx-dropzone-label [multiple]="false">
-                  <div>
-                    <h2>Add a picture here</h2>
-                  </div>
-                </ngx-dropzone-label>
-                <ngx-dropzone-image-preview
-                  ngProjectAs="ngx-dropzone-preview"
-                  *ngFor="let f of files"
-                  [multiple]="false"
-                  [file]="f"
-                  [removable]="true"
-                  (removed)="onRemove(f)"
-                >
-                </ngx-dropzone-image-preview>
+              <input type="file" (change)="onChange($event, 'create')">
+              <div *ngIf="createdImage">
+                <img [src]="createdImage | async" width="200px" height="200px" alt="" />
               </div>
             </div>
           </div>
@@ -292,24 +272,10 @@
         <div class="col-md-3">
           <div class="row">
             <div class="col-md-12">
-              <div
-                class="custom-dropzone"
-                ngx-dropzone
-                [accept]="'image/*'"
-                (change)="onSelect($event)"
-              >
-                <ngx-dropzone-label [multiple]="false">
-                  <div>
-                    <h2>Add a picture here</h2>
-                  </div>
-                </ngx-dropzone-label>
-                <ngx-dropzone-image-preview
-                  *ngFor="let f of updateimage"
-                  [file]="f"
-                  [removable]="true"
-                  (removed)="onUpdateRemove(f)"
-                >
-                </ngx-dropzone-image-preview>
+              <input type="file" (change)="onChange($event, 'edit')">
+              <div *ngIf="updateImage">
+                <img [src]="updateImage | async" width="200px" height="200px" alt="" />
+              </div>
               </div>
             </div>
           </div>
@@ -437,7 +403,6 @@
           Edit workout
         </button>
       </div>
-    </div>
   </form>
 </ng-template>
 
@@ -463,10 +428,7 @@
       *ngFor="let workout of this.filteredWorkout; let i = index"
     >
       <div class="card" style="width: 18rem">
-        <ngx-dropzone-image-preview
-          ngProjectAs="ngx-dropzone-preview"
-          [file]="workout.workout_photo[0]"
-        ></ngx-dropzone-image-preview>
+        <img [src]="changeToImage(workout.workout_photo)">
         <div class="card-body">
           <div class="row">
             <h5 class="card-title col-md-8">
@@ -485,7 +447,7 @@
               />
             </svg>
           </div>
-  
+
           <p class="card-text">Description : {{ workout.summary }}</p>
           <p>Calorie Burned: {{ workout.calories_burnt }}</p>
           <p>Equipment: {{ workout.equipment }}</p>
