@@ -18,7 +18,7 @@ const routes: Routes = [
   { path: 'deleteContact', component: DeletecontactComponent},
   { path: 'workout', component: WorkoutComponent},
   { path: 'calorie_tracker', component: CalorieTrackerComponent},
-  { path: '', component: DisplaycontactComponent, pathMatch: 'full'}
+  { path: '', component: WorkoutComponent, pathMatch: 'full'}
 
 ];
 

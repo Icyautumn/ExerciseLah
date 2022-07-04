@@ -33,7 +33,7 @@ export class CreatecontactComponent implements OnInit {
     this.newContact.tel = this.createForm.value.tel;
     this.newContact.email = this.createForm.value.email;
 
-    console.log("this is a test" +this.newContact.name);
+    // console.log("this is a test" +this.newContact.name);
 
     this.contactService.addContact(this.newContact);
     this.createForm.reset();
