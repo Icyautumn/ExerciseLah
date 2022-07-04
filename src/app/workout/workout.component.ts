@@ -199,12 +199,26 @@ export class WorkoutComponent implements OnInit {
 
   // Update method starts here
 
+  convertDataUrlToBlob(dataUrl): File {
+    const arr = dataUrl.split(',');
+    const mime = arr[0].match(/:(.*?);/)[1];
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+
+    while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+    }
+
+    return new File([u8arr], 'filename', {type: mime});
+}
+
   openModalupdate(contents: any, workoutchosen: Workouts) {
     console.log("Workout details", workoutchosen.workout);
 
-    
+    var chosenUpdatedImage = this.convertDataUrlToBlob(workoutchosen.workout_photo)
 
-    this.updateImage = this.changeToImage(workoutchosen.workout_photo);
+    this.convertToBase64(chosenUpdatedImage, "edit");
     // fill in the details in the formarray
     for(const workout of workoutchosen.workout){
       console.log("workout workout",workout.workout);
