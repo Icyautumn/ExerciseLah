@@ -1,1 +1,56 @@
-<p>calorie-tracker works!</p>
+<!-- <mat-icon (click)="previousDay($event)">arrow_back</mat-icon> -->
+<br /><br />
+<div class="container">
+  <div class="row justify-content-center">
+    <h2>Your Food Diary For :</h2>
+  </div>
+  <div class="row justify-content-center">
+    <mat-form-field>
+      <input
+        matInput
+        [matDatepicker]="myDatePicker"
+        placeholder="Form Date"
+        [(ngModel)]="datepickedbyuser"
+        (dateInput)="addEvent('input', $event)"
+      />
+      <mat-datepicker-toggle
+        [for]="myDatePicker"
+        matSuffix
+      ></mat-datepicker-toggle>
+      <mat-datepicker #myDatePicker></mat-datepicker>
+    </mat-form-field>
+  </div>
+
+  <hr><br>
+  <h3>Food Eaten Today</h3>
+
+  <div class="row">
+    <form [formGroup] = "createFoodTaken">
+      <ng-container formArrayName="foodTakenDetails">
+        <ng-container *ngFor="let FoodTakenDetailsForm of foodTakeDetails.controls; let i = index">
+          <div class="col-md-12" [formGroup]="FoodTakenDetailsForm">
+            <mat-form-field appearance="fill">
+              <mat-label>Enter Food</mat-label>
+              <input matInput #inputFood type="text" placeholder="Enter Food" formControlName="name">
+              <mat-hint align="end"></mat-hint>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+              <mat-label>Enter Food Grams</mat-label>
+              <input matInput #inputFoodGram type="number" placeholder="Enter food Grams" formControlName="serving_size_g">
+              <mat-hint align="end"></mat-hint>
+            </mat-form-field>
+          </div>
+
+
+        </ng-container>
+      </ng-container>
+    </form>
+  </div>
+  <button (click)="addFoodTakenDetails()">add food</button>
+
+
+</div>
+
+
+
+<!-- <mat-icon (click)="nextDay()">arrow_forward</mat-icon> -->
