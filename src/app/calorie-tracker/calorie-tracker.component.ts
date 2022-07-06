@@ -14,11 +14,15 @@ import { listofFoodDetails } from '../mock-foodDetails';
 })
 export class CalorieTrackerComponent implements OnInit {
 
+  // fooddetailsalreadytaken:
+
   createFoodTaken: FormGroup;
 
   datepickedbyuser  = new Date();
 
-  constructor(private fb: FormBuilder) {}
+  nameOfFood: string;
+
+  constructor(private fb: FormBuilder, private foodDetailsService: FoodDetailsService) {}
 
   ngOnInit(): void {
     this.createFoodTaken = this.fb.group({
@@ -38,6 +42,12 @@ export class CalorieTrackerComponent implements OnInit {
       serving_size_g: ['', Validators.required],
     });
     this.foodTakeDetails.push(FoodTakenDetailsForm);
+  }
+
+  getFoodData(idInTheArray: number){
+    this.nameOfFood = this.createFoodTaken.value.foodTakenDetails[idInTheArray].name;
+    console.log("foodticked",this.nameOfFood);
+    this.foodDetailsService.getSpecificFood(this.nameOfFood);
   }
 
   nextDay(){
