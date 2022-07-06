@@ -1,5 +1,4 @@
 export class FoodEaten{
-  _id: number;
   foodDateIntake: Date;
   foodTakenDetails : foodTakenDetails[];
 }

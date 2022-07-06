@@ -2,8 +2,7 @@ import { FoodEaten } from "./foodEaten";
 
 export const listofFoodEaten: FoodEaten[] = [
   {
-    _id: 1,
-    foodDateIntake: new Date("2022-07-05"),
+    foodDateIntake: new Date("2022/7/7"),
     foodTakenDetails:[{
         "sugar_g": 1.2,
         "fiber_g": 2.2,

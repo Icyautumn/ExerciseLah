@@ -28,6 +28,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import {MatTableModule} from '@angular/material/table';
+import { DatePipe } from '@angular/common';
 
 
 @NgModule({
@@ -59,11 +60,12 @@ import {MatTableModule} from '@angular/material/table';
     MatDatepickerModule,
     MatNativeDateModule,
     MatIconModule,
-    MatTableModule
+    MatTableModule,
+
 
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  providers: [ContactsService, WorkoutService],
+  providers: [ContactsService, WorkoutService, DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

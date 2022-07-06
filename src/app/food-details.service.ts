@@ -10,7 +10,5 @@ export class FoodDetailsService {
 
   getSpecificFood(foodname: string){
     return  listofFoodDetails.flatMap(d => d.items).find(c => c.name === foodname);
-
-
   }
 }
