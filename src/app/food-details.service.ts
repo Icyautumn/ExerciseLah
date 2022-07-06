@@ -9,6 +9,6 @@ export class FoodDetailsService {
   constructor() { }
 
   getSpecificFood(foodname: string){
-    console.log( listofFoodDetails.flatMap(d => d.items).find(c => c.name === foodname));
+    return listofFoodDetails.flatMap(d => d.items).find(c => c.name === foodname);
   }
 }

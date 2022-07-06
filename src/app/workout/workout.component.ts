@@ -47,8 +47,9 @@ export class WorkoutComponent implements OnInit {
     private modalService: NgbModal,
     private fb: FormBuilder, private sanitizer: DomSanitizer) {
     this.listOfWorkouts = this.workoutService.getWorkouts();
-    this.filteredWorkout = this.listOfWorkouts;
     this.setid = this.listOfWorkouts.length;
+    this.filteredWorkout = this.listOfWorkouts;
+
   }
 
 
@@ -136,6 +137,11 @@ export class WorkoutComponent implements OnInit {
 
 
   onSubmit() {
+    // just to get the length of list of workouts
+    this.listOfWorkouts = this.workoutService.getWorkouts();
+    this.setid = this.listOfWorkouts.length;
+
+
     this.newWorkout = new Workouts();
     this.newWorkout._id = this.setid;
     this.newWorkout.workout_photo = this.createdImageBase64;
@@ -229,9 +235,10 @@ export class WorkoutComponent implements OnInit {
     this.modalService.open(contents, { windowClass: 'my-class' });
     // this.updateimage = workoutchosen.workout_photo;
     // console.log("before", this.updateForm);
+
+    console.log("edit id",workoutchosen._id);
     this.updateForm.patchValue({
       _id: workoutchosen._id,
-      // workout_photo: this.updateimage,
       summary: workoutchosen.summary,
       calories_burnt: workoutchosen.calories_burnt,
       workout_type: workoutchosen.workout_type,
@@ -273,8 +280,9 @@ export class WorkoutComponent implements OnInit {
   // code not updated yet
   onUpdate() {
     this.newWorkout = new Workouts();
+    console.log("id",this.updateForm.value._id);
     this.newWorkout._id = this.updateForm.value._id;
-    // this.newWorkout.workout_photo = this.updateimage;
+    this.newWorkout.workout_photo = this.updateImageBase64;
     this.newWorkout.summary = this.updateForm.value.summary;
     this.newWorkout.calories_burnt = this.updateForm.value.calories_burnt;
     this.newWorkout.workout_type = this.updateForm.value.workout_type;

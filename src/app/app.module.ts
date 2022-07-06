@@ -27,6 +27,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
+import {MatTableModule} from '@angular/material/table';
 
 
 @NgModule({
@@ -57,7 +58,8 @@ import { MatIconModule } from '@angular/material/icon';
     MatMenuModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatIconModule
+    MatIconModule,
+    MatTableModule
 
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
