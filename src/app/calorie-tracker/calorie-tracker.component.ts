@@ -140,10 +140,29 @@ export class CalorieTrackerComponent implements OnInit {
       'sugar_g': this.sugar_g * multiplier,
     })
 
-    // fit the details in the table
-    this.dataSource = this.dataSource.concat(this.multiplierArray.value);
+    if(this.dataSource[0].name == "" || this.dataSource[0].name == null){
+      this.dataSource.pop();
+      this.dataSource = this.dataSource.concat(this.multiplierArray.value);
+    }else{
+      // fit the details in the table
+        this.dataSource = this.dataSource.concat(this.multiplierArray.value);
+    }
+    console.log(this.dataSource);
 
-    this.foodEatenService.addToListOfFoodEaten();
+
+
+
+
+    this.foodeaten = new FoodEaten();
+    this.foodeaten.foodDateIntake = new Date(this.DatePipe.transform(this.datepickedbyuser))
+    this.foodeaten.foodTakenDetails = this.dataSource;
+
+    console.log("time to see",this.foodeaten);
+    this.foodEatenService.updateFoodEaten(this.foodeaten);
+
+    this.multiplierArray.reset();
+
+    // this.foodEatenService.addToListOfFoodEaten();
 
   }
   // ChangeTheValues(foodArray, foodServingMulitplier){
@@ -164,6 +183,19 @@ export class CalorieTrackerComponent implements OnInit {
 
   addEvent(type: string, event: MatDatepickerInputEvent<Date>){
     this.datepickedbyuser = event.value;
+    try{
+      console.log(this.dataSource = this.dataSource.concat(this.foodEatenService.getListofFoodEaten(this.DatePipe.transform(this.datepickedbyuser)).foodTakenDetails));
+    } catch (err: unknown){
+      this.foodeaten = new FoodEaten();
+      this.foodeaten.foodTakenDetails = this.multiplierArray.value;
+      this.foodeaten.foodDateIntake = new Date(this.DatePipe.transform(this.datepickedbyuser))
+      this.foodEatenService.createNewListOfFoodEaten(this.foodeaten)
+    }
+    // clear the table
+    this.dataSource.splice(0);
+
+    console.log(this.dataSource = this.dataSource.concat(this.foodEatenService.getListofFoodEaten(this.DatePipe.transform(this.datepickedbyuser)).foodTakenDetails));
+    console.log("today's food",this.dataSource);
     console.log(this.datepickedbyuser);
   }
 

@@ -10,8 +10,10 @@ export class FoodEatenService {
 
   constructor(private datePipe: DatePipe) { }
 
-  addToListOfFoodEaten(){
-
+  updateFoodEaten(items: FoodEaten ){
+    const target = listofFoodEaten.find((item) =>this.datePipe.transform(item.foodDateIntake) === this.datePipe.transform(items.foodDateIntake));
+    console.log(target);
+    Object.assign(target, items);
   }
 
   createNewListOfFoodEaten(items: FoodEaten){
