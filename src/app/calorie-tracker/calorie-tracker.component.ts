@@ -27,7 +27,7 @@ export class CalorieTrackerComponent implements OnInit {
 
   nameOfFood: string;
 
-  foodeaten: FoodEaten;
+  foodeaten: any;
 
   gramsOfFood: number;
 
@@ -42,7 +42,7 @@ export class CalorieTrackerComponent implements OnInit {
   name: string;
   potassium_mg: number;
 
-  displayedColumns: string[] = ['name', 'serving_size_g', 'calories', 'carbohydrates', 'protein', 'sodium', 'sugar_g'];
+  displayedColumns: string[] = ['name', 'serving_size_g', 'calories', 'carbohydrates', 'protein', 'sodium', 'sugar_g', 'Delete'];
 
   dataSource : any[] = [];
 
@@ -53,13 +53,13 @@ export class CalorieTrackerComponent implements OnInit {
   constructor(private changeDetectorRefs: ChangeDetectorRef,private fb: FormBuilder,
     private foodDetailsService: FoodDetailsService, public changeDetectorRef: ChangeDetectorRef,
     private foodEatenService: FoodEatenService, public DatePipe: DatePipe) {
-      console.log("user", this.DatePipe.transform(this.datepickedbyuser, 'yyyy-MM-dd'));
+      // console.log("user", this.DatePipe.transform(this.datepickedbyuser, 'yyyy-MM-dd'));
       // console.log("food date",this.DatePipe.transform(this.foodEatenService.getListofFoodEaten(this.datepickedbyuser)[0].foodDateIntake, 'yyyy-MM-dd'));
 
 
       // console.log(this.DatePipe.transform(this.foodEatenService.getListofFoodEaten(this.datepickedbyuser)[0].foodDateIntake) === this.DatePipe.transform(this.datepickedbyuser));
       try{
-        console.log(this.dataSource = this.dataSource.concat(this.foodEatenService.getListofFoodEaten(this.DatePipe.transform(this.datepickedbyuser)).foodTakenDetails));
+        this.dataSource = this.dataSource.concat(this.foodEatenService.getListofFoodEaten(this.DatePipe.transform(this.datepickedbyuser)).foodTakenDetails);
       } catch (err: unknown){
         this.foodeaten = new FoodEaten();
         this.foodeaten.foodDateIntake = new Date(this.DatePipe.transform(this.datepickedbyuser))
@@ -91,7 +91,7 @@ export class CalorieTrackerComponent implements OnInit {
   }
 
   showDate(){
-    console.log(this.datepickedbyuser);
+    this.datepickedbyuser;
   }
 
   get foodTakeDetails(){
@@ -153,13 +153,11 @@ export class CalorieTrackerComponent implements OnInit {
 
 
 
-    this.foodeaten = new FoodEaten();
-    this.foodeaten.foodDateIntake = new Date(this.DatePipe.transform(this.datepickedbyuser))
+    this.foodeaten = new Object();
+    this.foodeaten.foodDateIntake = new Date(this.DatePipe.transform(this.datepickedbyuser, 'yyyy-MM-dd'), )
     this.foodeaten.foodTakenDetails = this.dataSource;
-
-    console.log("time to see",this.foodeaten);
     this.foodEatenService.updateFoodEaten(this.foodeaten);
-
+    console.log(this.foodeaten);
     this.multiplierArray.reset();
 
     // this.foodEatenService.addToListOfFoodEaten();
@@ -183,10 +181,11 @@ export class CalorieTrackerComponent implements OnInit {
 
   addEvent(type: string, event: MatDatepickerInputEvent<Date>){
     this.datepickedbyuser = event.value;
+    console.log("date",this.datepickedbyuser);
     try{
       console.log(this.dataSource = this.dataSource.concat(this.foodEatenService.getListofFoodEaten(this.DatePipe.transform(this.datepickedbyuser)).foodTakenDetails));
     } catch (err: unknown){
-      this.foodeaten = new FoodEaten();
+      this.foodeaten = new Object();
       this.foodeaten.foodTakenDetails = this.multiplierArray.value;
       this.foodeaten.foodDateIntake = new Date(this.DatePipe.transform(this.datepickedbyuser))
       this.foodEatenService.createNewListOfFoodEaten(this.foodeaten)
@@ -197,6 +196,18 @@ export class CalorieTrackerComponent implements OnInit {
     console.log(this.dataSource = this.dataSource.concat(this.foodEatenService.getListofFoodEaten(this.DatePipe.transform(this.datepickedbyuser)).foodTakenDetails));
     console.log("today's food",this.dataSource);
     console.log(this.datepickedbyuser);
+
+    this.foodEatenService.checkList();
+  }
+
+
+  deleteSpecificFood(index: number){
+    this.dataSource.splice(index, 1);
+    console.log("delete", this.dataSource);
+    this.foodeaten = new FoodEaten();
+    this.foodeaten.foodDateIntake = new Date(this.DatePipe.transform(this.datepickedbyuser))
+    this.foodeaten.foodTakenDetails = this.dataSource;
+    this.foodEatenService.updateFoodEaten(this.foodeaten);
   }
 
 }
