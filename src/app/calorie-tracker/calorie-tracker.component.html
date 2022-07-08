@@ -11,7 +11,7 @@
         [matDatepicker]="myDatePicker"
         placeholder="Form Date"
         [(ngModel)]="datepickedbyuser"
-        (dateInput)="addEvent('input', $event)"
+        (dateInput)="addEvent($event)"
       />
       <mat-datepicker-toggle
         [for]="myDatePicker"

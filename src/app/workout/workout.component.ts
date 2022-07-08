@@ -128,14 +128,6 @@ export class WorkoutComponent implements OnInit {
     return this.sanitizer.bypassSecurityTrustResourceUrl(base64String);
   }
 
-
-
-  openCreateModal(contents: any) {
-    this.modalService.open(contents, { windowClass: 'my-class' });
-  }
-
-
-
   onSubmit() {
     // just to get the length of list of workouts
     this.listOfWorkouts = this.workoutService.getWorkouts();

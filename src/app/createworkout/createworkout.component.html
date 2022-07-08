@@ -1,0 +1,195 @@
+<form [formGroup]="createWorkout">
+  <div class="container">
+    <div class="row gutters">
+      <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+        <div class="card h-100">
+          <div class="card-body">
+            <div class="account-settings">
+              <div class="user-profile">
+                <div *ngIf="createdImage">
+                  <img
+                    [src]="createdImage | async"
+                    width="200px"
+                    height="200px"
+                    alt=""
+                  />
+                </div>
+                <br />
+                <input type="file" (change)="onChange($event, 'create')" />
+              </div>
+              <div class="about">
+                <h5>About Workout</h5>
+                <mat-form-field class="full-width" appearance="fill">
+                  <mat-label>Enter summary of workout</mat-label>
+                  <textarea
+                    matInput
+                    placeholder="helps to lose weight ..."
+                    formControlName="summary"
+                  ></textarea>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+        <div class="card h-100">
+          <div class="card-body">
+            <div class="row gutters">
+              <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <h4 class="mb-2 text-primary">Workout Details</h4>
+              </div>
+              <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                <h4>Calories Burnt:</h4>
+                <mat-form-field class="example-full-width" appearance="fill">
+                  <mat-label>Enter Calories Burnt</mat-label>
+                  <input
+                    type="number"
+                    matInput
+                    [errorStateMatcher]="matcher"
+                    formControlName="calories_burnt"
+                    placeholder="Kcal"
+                  />
+                  <!-- <mat-hint>Kcal</mat-hint> -->
+                </mat-form-field>
+              </div>
+              <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                <h4>Workout Type:</h4>
+
+                <mat-form-field appearance="fill">
+                  <mat-select formControlName="workout_type"
+                          placeholder="Workout Type">
+                      <mat-option value="core">Core</mat-option>
+                      <mat-option value="Lower Body">Lower Body</mat-option>
+                      <mat-option value="Total Body">Total Body</mat-option>
+                      <mat-option value="Upper Body">Upper Body</mat-option>
+                  </mat-select>
+              </mat-form-field>
+              </div>
+              <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                <h4>Duration (mins):</h4>
+                <mat-form-field class="example-full-width" appearance="fill">
+                  <mat-label>Enter Duration</mat-label>
+                  <input
+                    type="number"
+                    matInput
+                    [errorStateMatcher]="matcher"
+                    formControlName="duration"
+                    placeholder="Mins"
+                  />
+                </mat-form-field>
+              </div>
+              <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                <h4>Equipment Needed:</h4>
+                <mat-form-field class="example-full-width" appearance="fill">
+                  <mat-label>Equipment</mat-label>
+                  <input
+                    type="text"
+                    matInput
+                    [errorStateMatcher]="matcher"
+                    formControlName="equipment"
+                    placeholder="Equipment"
+                  />
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row gutters">
+              <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <h4 class="mt-3 mb-2 text-primary">Workout</h4>
+              </div>
+              <ng-container formArrayName="workout">
+                <ng-container
+                  *ngFor="
+                    let workoutdetailform of workouts.controls;
+                    let i = index
+                  "
+                >
+                  <div class="row gutters" style="margin-left: 0px;" [formGroup]="workoutdetailform">
+                    <div class="col-xl-5 col-lg-5 col-md-5 col-sm-5 col-5">
+                      <div class="form-group">
+                        <mat-form-field appearance="fill" style="width: 100%">
+                          <mat-label>Enter Workout</mat-label>
+                          <input
+                            matInput
+                            #inputworkout
+                            type="text"
+                            placeholder="Enter workout"
+                            formControlName="workout"
+                          />
+                          <mat-hint align="end"></mat-hint>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+                      <div class="form-group">
+                        <mat-form-field appearance="fill" style="width: 100%">
+                          <mat-label>Enter amount of set</mat-label>
+                          <input
+                            matInput
+                            #inputset
+                            type="number"
+                            placeholder="Enter Set"
+                            formControlName="set"
+                          />
+                          <mat-hint align="end"></mat-hint>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+                      <div class="form-group" >
+                        <mat-form-field appearance="fill" style="width: 100%">
+                          <mat-label>Enter amount of rep</mat-label>
+                          <input
+                            matInput
+                            #inputrep
+                            type="number"
+                            placeholder="Enter Rep"
+                            formControlName="rep"
+                          />
+                          <mat-hint align="end"></mat-hint>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="col-xl-1 col-lg-1 col-md-1 col-sm-1 col-1">
+                      <mat-icon type="button" (click)="deleteWorkout(i)" style="margin-top: 10px;">delete</mat-icon>
+                    </div>
+                  </div>
+                </ng-container>
+              </ng-container>
+              <div class="col-md-12 text-center">
+                <button class="rounded-circle" (click)="addWorkoutDetails()">
+                  <span>&#43;</span>
+                </button>
+              </div>
+            </div>
+            <div class="row gutters">
+              <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="text-right">
+                  <button
+                    type="button"
+                    id="submit"
+                    name="submit"
+                    class="btn btn-secondary"
+                    routerLink="/workout"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    id="submit"
+                    name="submit"
+                    class="btn btn-primary"
+                    (click)="onSubmit()"
+                    routerLink="/workout"
+                  >
+                    Add
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

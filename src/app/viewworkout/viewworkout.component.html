@@ -1,0 +1,78 @@
+  <div class="container">
+    <div class="row gutters">
+    <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+    <div class="card h-100">
+      <div class="card-body">
+        <div class="account-settings">
+          <div class="user-profile">
+              <img
+                  [src]="image"
+                  width="200px"
+                  height="200px"
+                  alt=""
+                />
+          </div>
+          <div class="about">
+            <h5>About</h5>
+            <p>{{this.workout.summary}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+    <br>
+    <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+    <div class="card h-100">
+      <div class="card-body">
+        <div class="row gutters">
+          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <h6 class="mb-2 text-primary">Workout Details</h6>
+          </div>
+          <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+            <div class="form-group">
+              <h4>Calories Burnt: {{this.workout.calories_burnt}}</h4>
+            </div>
+          </div>
+          <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+            <div class="form-group">
+              <h4>Workout Type: {{this.workout.workout_type}}</h4>
+            </div>
+          </div>
+          <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+            <div class="form-group">
+              <h4>Duration (mins): {{this.workout.duration}}</h4>
+            </div>
+          </div>
+          <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+            <div class="form-group">
+              <h4>Equipment needed: {{this.workout.equipment}}</h4>
+            </div>
+          </div>
+        </div>
+        <div class="row gutters" style="margin-left: 0px ;" *ngFor="let workoutDetail of this.workoutDetails; let i = index">
+          <h4>workout: {{i + 1}}</h4>
+              <div class="col-xl-2 col-lg-5 col-md-5 col-sm-5 col-5">
+
+                <h3>{{this.workoutDetail.workout}}</h3>
+              </div>
+              <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2">
+                <h4>set: {{workoutDetail.set}}</h4>
+              </div>
+              <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2">
+                <h4>Rep: {{workoutDetail.rep}}</h4>
+
+              </div>
+        </div>
+        <div class="row gutters">
+          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="text-right">
+              <button type="button" id="submit" name="submit" class="btn btn-secondary">Cancel</button>
+              <button type="button" id="submit" name="submit" class="btn btn-primary">Update</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+    </div>
+    </div>

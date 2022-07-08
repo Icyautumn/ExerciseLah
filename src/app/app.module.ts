@@ -29,6 +29,9 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import {MatTableModule} from '@angular/material/table';
 import { DatePipe } from '@angular/common';
+import { CreateworkoutComponent } from './createworkout/createworkout.component';
+import { ViewworkoutComponent } from './viewworkout/viewworkout.component';
+import { EditworkoutComponent } from './editworkout/editworkout.component';
 
 
 @NgModule({
@@ -42,6 +45,9 @@ import { DatePipe } from '@angular/common';
     DeletecontactComponent,
     WorkoutComponent,
     CalorieTrackerComponent,
+    CreateworkoutComponent,
+    ViewworkoutComponent,
+    EditworkoutComponent,
   ],
   imports: [
     FormsModule,

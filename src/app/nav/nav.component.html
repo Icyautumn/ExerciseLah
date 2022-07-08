@@ -1,55 +1,13 @@
-<!-- <nav class="navbar navbar-expand-sm bg-light navbar-light">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-        <ul class="nav navbar-nav">
-          <li>
-            <a routerLink="/createContact" class="nav-link" routerLinkActive="active">
-              Create Contact
-            </a>
-          </li>
-          <li>
-            <a routerLink="/displayContact" class="nav-link" routerLinkActive="active">
-              display Contact
-            </a>
-          </li>
-          <li>
-            <a routerLink="/updateContact" class="nav-link" routerLinkActive="active">
-              Update Contact
-            </a>
-          </li>
-          <li>
-            <a routerLink="/deleteContact" class="nav-link" routerLinkActive="active">
-              Delete Contact
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</nav> -->
+<!--
 <div class="container">
   <div class="header clearfix">
     <nav>
       <ul class="nav nav-pills float-right">
-        <!-- <li class="nav-item">
-          <a class="nav-link" routerLink="/createContact" routerLinkActive="active">Create Contact</a>
-        </li>
         <li class="nav-item">
           <a routerLink="/displayContact" class="nav-link" routerLinkActive="active">
             display Contact
           </a>
         </li>
-        <li>
-          <a routerLink="/updateContact" class="nav-link" routerLinkActive="active">
-            Update Contact
-          </a>
-        </li>
-        <li>
-          <a routerLink="/deleteContact" class="nav-link" routerLinkActive="active">
-            Delete Contact
-          </a>
-        </li> -->
         <li class="nav-item">
           <a class="nav-link" routerLink="/workout" routerLinkActive="active">Workouts </a>
         </li>
@@ -62,4 +20,30 @@
       </ul>
     </nav>
     <h3 class="text-muted">ExerciseLah!</h3>
+  </div> -->
+
+<header>
+  <div class="navbar navbar-dark bg-dark shadow-sm">
+    <div class="container d-flex justify-content-between">
+      <a routerLink="/workout" class="navbar-brand d-flex align-items-center">
+        <strong>WorkoutLah!</strong>
+      </a>
+      <nav class="nav nav-masthead justify-content-center">
+        <li class="nav-item">
+          <a routerLink="/displayContact" class="nav-link" routerLinkActive="active">
+            display Contact
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/workout" routerLinkActive="active">Workouts</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/calorie_tracker" routerLinkActive="active">Calorie Tracker</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLinkActive="active">Log In</a>
+        </li>
+      </nav>
+    </div>
   </div>
+</header>

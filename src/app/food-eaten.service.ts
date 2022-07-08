@@ -10,24 +10,28 @@ export class FoodEatenService {
 
   constructor(private datePipe: DatePipe) { }
 
-  updateFoodEaten(items: FoodEaten ){
+  updateFoodEaten(items: FoodEaten): void{
     const target = listofFoodEaten.find((item) =>this.datePipe.transform(item.foodDateIntake, 'yyyy-MM-dd') === this.datePipe.transform(items.foodDateIntake, 'yyyy-MM-dd'));
-    console.log(target);
-    Object.assign(target, items);
-    console.log(listofFoodEaten);
+    console.log(target.foodTakenDetails = items.foodTakenDetails);
+    // Object.assign(target, items);
+    // console.log(listofFoodEaten);
+    this.checkList();
+
+
   }
 
   createNewListOfFoodEaten(items: any){
-    console.log("before",listofFoodEaten);
+    // console.log("before",listofFoodEaten);
     listofFoodEaten.push(items);
-    console.log("after",listofFoodEaten);
+    // console.log("after",listofFoodEaten);
   }
 
   getListofFoodEaten(Datechosen: string){
-    var inlist = listofFoodEaten.find(c => this.datePipe.transform(c.foodDateIntake) === Datechosen);
-    console.log(inlist);
-    // return inlist;
-    return inlist;
+    console.log("before",listofFoodEaten);
+      var inlist = listofFoodEaten.find(c => this.datePipe.transform(c.foodDateIntake) === Datechosen);
+      return inlist;
+
+
   }
 
   checkList(){

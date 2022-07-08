@@ -58,6 +58,7 @@ export class CalorieTrackerComponent implements OnInit {
 
 
       // console.log(this.DatePipe.transform(this.foodEatenService.getListofFoodEaten(this.datepickedbyuser)[0].foodDateIntake) === this.DatePipe.transform(this.datepickedbyuser));
+      this.foodEatenService.checkList();
       try{
         this.dataSource = this.dataSource.concat(this.foodEatenService.getListofFoodEaten(this.DatePipe.transform(this.datepickedbyuser)).foodTakenDetails);
       } catch (err: unknown){
@@ -158,7 +159,6 @@ export class CalorieTrackerComponent implements OnInit {
     this.foodeaten.foodTakenDetails = this.dataSource;
     this.foodEatenService.updateFoodEaten(this.foodeaten);
     console.log(this.foodeaten);
-    this.multiplierArray.reset();
 
     // this.foodEatenService.addToListOfFoodEaten();
 
@@ -179,16 +179,19 @@ export class CalorieTrackerComponent implements OnInit {
     console.log("yesterday date", this.datepickedbyuser);
   }
 
-  addEvent(type: string, event: MatDatepickerInputEvent<Date>){
+  addEvent(event: MatDatepickerInputEvent<Date>){
     this.datepickedbyuser = event.value;
     console.log("date",this.datepickedbyuser);
+
     try{
-      console.log(this.dataSource = this.dataSource.concat(this.foodEatenService.getListofFoodEaten(this.DatePipe.transform(this.datepickedbyuser)).foodTakenDetails));
-    } catch (err: unknown){
+      this.dataSource = this.dataSource.concat(this.foodEatenService.getListofFoodEaten(this.DatePipe.transform(this.datepickedbyuser, 'yyyy-MM-dd')).foodTakenDetails);
+    } catch (error){
       this.foodeaten = new Object();
-      this.foodeaten.foodTakenDetails = this.multiplierArray.value;
       this.foodeaten.foodDateIntake = new Date(this.DatePipe.transform(this.datepickedbyuser))
+      this.foodeaten.foodTakenDetails = this.multiplierArray.value;
+      console.log("this is what i am creating",this.foodeaten);
       this.foodEatenService.createNewListOfFoodEaten(this.foodeaten)
+      this.foodEatenService.checkList();
     }
     // clear the table
     this.dataSource.splice(0);
@@ -202,12 +205,13 @@ export class CalorieTrackerComponent implements OnInit {
 
 
   deleteSpecificFood(index: number){
-    this.dataSource.splice(index, 1);
-    console.log("delete", this.dataSource);
-    this.foodeaten = new FoodEaten();
-    this.foodeaten.foodDateIntake = new Date(this.DatePipe.transform(this.datepickedbyuser))
-    this.foodeaten.foodTakenDetails = this.dataSource;
-    this.foodEatenService.updateFoodEaten(this.foodeaten);
+    // this.dataSource.splice(index, 1);
+    // console.log("delete", this.dataSource);
+    // this.foodeaten = new FoodEaten();
+    // this.foodeaten.foodDateIntake = new Date(this.DatePipe.transform(this.datepickedbyuser))
+    // this.foodeaten.foodTakenDetails = this.dataSource;
+    // this.foodEatenService.updateFoodEaten(this.foodeaten);
+    this.foodEatenService.checkList();
   }
 
 }

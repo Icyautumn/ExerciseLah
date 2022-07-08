@@ -26,4 +26,9 @@ export class WorkoutService {
     const target = listOfWorkouts.find((item) =>item._id === itemid);
     Object.assign(target, item);
   }
+
+  getSpecificWorkout(id: number){
+    const target = listOfWorkouts.find((item) =>item._id == id);
+    return target;
+  }
 }
