@@ -32,6 +32,8 @@ import { DatePipe } from '@angular/common';
 import { CreateworkoutComponent } from './createworkout/createworkout.component';
 import { ViewworkoutComponent } from './viewworkout/viewworkout.component';
 import { EditworkoutComponent } from './editworkout/editworkout.component';
+import { HttpClientModule } from '@angular/common/http';
+import { PostsService } from './posts.service';
 
 
 @NgModule({
@@ -71,7 +73,7 @@ import { EditworkoutComponent } from './editworkout/editworkout.component';
 
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  providers: [ContactsService, WorkoutService, DatePipe],
+  providers: [ContactsService, WorkoutService, DatePipe, PostsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

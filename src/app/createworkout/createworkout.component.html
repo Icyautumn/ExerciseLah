@@ -1,4 +1,4 @@
-<form [formGroup]="createWorkout">
+<form [formGroup]="createWorkout" novalidate>
   <div class="container">
     <div class="row gutters">
       <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
@@ -26,6 +26,14 @@
                     placeholder="helps to lose weight ..."
                     formControlName="summary"
                   ></textarea>
+                  <mat-error
+                  >{{
+                    createWorkout.get("summary").errors.required &&
+                    createWorkout.get("summary").touched
+                      ? "This field is required"
+                      : ""
+                  }}
+                </mat-error>
                 </mat-form-field>
               </div>
             </div>
@@ -49,22 +57,34 @@
                     [errorStateMatcher]="matcher"
                     formControlName="calories_burnt"
                     placeholder="Kcal"
+                    required
                   />
                   <!-- <mat-hint>Kcal</mat-hint> -->
                 </mat-form-field>
+                <mat-error
+                  >{{
+                    createWorkout.get("calories_burnt").errors.required &&
+                    createWorkout.get("calories_burnt").touched
+                      ? "This field is required"
+                      : ""
+                  }}
+                </mat-error>
               </div>
               <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                 <h4>Workout Type:</h4>
 
                 <mat-form-field appearance="fill">
-                  <mat-select formControlName="workout_type"
-                          placeholder="Workout Type">
-                      <mat-option value="core">Core</mat-option>
-                      <mat-option value="Lower Body">Lower Body</mat-option>
-                      <mat-option value="Total Body">Total Body</mat-option>
-                      <mat-option value="Upper Body">Upper Body</mat-option>
+                  <mat-select
+                    formControlName="workout_type"
+                    placeholder="Workout Type"
+                    required
+                  >
+                    <mat-option value="core">Core</mat-option>
+                    <mat-option value="Lower Body">Lower Body</mat-option>
+                    <mat-option value="Total Body">Total Body</mat-option>
+                    <mat-option value="Upper Body">Upper Body</mat-option>
                   </mat-select>
-              </mat-form-field>
+                </mat-form-field>
               </div>
               <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                 <h4>Duration (mins):</h4>
@@ -78,6 +98,14 @@
                     placeholder="Mins"
                   />
                 </mat-form-field>
+                <mat-error
+                  >{{
+                    createWorkout.get("duration").errors.required &&
+                    createWorkout.get("duration").touched
+                      ? "This field is required"
+                      : ""
+                  }}
+                </mat-error>
               </div>
               <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                 <h4>Equipment Needed:</h4>
@@ -91,6 +119,14 @@
                     placeholder="Equipment"
                   />
                 </mat-form-field>
+                <mat-error
+                  >{{
+                    createWorkout.get("equipment").errors.required &&
+                    createWorkout.get("equipment").touched
+                      ? "This field is required"
+                      : ""
+                  }}
+                </mat-error>
               </div>
             </div>
             <div class="row gutters">
@@ -104,7 +140,11 @@
                     let i = index
                   "
                 >
-                  <div class="row gutters" style="margin-left: 0px;" [formGroup]="workoutdetailform">
+                  <div
+                    class="row gutters"
+                    style="margin-left: 0px"
+                    [formGroup]="workoutdetailform"
+                  >
                     <div class="col-xl-5 col-lg-5 col-md-5 col-sm-5 col-5">
                       <div class="form-group">
                         <mat-form-field appearance="fill" style="width: 100%">
@@ -118,6 +158,14 @@
                           />
                           <mat-hint align="end"></mat-hint>
                         </mat-form-field>
+                        <mat-error
+                  >{{
+                    workoutdetailform.get("workout").errors.required &&
+                    workoutdetailform.get("workout").touched
+                      ? "This field is required"
+                      : ""
+                  }}
+                </mat-error>
                       </div>
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
@@ -133,10 +181,18 @@
                           />
                           <mat-hint align="end"></mat-hint>
                         </mat-form-field>
+                        <mat-error
+                  >{{
+                    workoutdetailform.get("set").errors.required &&
+                    workoutdetailform.get("set").touched
+                      ? "This field is required"
+                      : ""
+                  }}
+                </mat-error>
                       </div>
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
-                      <div class="form-group" >
+                      <div class="form-group">
                         <mat-form-field appearance="fill" style="width: 100%">
                           <mat-label>Enter amount of rep</mat-label>
                           <input
@@ -148,10 +204,23 @@
                           />
                           <mat-hint align="end"></mat-hint>
                         </mat-form-field>
+                        <mat-error
+                  >{{
+                    workoutdetailform.get("rep").errors.required &&
+                    workoutdetailform.get("rep").touched
+                      ? "This field is required"
+                      : ""
+                  }}
+                </mat-error>
                       </div>
                     </div>
                     <div class="col-xl-1 col-lg-1 col-md-1 col-sm-1 col-1">
-                      <mat-icon type="button" (click)="deleteWorkout(i)" style="margin-top: 10px;">delete</mat-icon>
+                      <mat-icon
+                        type="button"
+                        (click)="deleteWorkout(i)"
+                        style="margin-top: 10px"
+                        >delete</mat-icon
+                      >
                     </div>
                   </div>
                 </ng-container>

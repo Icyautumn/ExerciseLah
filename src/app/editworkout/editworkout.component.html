@@ -1,4 +1,4 @@
-<form [formGroup]="updateForm">
+<form [formGroup]="updateForm" novalidate>
   <div class="container">
     <div class="row gutters">
       <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
@@ -26,6 +26,12 @@
                     placeholder="helps to lose weight ..."
                     formControlName="summary"
                   ></textarea>
+                  <div *ngIf="updateForm.invalid">
+                    <p *ngIf="updateForm.controls.summary.dirty && updateForm.controls.hasError('required')">
+                      Enter Summary
+                    </p>
+                  </div>
+
                 </mat-form-field>
               </div>
             </div>
@@ -148,7 +154,7 @@
                       </div>
                     </div>
                     <div class="col-xl-1 col-lg-1 col-md-1 col-sm-1 col-1">
-                      <mat-icon type="button" (click)="deleteWorkout(i)" style="margin-top: 10px;">delete</mat-icon>
+                      <mat-icon type="button" (click)="deleteUpdateWorkout  (i)" style="margin-top: 10px;">delete</mat-icon>
                     </div>
                   </div>
                 </ng-container>

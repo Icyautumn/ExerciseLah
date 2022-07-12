@@ -47,8 +47,8 @@ export class EditworkoutComponent implements OnInit {
     this.updateForm = this.fb.group({
       _id: '',
       workout_photo: '',
-      summary: '',
-      calories_burnt: '',
+      summary: ['', [Validators.required]],
+      calories_burnt: ['', [Validators.required]],
       workout_type: '',
       duration: '',
       equipment: '',
@@ -171,4 +171,5 @@ export class EditworkoutComponent implements OnInit {
     this.updateworkouts.clear();
 
   }
+
 }

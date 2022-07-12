@@ -44,11 +44,11 @@ export class CreateworkoutComponent implements OnInit {
     this.createWorkout = this.fb.group({
       _id: '',
       workout_photo: '',
-      summary: '',
-      calories_burnt: '',
+      summary: ['', [Validators.required]],
+      calories_burnt: ['', [Validators.required]],
       workout_type: '',
-      duration: '',
-      equipment: '',
+      duration: ['', [Validators.required]],
+      equipment: ['', [Validators.required]],
       workout: this.fb.array([])
     });
   }
