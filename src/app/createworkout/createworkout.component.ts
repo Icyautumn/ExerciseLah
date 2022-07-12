@@ -6,6 +6,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import { Workouts } from '../workout';
 import { WorkoutService } from '../workout.service';
+import { Router } from '@angular/router';
 
 
 /** Error when invalid control is dirty, touched, or submitted. */
@@ -35,7 +36,7 @@ export class CreateworkoutComponent implements OnInit {
 
   matcher = new MyErrorStateMatcher();
 
-  constructor(private fb: FormBuilder, private workoutService: WorkoutService) {
+  constructor(private fb: FormBuilder, private workoutService: WorkoutService, private router: Router) {
     this.listOfWorkouts = this.workoutService.getWorkouts();
     this.setid = this.listOfWorkouts.length;
    }
@@ -120,7 +121,9 @@ export class CreateworkoutComponent implements OnInit {
   }
 
   onSubmit() {
-    // just to get the length of list of workouts
+
+    if(this.createWorkout.valid){
+      // just to get the length of list of workouts
     this.listOfWorkouts = this.workoutService.getWorkouts();
     this.setid = this.listOfWorkouts.length;
     this.newWorkout = new Workouts();
@@ -141,6 +144,11 @@ export class CreateworkoutComponent implements OnInit {
     this.convertToBase64(null, null);
     // clear workout details form
     this.workouts.clear();
+    this.router.navigate(['/workout']);
+    }else{
+      alert('please fill up the form');
+    }
+
 
   }
 

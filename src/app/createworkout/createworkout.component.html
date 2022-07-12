@@ -28,7 +28,7 @@
                   ></textarea>
                   <mat-error
                   >{{
-                    createWorkout.get("summary").errors.required &&
+                    createWorkout.get("summary").errors?.required &&
                     createWorkout.get("summary").touched
                       ? "This field is required"
                       : ""
@@ -63,7 +63,7 @@
                 </mat-form-field>
                 <mat-error
                   >{{
-                    createWorkout.get("calories_burnt").errors.required &&
+                    createWorkout.get("calories_burnt").errors?.required &&
                     createWorkout.get("calories_burnt").touched
                       ? "This field is required"
                       : ""
@@ -100,7 +100,7 @@
                 </mat-form-field>
                 <mat-error
                   >{{
-                    createWorkout.get("duration").errors.required &&
+                    createWorkout.get("duration").errors?.required &&
                     createWorkout.get("duration").touched
                       ? "This field is required"
                       : ""
@@ -121,7 +121,7 @@
                 </mat-form-field>
                 <mat-error
                   >{{
-                    createWorkout.get("equipment").errors.required &&
+                    createWorkout.get("equipment").errors?.required &&
                     createWorkout.get("equipment").touched
                       ? "This field is required"
                       : ""
@@ -160,7 +160,7 @@
                         </mat-form-field>
                         <mat-error
                   >{{
-                    workoutdetailform.get("workout").errors.required &&
+                    workoutdetailform.get("workout").errors?.required &&
                     workoutdetailform.get("workout").touched
                       ? "This field is required"
                       : ""
@@ -183,7 +183,7 @@
                         </mat-form-field>
                         <mat-error
                   >{{
-                    workoutdetailform.get("set").errors.required &&
+                    workoutdetailform.get("set").errors?.required &&
                     workoutdetailform.get("set").touched
                       ? "This field is required"
                       : ""
@@ -206,7 +206,7 @@
                         </mat-form-field>
                         <mat-error
                   >{{
-                    workoutdetailform.get("rep").errors.required &&
+                    workoutdetailform.get("rep").errors?.required &&
                     workoutdetailform.get("rep").touched
                       ? "This field is required"
                       : ""
@@ -249,7 +249,7 @@
                     name="submit"
                     class="btn btn-primary"
                     (click)="onSubmit()"
-                    routerLink="/workout"
+                    [disabled]="createWorkout.invalid"
                   >
                     Add
                   </button>
