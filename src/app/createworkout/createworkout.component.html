@@ -280,7 +280,7 @@
 
     <table
       mat-table
-      [dataSource]="dataSource"
+      [dataSource]="this.dataSource"
       class="mat-elevation-z8"
       style="width: 70%; height: auto;"
     >
@@ -353,7 +353,7 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
     </div>
-    <ngx-charts-advanced-pie-chart [results]="dataSource.data" [view]="view" [scheme]="colorScheme" [gradient]="gradient"></ngx-charts-advanced-pie-chart>
+    <ngx-charts-advanced-pie-chart [results]="this.FoodData" [view]="view" [scheme]="colorScheme" [gradient]="gradient"></ngx-charts-advanced-pie-chart>
     <br>
     <div class="row gutters">
       <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">

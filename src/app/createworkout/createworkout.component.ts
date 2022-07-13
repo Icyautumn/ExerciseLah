@@ -31,6 +31,8 @@ export class CreateworkoutComponent implements OnInit {
   data : any[] =[];
   displayedColumns: string[] = ['name', 'serving_size_g', 'calories', 'carbohydrates', 'protein', 'sodium', 'sugar_g', 'Delete'];
 
+  FoodData: any[] = [];
+  showData: any[] = [];
   multiplierArray: FormGroup;
 
   view: any[] = [700, 370];
@@ -46,6 +48,12 @@ export class CreateworkoutComponent implements OnInit {
   updateImageBase64: string;
   setid: number;
   newWorkout: Workouts;
+
+  foodData_calories: number = 0;
+  foodData_carbohydrates_total_g: number = 0;
+  foodData_protein_g: number = 0;
+  foodData_sodium_mg: number = 0;
+  foodData_sugar_g: number = 0;
 
   calories: number;
   carbohydrates_total_g: number;
@@ -94,7 +102,31 @@ export class CreateworkoutComponent implements OnInit {
       'serving_size_g': '',
       'sodium_mg': '',
       'sugar_g': '',
-    })
+    });
+
+    this.FoodData = [
+      {
+        name: 'calories',
+        value: 0
+      },
+      {
+        name: 'carbohydrates_total_g',
+        value: 0
+      },
+      {
+        name: 'protein_g',
+        value: 0
+      },
+      {
+        name: 'sodium_mg',
+        value: 0
+      },
+      {
+        name: 'sugar_g',
+        value: 0
+      },
+    ];
+    this.FoodData = [...this.FoodData];
   }
 
   addFood(){
@@ -127,15 +159,81 @@ export class CreateworkoutComponent implements OnInit {
       'sodium_mg': this.sodium_mg * multiplier,
       'sugar_g': this.sugar_g * multiplier,
     });
+
+    this.foodData_calories += (this.calories * multiplier);
+    this.foodData_carbohydrates_total_g += + (this.carbohydrates_total_g * multiplier)
+    this.foodData_protein_g += (this.protein_g * multiplier);
+    this.foodData_sodium_mg += (this.sodium_mg * multiplier);
+    this.foodData_sugar_g += (this.sugar_g * multiplier);
+    this.FoodData = [
+      {
+        name: 'calories',
+        value:this.foodData_calories
+      },
+      {
+        name: 'carbohydrates_total_g',
+        value: this.foodData_carbohydrates_total_g
+      },
+      {
+        name: 'protein_g',
+        value: this.foodData_protein_g
+      },
+      {
+        name: 'sodium_mg',
+        value: this.foodData_sodium_mg
+      },
+      {
+        name: 'sugar_g',
+        value: this.foodData_sugar_g
+      },
+    ];
+
+    this.FoodData = [...this.FoodData];
+
+
+
     this.data.push(this.multiplierArray.value);
+    console.log("data",this.FoodData);
     this.updateTable();
     (<HTMLSelectElement>document.getElementById('Food')).value = '';
     (<HTMLSelectElement>document.getElementById('Grams')).value  = '';
 
+
+
   }
 
   deleteSpecificFood(index: number){
-    console.log("index", index);
+
+    this.foodData_calories -= (this.data[index].calories);
+    this.foodData_carbohydrates_total_g -= (this.data[index].carbohydrates_total_g)
+    this.foodData_protein_g -= (this.data[index].protein_g);
+    this.foodData_sodium_mg -= (this.data[index].sodium_mg);
+    this.foodData_sugar_g -= (this.data[index].sugar_g);
+    this.FoodData = [
+      {
+        name: 'calories',
+        value:this.foodData_calories
+      },
+      {
+        name: 'carbohydrates_total_g',
+        value: this.foodData_carbohydrates_total_g
+      },
+      {
+        name: 'protein_g',
+        value: this.foodData_protein_g
+      },
+      {
+        name: 'sodium_mg',
+        value: this.foodData_sodium_mg
+      },
+      {
+        name: 'sugar_g',
+        value: this.foodData_sugar_g
+      },
+    ];
+
+    this.FoodData = [...this.FoodData];
+
     this.data.splice(index, 1);
     this.updateTable();
   }
