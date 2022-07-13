@@ -20,6 +20,36 @@ export const listOfWorkouts: Workouts[] = [
       set: 8,
       rep: 15
     },
+  ],
+  foodDetails: [
+    {
+      "sugar_g": 1.2,
+      "fiber_g": 2.2,
+      "serving_size_g": 100,
+      "sodium_mg": 10,
+      "name": "potato",
+      "potassium_mg": 70,
+      "fat_saturated_g": 0,
+      "fat_total_g": 0.1,
+      "calories": 92.7,
+      "cholesterol_mg": 0,
+      "protein_g": 2.5,
+      "carbohydrates_total_g": 21
+    },
+    {
+    "sugar_g": 12.3,
+        "fiber_g": 2.6,
+        "serving_size_g": 100,
+        "sodium_mg": 1,
+        "name": "banana",
+        "potassium_mg": 22,
+        "fat_saturated_g": 0.1,
+        "fat_total_g": 0.3,
+        "calories": 89.4,
+        "cholesterol_mg": 0,
+        "protein_g": 1.1,
+        "carbohydrates_total_g": 23.2
+    },
   ]
   },
   {
@@ -39,6 +69,36 @@ export const listOfWorkouts: Workouts[] = [
       workout: "pushups",
       set: 5,
       rep: 13
+    },
+  ],
+  foodDetails: [
+    {
+      "sugar_g": 5.7,
+      "fiber_g": 2.7,
+      "serving_size_g": 100,
+      "sodium_mg": 495,
+      "name": "bread",
+      "potassium_mg": 98,
+      "fat_saturated_g": 0.7,
+      "fat_total_g": 3.4,
+      "calories": 261.6,
+      "cholesterol_mg": 0,
+      "protein_g": 8.8,
+      "carbohydrates_total_g": 50.2
+    },
+    {
+      "sugar_g": 1.1,
+      "fiber_g": 1.3,
+      "serving_size_g": 100,
+      "sodium_mg": 4,
+      "name": "spagetti",
+      "potassium_mg": 76,
+      "fat_saturated_g": 0.1,
+      "fat_total_g": 0.6,
+      "calories": 147.1,
+      "cholesterol_mg": 0,
+      "protein_g": 5.3,
+      "carbohydrates_total_g": 29.9
     },
   ]
   }

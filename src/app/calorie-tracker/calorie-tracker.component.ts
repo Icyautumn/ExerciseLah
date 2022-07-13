@@ -1,4 +1,4 @@
-import { ChangeDetectorRef , Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { FoodDetailsService } from '../food-details.service';
@@ -8,9 +8,10 @@ import { foodTakenDetails } from '../foodEaten';
 import { listofFoodDetails } from '../mock-foodDetails';
 import { listofFoodEaten } from '../mock-foodEaten';
 import { FoodEaten } from '../foodEaten';
-import {MatTableDataSource, MatTableModule} from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Variable } from '@angular/compiler/src/render3/r3_ast';
 import { DatePipe } from '@angular/common';
+import { PostsService } from '../posts.service';
 
 @Component({
   selector: 'app-calorie-tracker',
@@ -19,11 +20,14 @@ import { DatePipe } from '@angular/common';
 })
 export class CalorieTrackerComponent implements OnInit {
 
+  myForm!: FormGroup;
+  posts: any = [];
+
   foodDetailsAlreadyTaken: itemDetails[] = [];
 
   createFoodTaken: FormGroup;
 
-  datepickedbyuser  = new Date();
+  datepickedbyuser = new Date();
 
   nameOfFood: string;
 
@@ -44,35 +48,37 @@ export class CalorieTrackerComponent implements OnInit {
 
   displayedColumns: string[] = ['name', 'serving_size_g', 'calories', 'carbohydrates', 'protein', 'sodium', 'sugar_g', 'Delete'];
 
-  dataSource : any[] = [];
+  dataSource: any[] = [];
 
   multiplierArray: FormGroup;
 
 
-
-  constructor(private changeDetectorRefs: ChangeDetectorRef,private fb: FormBuilder,
+  constructor(private changeDetectorRefs: ChangeDetectorRef, private fb: FormBuilder,
     private foodDetailsService: FoodDetailsService, public changeDetectorRef: ChangeDetectorRef,
-    private foodEatenService: FoodEatenService, public DatePipe: DatePipe) {
-      // console.log("user", this.DatePipe.transform(this.datepickedbyuser, 'yyyy-MM-dd'));
-      // console.log("food date",this.DatePipe.transform(this.foodEatenService.getListofFoodEaten(this.datepickedbyuser)[0].foodDateIntake, 'yyyy-MM-dd'));
+    private foodEatenService: FoodEatenService, public DatePipe: DatePipe, private postsService: PostsService) {
+    this.postsService.getAllFood().subscribe(posts => {
+      this.posts = posts;
+    })
+    // console.log("user", this.DatePipe.transform(this.datepickedbyuser, 'yyyy-MM-dd'));
+    // console.log("food date",this.DatePipe.transform(this.foodEatenService.getListofFoodEaten(this.datepickedbyuser)[0].foodDateIntake, 'yyyy-MM-dd'));
 
 
-      // console.log(this.DatePipe.transform(this.foodEatenService.getListofFoodEaten(this.datepickedbyuser)[0].foodDateIntake) === this.DatePipe.transform(this.datepickedbyuser));
-      this.foodEatenService.checkList();
-      try{
-        this.dataSource = this.dataSource.concat(this.foodEatenService.getListofFoodEaten(this.DatePipe.transform(this.datepickedbyuser)).foodTakenDetails);
-      } catch (err: unknown){
-        this.foodeaten = new FoodEaten();
-        this.foodeaten.foodDateIntake = new Date(this.DatePipe.transform(this.datepickedbyuser))
-        this.foodEatenService.createNewListOfFoodEaten(this.foodeaten)
-      }
-
+    // console.log(this.DatePipe.transform(this.foodEatenService.getListofFoodEaten(this.datepickedbyuser)[0].foodDateIntake) === this.DatePipe.transform(this.datepickedbyuser));
+    this.foodEatenService.checkList();
+    try {
+      this.dataSource = this.dataSource.concat(this.foodEatenService.getListofFoodEaten(this.DatePipe.transform(this.datepickedbyuser)).foodTakenDetails);
+    } catch (err: unknown) {
+      this.foodeaten = new FoodEaten();
+      this.foodeaten.foodDateIntake = new Date(this.DatePipe.transform(this.datepickedbyuser))
+      this.foodEatenService.createNewListOfFoodEaten(this.foodeaten)
     }
+
+  }
 
   ngOnInit(): void {
     this.createFoodTaken = this.fb.group({
       foodDateIntake: '',
-      foodTakenDetails : this.fb.array([]),
+      foodTakenDetails: this.fb.array([]),
     });
     this.multiplierArray = this.fb.group({
       "calories": '',
@@ -89,17 +95,46 @@ export class CalorieTrackerComponent implements OnInit {
       'sugar_g': '',
     })
 
+    // sample code
+    this.myForm = this.fb.group({
+      name: '',
+      post: ''
+    });
+
   }
 
-  showDate(){
+  onSubmit() {
+    this.postsService.insertUser(this.myForm.value.name, this.myForm.value.post).subscribe(result => {
+      location.reload();
+    })
+  }
+
+  deletePost(_id: number) {
+    this.postsService.deletePost(_id).subscribe(results => {
+      location.reload();
+    });
+  }
+
+  updatePost(_id: number) {
+    var name = (document.getElementById(_id + '_name') as
+      HTMLInputElement).value;
+    var newpost = (document.getElementById(_id + '_post') as
+      HTMLInputElement).value;
+    this.postsService.updatePost(_id, name,
+      parseInt(newpost)).subscribe(results => {
+        location.reload();
+      });
+  }
+
+  showDate() {
     this.datepickedbyuser;
   }
 
-  get foodTakeDetails(){
+  get foodTakeDetails() {
     return this.createFoodTaken.controls["foodTakenDetails"] as FormArray;
   }
 
-  addFoodTakenDetails(){
+  addFoodTakenDetails() {
     const FoodTakenDetailsForm = this.fb.group({
       name: ['', Validators.required],
       serving_size_g: ['', Validators.required],
@@ -107,7 +142,7 @@ export class CalorieTrackerComponent implements OnInit {
     this.foodTakeDetails.push(FoodTakenDetailsForm);
   }
 
-  getFoodData(idInTheArray: number){
+  getFoodData(idInTheArray: number) {
     // get name of food
     this.nameOfFood = this.createFoodTaken.value.foodTakenDetails[idInTheArray].name;
     // get grams of food
@@ -141,12 +176,12 @@ export class CalorieTrackerComponent implements OnInit {
       'sugar_g': this.sugar_g * multiplier,
     })
 
-    if(this.dataSource[0].name == "" || this.dataSource[0].name == null){
+    if (this.dataSource[0].name == "" || this.dataSource[0].name == null) {
       this.dataSource.pop();
       this.dataSource = this.dataSource.concat(this.multiplierArray.value);
-    }else{
+    } else {
       // fit the details in the table
-        this.dataSource = this.dataSource.concat(this.multiplierArray.value);
+      this.dataSource = this.dataSource.concat(this.multiplierArray.value);
     }
     console.log(this.dataSource);
 
@@ -155,7 +190,7 @@ export class CalorieTrackerComponent implements OnInit {
 
 
     this.foodeaten = new Object();
-    this.foodeaten.foodDateIntake = new Date(this.DatePipe.transform(this.datepickedbyuser, 'yyyy-MM-dd'), )
+    this.foodeaten.foodDateIntake = new Date(this.DatePipe.transform(this.datepickedbyuser, 'yyyy-MM-dd'),)
     this.foodeaten.foodTakenDetails = this.dataSource;
     this.foodEatenService.updateFoodEaten(this.foodeaten);
     console.log(this.foodeaten);
@@ -169,27 +204,27 @@ export class CalorieTrackerComponent implements OnInit {
   //   }
   // }
 
-  nextDay(){
-    this.datepickedbyuser.setDate(this.datepickedbyuser.getDate() +1);
+  nextDay() {
+    this.datepickedbyuser.setDate(this.datepickedbyuser.getDate() + 1);
     console.log("tmr date", this.datepickedbyuser);
   }
 
-  previousDay(event: Event){
-    this.datepickedbyuser.setDate(this.datepickedbyuser.getDate() -1);
+  previousDay(event: Event) {
+    this.datepickedbyuser.setDate(this.datepickedbyuser.getDate() - 1);
     console.log("yesterday date", this.datepickedbyuser);
   }
 
-  addEvent(event: MatDatepickerInputEvent<Date>){
+  addEvent(event: MatDatepickerInputEvent<Date>) {
     this.datepickedbyuser = event.value;
-    console.log("date",this.datepickedbyuser);
+    console.log("date", this.datepickedbyuser);
 
-    try{
+    try {
       this.dataSource = this.dataSource.concat(this.foodEatenService.getListofFoodEaten(this.DatePipe.transform(this.datepickedbyuser, 'yyyy-MM-dd')).foodTakenDetails);
-    } catch (error){
+    } catch (error) {
       this.foodeaten = new Object();
       this.foodeaten.foodDateIntake = new Date(this.DatePipe.transform(this.datepickedbyuser))
       this.foodeaten.foodTakenDetails = this.multiplierArray.value;
-      console.log("this is what i am creating",this.foodeaten);
+      console.log("this is what i am creating", this.foodeaten);
       this.foodEatenService.createNewListOfFoodEaten(this.foodeaten)
       this.foodEatenService.checkList();
     }
@@ -197,14 +232,14 @@ export class CalorieTrackerComponent implements OnInit {
     this.dataSource.splice(0);
 
     console.log(this.dataSource = this.dataSource.concat(this.foodEatenService.getListofFoodEaten(this.DatePipe.transform(this.datepickedbyuser)).foodTakenDetails));
-    console.log("today's food",this.dataSource);
+    console.log("today's food", this.dataSource);
     console.log(this.datepickedbyuser);
 
     this.foodEatenService.checkList();
   }
 
 
-  deleteSpecificFood(index: number){
+  deleteSpecificFood(index: number) {
     // this.dataSource.splice(index, 1);
     // console.log("delete", this.dataSource);
     // this.foodeaten = new FoodEaten();

@@ -34,6 +34,7 @@ import { ViewworkoutComponent } from './viewworkout/viewworkout.component';
 import { EditworkoutComponent } from './editworkout/editworkout.component';
 import { HttpClientModule } from '@angular/common/http';
 import { PostsService } from './posts.service';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 
 @NgModule({
@@ -69,8 +70,8 @@ import { PostsService } from './posts.service';
     MatNativeDateModule,
     MatIconModule,
     MatTableModule,
-
-
+    HttpClientModule,
+    NgxChartsModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [ContactsService, WorkoutService, DatePipe, PostsService],
