@@ -61,10 +61,20 @@ body {
 }
 
 
-.full-width {
+/* .full-width {
   width: 100%;
 }
 
 .advanced-pie-legend .legend-items-container .legend-items {
+  width: 300px;
+  height: 300px;
   overflow: initial !important;
+} */
+
+.legend-item.ng-star-inserted {
+  margin-top: 10px;
+}
+
+:host ::ng-deep .legend-item.ng-star-inserted  {
+  margin-top: 10px !important;
 }

@@ -35,7 +35,7 @@ export class CreateworkoutComponent implements OnInit {
   showData: any[] = [];
   multiplierArray: FormGroup;
 
-  view: any[] = [700, 370];
+  view: any[] = [810, 200];
   colorScheme = {
     domain: ['#704FC4', '#4B852C', '#B67A3D', '#5B6FC8', '#25706F']
   };
@@ -106,10 +106,6 @@ export class CreateworkoutComponent implements OnInit {
 
     this.FoodData = [
       {
-        name: 'calories',
-        value: 0
-      },
-      {
         name: 'carbohydrates_total_g',
         value: 0
       },
@@ -167,10 +163,6 @@ export class CreateworkoutComponent implements OnInit {
     this.foodData_sugar_g += (this.sugar_g * multiplier);
     this.FoodData = [
       {
-        name: 'calories',
-        value:this.foodData_calories
-      },
-      {
         name: 'carbohydrates_total_g',
         value: this.foodData_carbohydrates_total_g
       },
@@ -210,10 +202,6 @@ export class CreateworkoutComponent implements OnInit {
     this.foodData_sodium_mg -= (this.data[index].sodium_mg);
     this.foodData_sugar_g -= (this.data[index].sugar_g);
     this.FoodData = [
-      {
-        name: 'calories',
-        value:this.foodData_calories
-      },
       {
         name: 'carbohydrates_total_g',
         value: this.foodData_carbohydrates_total_g
