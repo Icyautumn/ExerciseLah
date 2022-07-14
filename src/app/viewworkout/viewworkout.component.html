@@ -64,10 +64,79 @@
               </div>
         </div>
         <div class="row gutters">
+          <table
+      mat-table
+      [dataSource]="this.dataSource"
+      class="mat-elevation-z8"
+      style="width: 70%; height: auto;"
+    >
+      <!--- Note that these columns can be defined in any order.
+          The actual rendered columns are set as a property on the row definition" -->
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Name</th>
+        <td mat-cell *matCellDef="let foodDetailsAlreadyTaken">
+          {{ foodDetailsAlreadyTaken.name }}
+        </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="serving_size_g">
+        <th mat-header-cell *matHeaderCellDef>Serving Portion (g)</th>
+        <td mat-cell *matCellDef="let foodDetailsAlreadyTaken">
+          {{ foodDetailsAlreadyTaken.serving_size_g }}
+        </td>
+      </ng-container>
+
+      <!-- Weight Column -->
+      <ng-container matColumnDef="calories">
+        <th mat-header-cell *matHeaderCellDef>Calories</th>
+        <td mat-cell *matCellDef="let foodDetailsAlreadyTaken">
+          {{ foodDetailsAlreadyTaken.calories }}
+        </td>
+      </ng-container>
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="carbohydrates">
+        <th mat-header-cell *matHeaderCellDef>Carbohydrates</th>
+        <td mat-cell *matCellDef="let foodDetailsAlreadyTaken">
+          {{ foodDetailsAlreadyTaken.carbohydrates_total_g }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="protein">
+        <th mat-header-cell *matHeaderCellDef>Protein</th>
+        <td mat-cell *matCellDef="let foodDetailsAlreadyTaken">
+          {{ foodDetailsAlreadyTaken.protein_g }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="sodium">
+        <th mat-header-cell *matHeaderCellDef>Sodium</th>
+        <td mat-cell *matCellDef="let foodDetailsAlreadyTaken">
+          {{ foodDetailsAlreadyTaken.sodium_mg }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="sugar_g">
+        <th mat-header-cell *matHeaderCellDef>Sugar(g)</th>
+        <td mat-cell *matCellDef="let foodDetailsAlreadyTaken">
+          {{ foodDetailsAlreadyTaken.sugar_g }}
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+    <ngx-charts-linear-gauge [view]="[200,200]" [scheme]="colorScheme" [value]="this.foodData_calories" [previousValue]="3000" [units]="linearUnits"></ngx-charts-linear-gauge>
           <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="row">
+              <ngx-charts-advanced-pie-chart [results]="this.FoodData" [view]="[800, 200]" [scheme]="colorScheme" [gradient]="gradient"></ngx-charts-advanced-pie-chart>
+
+            </div>
             <div class="text-right">
-              <button type="button" id="submit" name="submit" class="btn btn-secondary">Cancel</button>
-              <button type="button" id="submit" name="submit" class="btn btn-primary">Update</button>
+              <button type="button" id="submit" name="submit" routerLink="/workout" class="btn btn-primary">Back</button>
             </div>
           </div>
         </div>
