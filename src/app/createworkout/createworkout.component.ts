@@ -129,8 +129,12 @@ export class CreateworkoutComponent implements OnInit {
   }
 
   addFood(){
+
+    // get the values inputted by the user
     var foodInputted = (<HTMLSelectElement>document.getElementById('Food')).value;
     var gramsInputted = (<HTMLSelectElement>document.getElementById('Grams')).value;
+
+    // get the values from library
     this.carbohydrates_total_g = this.foodDetailsService.getSpecificFood(foodInputted).carbohydrates_total_g;
     this.calories = this.foodDetailsService.getSpecificFood(foodInputted).calories;
     this.fat_total_g = this.foodDetailsService.getSpecificFood(foodInputted).fat_total_g;
@@ -141,11 +145,10 @@ export class CreateworkoutComponent implements OnInit {
     this.name = this.foodDetailsService.getSpecificFood(foodInputted).name;
     this.fiber_g = this.foodDetailsService.getSpecificFood(foodInputted).fiber_g;
     this.potassium_mg = this.foodDetailsService.getSpecificFood(foodInputted).potassium_mg;
-
-    console.log("grams",gramsInputted);
-
+    // multiply the grams which the user has inputted
     var multiplier = parseInt(gramsInputted) / this.serving_size_g;
 
+    // input the multiplied values into the multiplier array
     this.multiplierArray.patchValue({
       "calories": this.calories * multiplier,
       'carbohydrates_total_g': this.carbohydrates_total_g * multiplier,
@@ -161,12 +164,16 @@ export class CreateworkoutComponent implements OnInit {
       'sugar_g': this.sugar_g * multiplier,
     });
 
+    // add the values to its existing values
+
     this.foodData_calories += (this.calories * multiplier);
     console.log(this.foodData_calories);
     this.foodData_carbohydrates_total_g += + (this.carbohydrates_total_g * multiplier)
     this.foodData_protein_g += (this.protein_g * multiplier);
     this.foodData_sodium_mg += (this.sodium_mg * multiplier);
     this.foodData_sugar_g += (this.sugar_g * multiplier);
+
+    // set the values for the food inputted
     this.FoodData = [
       {
         name: 'carbohydrates_total_g',
@@ -185,23 +192,17 @@ export class CreateworkoutComponent implements OnInit {
         value: this.foodData_sugar_g
       },
     ];
-
-    this.FoodData = [...this.FoodData];
-
-
-
+    // push value into the tables
     this.data.push(this.multiplierArray.value);
-    console.log("data",this.FoodData);
     this.updateTable();
+    // reset the form
     (<HTMLSelectElement>document.getElementById('Food')).value = '';
     (<HTMLSelectElement>document.getElementById('Grams')).value  = '';
-
-
-
   }
 
-  deleteSpecificFood(index: number){
 
+  deleteSpecificFood(index: number){
+    // minus out the current values
     this.foodData_calories -= (this.data[index].calories);
     this.foodData_carbohydrates_total_g -= (this.data[index].carbohydrates_total_g)
     this.foodData_protein_g -= (this.data[index].protein_g);
@@ -225,14 +226,13 @@ export class CreateworkoutComponent implements OnInit {
         value: this.foodData_sugar_g
       },
     ];
-
-    this.FoodData = [...this.FoodData];
-
+    // take out the food the user clicked on
     this.data.splice(index, 1);
     this.updateTable();
   }
 
   updateTable(){
+    // update the tables
     this.dataSource.data = this.data;
   }
 
@@ -332,8 +332,5 @@ export class CreateworkoutComponent implements OnInit {
     }else{
       alert('please fill up the form');
     }
-
-
   }
-
 }
