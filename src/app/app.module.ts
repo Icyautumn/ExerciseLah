@@ -35,6 +35,9 @@ import { EditworkoutComponent } from './editworkout/editworkout.component';
 import { HttpClientModule } from '@angular/common/http';
 import { PostsService } from './posts.service';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { WorkoutCommentsComponent } from './workout-comments/workout-comments.component';
+import { WorkoutOrCommentComponent } from './workout-or-comment/workout-or-comment.component';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
 
 
 @NgModule({
@@ -51,6 +54,8 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     CreateworkoutComponent,
     ViewworkoutComponent,
     EditworkoutComponent,
+    WorkoutCommentsComponent,
+    WorkoutOrCommentComponent,
   ],
   imports: [
     FormsModule,
@@ -71,7 +76,8 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     MatIconModule,
     MatTableModule,
     HttpClientModule,
-    NgxChartsModule
+    NgxChartsModule,
+    MatButtonToggleModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [ContactsService, WorkoutService, DatePipe, PostsService],

@@ -89,9 +89,4 @@ export class ViewworkoutComponent implements OnInit {
   changeToImage(base64String: any){
     return this.sanitizer.bypassSecurityTrustResourceUrl(base64String);
   }
-
-
-
-
-
 }

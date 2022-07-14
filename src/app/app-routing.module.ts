@@ -10,6 +10,7 @@ import { FooterComponent } from './footer/footer.component';
 import { NavComponent } from './nav/nav.component';
 import { UpdatecontactComponent } from './updatecontact/updatecontact.component';
 import { ViewworkoutComponent } from './viewworkout/viewworkout.component';
+import { WorkoutCommentsComponent } from './workout-comments/workout-comments.component';
 import { WorkoutComponent } from './workout/workout.component';
 
 const routes: Routes = [
@@ -24,6 +25,7 @@ const routes: Routes = [
   { path: 'createworkout', component: CreateworkoutComponent},
   { path: 'calorie_tracker', component: CalorieTrackerComponent},
   { path: 'editWorkout/:id', component: EditworkoutComponent},
+  { path: 'viewWorkout/comments/:id', component: WorkoutCommentsComponent},
   { path: '', component: WorkoutComponent, pathMatch: 'full'}
 
 ];

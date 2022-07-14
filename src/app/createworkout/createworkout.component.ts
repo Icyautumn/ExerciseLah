@@ -198,6 +198,7 @@ export class CreateworkoutComponent implements OnInit {
     // reset the form
     (<HTMLSelectElement>document.getElementById('Food')).value = '';
     (<HTMLSelectElement>document.getElementById('Grams')).value  = '';
+    console.log("photo",this.createdImageBase64);
   }
 
 

@@ -1,0 +1,161 @@
+<div class="container">
+  <br />
+  <app-workout-or-comment [id]="this.id"></app-workout-or-comment>
+
+  <section style="background-color: #e7effd">
+    <div class="container my-5 py-5 text-dark">
+      <div class="row d-flex justify-content-center">
+        <div class="col-md-11 col-lg-9 col-xl-7">
+          <div *ngFor="let comments of this.commentData; let i = index">
+            <div class="d-flex flex-start mb-4">
+              <img
+                class="rounded-circle shadow-1-strong me-3"
+                src="{{ comments.userProfilePicture }}"
+                alt="avatar"
+                width="65"
+                height="65"
+              />
+              <div class="card w-100">
+                <div class="card-body p-4">
+                  <div class="">
+                    <h5>{{ comments.username }}</h5>
+                    <mat-icon class="rating" *ngFor="let star of Number(comments.rating)">star</mat-icon>
+                    <p id="container"><span id="span1">{{ comments.comments }}</span></p>
+
+                    <div
+                      class="d-flex justify-content-between align-items-center"
+                    >
+                      <div class="d-flex align-items-center">
+                          <mat-icon type="button" (click)="editComment(i, 'commentsEdit')"
+                            >edit</mat-icon
+                          >
+                        <mat-icon type="button" (click)="deleteComment(i)"
+                          >delete</mat-icon
+                        >
+                      </div>
+                      <!-- <a class="link-muted"
+                        ><i class="fas fa-reply me-2"></i> Reply</a
+                      > -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <form [formGroup]="comment">
+    <div class="container my-5 py-5 col-md-12 col-lg-10">
+      <img
+        class="rounded-circle shadow-1-strong me-3"
+        style="margin-right: 10px; border: 2px solid #555"
+        [src]="this.userProfilePicture"
+        alt="avatar"
+        width="60"
+        height="60"
+      />
+      <textarea
+        class="form-control"
+        placeholder="write a comment..."
+        rows="3"
+        formControlName="comments"
+        id="comment"
+      ></textarea>
+      <br />
+      <h3>Rating</h3>
+      <div class="row" style="padding-left: 15px">
+        <mat-button-toggle-group
+          name="rating"
+          aria-label="rating"
+          formControlName="rating"
+        >
+          <mat-button-toggle value="1">1</mat-button-toggle>
+          <mat-button-toggle value="2">2</mat-button-toggle>
+          <mat-button-toggle value="3">3</mat-button-toggle>
+          <mat-button-toggle value="4">4</mat-button-toggle>
+          <mat-button-toggle value="5">5</mat-button-toggle>
+        </mat-button-toggle-group>
+
+        <button
+          type="button"
+          class="btn btn-info pull-right"
+          style="margin-left: 10px"
+          (click)="postComment()"
+        >
+          Post
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
+
+
+
+
+<ng-template #commentsEdit let-modal let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title" >Edit Comment</h4>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="d('Cross click')"
+    >
+      close
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="container">
+      <br />
+      <form [formGroup]="commentUpdate">
+        <div class="container my-5 py-5 col-md-12 col-lg-10">
+          <img
+            class="rounded-circle shadow-1-strong me-3"
+            style="margin-right: 10px; border: 2px solid #555"
+            [src]="commentUpdate.value.userProfilePicture"
+            alt="avatar"
+            width="60"
+            height="60"
+          />
+          <textarea
+            class="form-control"
+            placeholder="write a comment..."
+            rows="3"
+            formControlName="comments"
+            id="comment"
+          ></textarea>
+          <br />
+          <h3>Rating</h3>
+          <div class="row" style="padding-left: 15px">
+            <mat-button-toggle-group
+              name="rating"
+              aria-label="rating"
+              formControlName="rating"
+            >
+              <mat-button-toggle value="1">1</mat-button-toggle>
+              <mat-button-toggle value="2">2</mat-button-toggle>
+              <mat-button-toggle value="3">3</mat-button-toggle>
+              <mat-button-toggle value="4">4</mat-button-toggle>
+              <mat-button-toggle value="5">5</mat-button-toggle>
+            </mat-button-toggle-group>
+
+            <button
+              type="button"
+              class="btn btn-info pull-right"
+              style="margin-left: 10px"
+              (click)="postComment()"
+            >
+              Post
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+</ng-template>
