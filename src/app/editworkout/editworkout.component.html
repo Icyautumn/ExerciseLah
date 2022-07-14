@@ -165,34 +165,158 @@
                 </button>
               </div>
             </div>
-            <div class="row gutters">
-              <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                <div class="text-right">
-                  <button
-                    type="button"
-                    id="submit"
-                    name="submit"
-                    class="btn btn-secondary"
-                    routerLink="/workout"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="button"
-                    id="submit"
-                    name="submit"
-                    class="btn btn-primary"
-                    (click)="onUpdate()"
-                    routerLink="/workout"
-                  >
-                    Edit
-                  </button>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
     </div>
+    <div class="row">
+      <form
+      class="text-center border border-light p-5 mat-elevation-z1"
+      action="#!"
+      style="width: 30%"
+    >
+      <p class="h4 mb-4">Add Food</p>
+
+      <!-- food item -->
+      <input
+        type="text"
+        id="Food"
+        class="form-control mb-4"
+        placeholder="Food"
+      />
+
+      <!-- grams of the food -->
+      <input
+        type="number"
+        id="Grams"
+        class="form-control mb-4"
+        placeholder="Grams of food"
+      />
+      <!-- add food button-->
+      <button class="btn btn-info btn-block my-4" (click)="addFood()">
+        Add Food
+      </button>
+
+      <a class="mx-2" role="button"
+        ><i class="fab fa-facebook-f light-blue-text"></i
+      ></a>
+      <a class="mx-2" role="button"
+        ><i class="fab fa-twitter light-blue-text"></i
+      ></a>
+      <a class="mx-2" role="button"
+        ><i class="fab fa-linkedin-in light-blue-text"></i
+      ></a>
+      <a class="mx-2" role="button"
+        ><i class="fab fa-github light-blue-text"></i
+      ></a>
+    </form>
+
+    <table
+      mat-table
+      [dataSource]="this.dataSource"
+      class="mat-elevation-z8"
+      style="width: 70%; height: auto;"
+    >
+      <!--- Note that these columns can be defined in any order.
+          The actual rendered columns are set as a property on the row definition" -->
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Name</th>
+        <td mat-cell *matCellDef="let foodDetailsAlreadyTaken">
+          {{ foodDetailsAlreadyTaken.name }}
+        </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="serving_size_g">
+        <th mat-header-cell *matHeaderCellDef>Serving Portion (g)</th>
+        <td mat-cell *matCellDef="let foodDetailsAlreadyTaken">
+          {{ foodDetailsAlreadyTaken.serving_size_g }}
+        </td>
+      </ng-container>
+
+      <!-- Weight Column -->
+      <ng-container matColumnDef="calories">
+        <th mat-header-cell *matHeaderCellDef>Calories</th>
+        <td mat-cell *matCellDef="let foodDetailsAlreadyTaken">
+          {{ foodDetailsAlreadyTaken.calories }}
+        </td>
+      </ng-container>
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="carbohydrates">
+        <th mat-header-cell *matHeaderCellDef>Carbohydrates</th>
+        <td mat-cell *matCellDef="let foodDetailsAlreadyTaken">
+          {{ foodDetailsAlreadyTaken.carbohydrates_total_g }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="protein">
+        <th mat-header-cell *matHeaderCellDef>Protein</th>
+        <td mat-cell *matCellDef="let foodDetailsAlreadyTaken">
+          {{ foodDetailsAlreadyTaken.protein_g }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="sodium">
+        <th mat-header-cell *matHeaderCellDef>Sodium</th>
+        <td mat-cell *matCellDef="let foodDetailsAlreadyTaken">
+          {{ foodDetailsAlreadyTaken.sodium_mg }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="sugar_g">
+        <th mat-header-cell *matHeaderCellDef>Sugar(g)</th>
+        <td mat-cell *matCellDef="let foodDetailsAlreadyTaken">
+          {{ foodDetailsAlreadyTaken.sugar_g }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="Delete">
+        <th mat-header-cell *matHeaderCellDef>Delete</th>
+        <td mat-cell *matCellDef="let foodDetailsAlreadyTaken; let i = index">
+          <button style="outline: none; border: none">
+            <i class="material-icons" (click)="deleteSpecificFood(i)">delete</i>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+    </div>
+    <div class="row">
+      <ngx-charts-advanced-pie-chart [results]="this.FoodData" [view]="[800,200]" [scheme]="colorScheme" [gradient]="gradient"></ngx-charts-advanced-pie-chart>
+    <ngx-charts-linear-gauge [view]="[200,200]" [scheme]="colorScheme" [value]="this.foodData_calories" [previousValue]="3000" [units]="linearUnits"></ngx-charts-linear-gauge>
+    </div>
+
+    <br>
+    <div class="row gutters">
+      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="text-right">
+          <button
+            type="button"
+            id="submit"
+            name="submit"
+            class="btn btn-secondary"
+            routerLink="/workout"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            id="submit"
+            name="submit"
+            class="btn btn-primary"
+            (click)="onUpdate()"
+            routerLink="/workout"
+          >
+            Edit
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
+
 </form>

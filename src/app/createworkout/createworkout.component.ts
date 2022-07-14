@@ -253,10 +253,7 @@ export class CreateworkoutComponent implements OnInit {
         this.readFile(file, subscriber, 'edit');
       });
     } else{
-
     }
-
-
   }
 
   readFile(file: File, subscriber: Subscriber<any>, create_or_edit: string) {
