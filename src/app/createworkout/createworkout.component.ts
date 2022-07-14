@@ -35,7 +35,7 @@ export class CreateworkoutComponent implements OnInit {
   showData: any[] = [];
   multiplierArray: FormGroup;
 
-  view: any[] = [810, 200];
+  view: any[] = [800, 200];
   colorScheme = {
     domain: ['#704FC4', '#4B852C', '#B67A3D', '#5B6FC8', '#25706F']
   };
@@ -48,6 +48,9 @@ export class CreateworkoutComponent implements OnInit {
   updateImageBase64: string;
   setid: number;
   newWorkout: Workouts;
+
+  linearView: any[] = [200, 200];
+  linearUnits: string = 'Calories';
 
   foodData_calories: number = 0;
   foodData_carbohydrates_total_g: number = 0;
@@ -127,7 +130,7 @@ export class CreateworkoutComponent implements OnInit {
 
   addFood(){
     var foodInputted = (<HTMLSelectElement>document.getElementById('Food')).value;
-    var gramsInputted = (<HTMLSelectElement>document.getElementById('Grams')).value + 0;
+    var gramsInputted = (<HTMLSelectElement>document.getElementById('Grams')).value;
     this.carbohydrates_total_g = this.foodDetailsService.getSpecificFood(foodInputted).carbohydrates_total_g;
     this.calories = this.foodDetailsService.getSpecificFood(foodInputted).calories;
     this.fat_total_g = this.foodDetailsService.getSpecificFood(foodInputted).fat_total_g;
@@ -138,6 +141,8 @@ export class CreateworkoutComponent implements OnInit {
     this.name = this.foodDetailsService.getSpecificFood(foodInputted).name;
     this.fiber_g = this.foodDetailsService.getSpecificFood(foodInputted).fiber_g;
     this.potassium_mg = this.foodDetailsService.getSpecificFood(foodInputted).potassium_mg;
+
+    console.log("grams",gramsInputted);
 
     var multiplier = parseInt(gramsInputted) / this.serving_size_g;
 
@@ -157,6 +162,7 @@ export class CreateworkoutComponent implements OnInit {
     });
 
     this.foodData_calories += (this.calories * multiplier);
+    console.log(this.foodData_calories);
     this.foodData_carbohydrates_total_g += + (this.carbohydrates_total_g * multiplier)
     this.foodData_protein_g += (this.protein_g * multiplier);
     this.foodData_sodium_mg += (this.sodium_mg * multiplier);

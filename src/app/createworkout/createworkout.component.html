@@ -353,7 +353,11 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
     </div>
-    <ngx-charts-advanced-pie-chart [results]="this.FoodData" [view]="view" [scheme]="colorScheme" [gradient]="gradient"></ngx-charts-advanced-pie-chart>
+    <div class="row">
+      <ngx-charts-advanced-pie-chart [results]="this.FoodData" [view]="view" [scheme]="colorScheme" [gradient]="gradient"></ngx-charts-advanced-pie-chart>
+    <ngx-charts-linear-gauge [view]="[200,200]" [scheme]="colorScheme" [value]="this.foodData_calories" [previousValue]="3000" [units]="linearUnits"></ngx-charts-linear-gauge>
+    </div>
+
     <br>
     <div class="row gutters">
       <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
