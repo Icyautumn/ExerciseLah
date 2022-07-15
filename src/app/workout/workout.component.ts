@@ -10,6 +10,7 @@ import { NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { Observable, observable, Subscriber } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
+import { CommentsService } from '../comments.service';
 
 // import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 
@@ -45,7 +46,7 @@ export class WorkoutComponent implements OnInit {
 
   constructor(private workoutService: WorkoutService,
     private modalService: NgbModal,
-    private fb: FormBuilder, private sanitizer: DomSanitizer) {
+    private fb: FormBuilder, private sanitizer: DomSanitizer, private commentsService: CommentsService) {
     this.listOfWorkouts = this.workoutService.getWorkouts();
     this.setid = this.listOfWorkouts.length;
     this.filteredWorkout = this.listOfWorkouts;
@@ -268,6 +269,7 @@ export class WorkoutComponent implements OnInit {
 
   deleteUpdateWorkout(workoutIndex: number) {
     this.updateworkouts.removeAt(workoutIndex);
+    this.commentsService.deleteEntireComment(workoutIndex);
   }
   // code not updated yet
   onUpdate() {

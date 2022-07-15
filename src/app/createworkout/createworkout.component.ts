@@ -306,7 +306,7 @@ export class CreateworkoutComponent implements OnInit {
 
   onSubmit() {
 
-    if(this.createWorkout.valid){
+    if(this.createWorkout.valid && this.createdImage != null){
       // just to get the length of list of workouts
     this.listOfWorkouts = this.workoutService.getWorkouts();
     this.setid = this.listOfWorkouts.length;
@@ -339,7 +339,7 @@ export class CreateworkoutComponent implements OnInit {
 
     this.router.navigate(['/workout']);
     }else{
-      alert('please fill up the form');
+      alert('please set an image');
     }
   }
 }

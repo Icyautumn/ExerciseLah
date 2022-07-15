@@ -26,4 +26,8 @@ export class CommentsService {
   newCommentTable(item: comments){
     mocklistOfComments.push(item);
   }
+
+  deleteEntireComment(id: number){
+    mocklistOfComments.splice(id, 1);
+  }
 }

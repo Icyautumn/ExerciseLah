@@ -5,10 +5,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavComponent } from './nav/nav.component';
 import { FooterComponent } from './footer/footer.component';
-import { CreatecontactComponent } from './createcontact/createcontact.component';
-import { DisplaycontactComponent } from './displaycontact/displaycontact.component';
-import { UpdatecontactComponent } from './updatecontact/updatecontact.component';
-import { DeletecontactComponent } from './deletecontact/deletecontact.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ContactsService } from './contacts.service';
 import { WorkoutComponent } from './workout/workout.component';
@@ -45,10 +41,6 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
     AppComponent,
     NavComponent,
     FooterComponent,
-    CreatecontactComponent,
-    DisplaycontactComponent,
-    UpdatecontactComponent,
-    DeletecontactComponent,
     WorkoutComponent,
     CalorieTrackerComponent,
     CreateworkoutComponent,
