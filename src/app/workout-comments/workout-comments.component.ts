@@ -24,6 +24,8 @@ export class WorkoutCommentsComponent implements OnInit {
 
   commentData: any[] = [];
 
+  updateCommentIndex: number;
+
   userProfilePicture: any;
 
   id: number;
@@ -84,11 +86,19 @@ export class WorkoutCommentsComponent implements OnInit {
       rating: this.commentData[index].rating,
       username: 'Victor',
       // hard coded due to not taking from database
-      userProfilePicture: this.userProfilePicture,
+      userProfilePicture: this.changeToImage(this.commentData[index].userProfilePicture),
     });
 
-    this.commentData[index] = this.commentUpdate.value;
+    this.updateCommentIndex = index;
+
+
+  }
+
+  editCommentSubmit(id: number){
+    this.commentData[id].comments = this.commentUpdate.value.comments;
+    this.commentData[id].rating = this.commentUpdate.value.rating;
     console.log(this.commentData);
+    this.modalService.dismissAll();
   }
 
   deleteComment(id: number){

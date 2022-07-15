@@ -136,18 +136,18 @@
               aria-label="rating"
               formControlName="rating"
             >
-              <mat-button-toggle value="1">1</mat-button-toggle>
-              <mat-button-toggle value="2">2</mat-button-toggle>
-              <mat-button-toggle value="3">3</mat-button-toggle>
-              <mat-button-toggle value="4">4</mat-button-toggle>
-              <mat-button-toggle value="5">5</mat-button-toggle>
+              <mat-button-toggle value=1>1</mat-button-toggle>
+              <mat-button-toggle value=2>2</mat-button-toggle>
+              <mat-button-toggle value=3>3</mat-button-toggle>
+              <mat-button-toggle value=4>4</mat-button-toggle>
+              <mat-button-toggle value=5>5</mat-button-toggle>
             </mat-button-toggle-group>
 
             <button
               type="button"
               class="btn btn-info pull-right"
               style="margin-left: 10px"
-              (click)="postComment()"
+              (click)="editCommentSubmit(this.updateCommentIndex)"
             >
               Post
             </button>

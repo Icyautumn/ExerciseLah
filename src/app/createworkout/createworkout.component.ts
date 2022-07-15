@@ -9,6 +9,8 @@ import { WorkoutService } from '../workout.service';
 import { Router } from '@angular/router';
 import { FoodDetailsService } from '../food-details.service';
 import { MatTableDataSource } from '@angular/material/table';
+import { CommentsService } from '../comments.service';
+import { comments } from '../comments';
 
 
 /** Error when invalid control is dirty, touched, or submitted. */
@@ -48,7 +50,6 @@ export class CreateworkoutComponent implements OnInit {
   updateImageBase64: string;
   setid: number;
   newWorkout: Workouts;
-
   linearView: any[] = [200, 200];
   linearUnits: string = 'Calories';
 
@@ -71,12 +72,15 @@ export class CreateworkoutComponent implements OnInit {
 
   listOfWorkouts: Workouts[] = [];
 
+  newComment: comments;
+
   matcher = new MyErrorStateMatcher();
 
   constructor(private fb: FormBuilder,
     private workoutService: WorkoutService,
     private router: Router,
-    private foodDetailsService: FoodDetailsService,) {
+    private foodDetailsService: FoodDetailsService,
+    private commentsService: CommentsService) {
     this.listOfWorkouts = this.workoutService.getWorkouts();
     this.setid = this.listOfWorkouts.length;
    }
@@ -326,6 +330,13 @@ export class CreateworkoutComponent implements OnInit {
     this.convertToBase64(null, null);
     // clear workout details form
     this.workouts.clear();
+
+    // create an empty commment for new workout
+    this.newComment = new comments();
+    this.newComment._idOfWorkout = this.setid;
+    this.newComment.comments = null;
+    this.commentsService.newCommentTable(this.newComment);
+
     this.router.navigate(['/workout']);
     }else{
       alert('please fill up the form');
