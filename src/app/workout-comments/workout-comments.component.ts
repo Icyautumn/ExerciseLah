@@ -35,6 +35,7 @@ export class WorkoutCommentsComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.id = params["id"];
       this.commentData = this.commentsService.getSpecificComments(this.id);
+      console.log(this.commentData);
     });
 
     this.comment = this.fb.group({
@@ -60,9 +61,13 @@ export class WorkoutCommentsComponent implements OnInit {
   postComment() {
     // takes the user comment
     console.log(this.comment.value.comments);
-    console.log(this.comment.value.rating);
+    console.log(this.comment);
+    if (this.commentData == null){
+      this.commentData = this.comment.value
+    }else{
+      this.commentData.push(this.comment.value);
+    }
 
-    this.commentData.push(this.comment.value);
 
     console.log(this.commentData);
 

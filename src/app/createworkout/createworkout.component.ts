@@ -334,7 +334,7 @@ export class CreateworkoutComponent implements OnInit {
     // create an empty commment for new workout
     this.newComment = new comments();
     this.newComment._idOfWorkout = this.setid;
-    this.newComment.comments = null;
+    this.newComment.comments = [];
     this.commentsService.newCommentTable(this.newComment);
 
     this.router.navigate(['/workout']);
