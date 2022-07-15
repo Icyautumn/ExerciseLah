@@ -7,6 +7,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { DomSanitizer } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TemplateRef, ViewChild } from '@angular/core';
+import { CommentsService } from '../comments.service';
 
 @Component({
   selector: 'app-workout-comments',
@@ -26,11 +27,12 @@ export class WorkoutCommentsComponent implements OnInit {
   userProfilePicture: any;
 
   id: number;
-  constructor(private route: ActivatedRoute, private fb: FormBuilder, private sanitizer: DomSanitizer, private modalService: NgbModal) { }
+  constructor(private route: ActivatedRoute, private fb: FormBuilder, private sanitizer: DomSanitizer, private modalService: NgbModal, private commentsService: CommentsService) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.id = params["id"];
+      this.commentData = this.commentsService.getSpecificComments(this.id);
     });
 
     this.comment = this.fb.group({
@@ -89,7 +91,9 @@ export class WorkoutCommentsComponent implements OnInit {
     console.log(this.commentData);
   }
 
-  delete
+  deleteComment(id: number){
+    this.commentData.splice(id, 1);
+  }
 
 
 }
