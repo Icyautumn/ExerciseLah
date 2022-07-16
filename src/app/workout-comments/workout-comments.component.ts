@@ -95,8 +95,6 @@ export class WorkoutCommentsComponent implements OnInit {
     });
 
     this.updateCommentIndex = index;
-
-
   }
 
   editCommentSubmit(id: number){

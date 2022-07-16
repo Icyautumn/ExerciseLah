@@ -194,6 +194,7 @@ export class WorkoutComponent implements OnInit {
 
   deleteEntireWorkout(EntireWorkout: number) {
     this.workoutService.deleteWorkout(EntireWorkout);
+    this.commentsService.deleteEntireComment(EntireWorkout);
   }
 
   // Update method starts here

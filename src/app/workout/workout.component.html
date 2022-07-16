@@ -449,8 +449,8 @@
             <div class="d-flex justify-content-between align-items-center">
               <div class="btn-group">
                 <!-- <button type="button" class="btn btn-sm btn-outline-secondary" (click)="openModalview(contents, workout)" data-toggle="modal" data-target="#Modal1">View</button> -->
-                <button type="button" class="btn btn-sm btn-outline-secondary" routerLink="/viewWorkout/{{i}}" data-toggle="modal" data-target="#Modal1">View</button>
-                <button type="button" class="btn btn-sm btn-outline-secondary" routerLink="/editWorkout/{{i}}">Edit</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary" routerLink="/viewWorkout/{{workout._id}}" data-toggle="modal" data-target="#Modal1">View</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary" routerLink="/editWorkout/{{workout._id}}">Edit</button>
                 <button type="button" class="btn btn-sm btn-outline-secondary" (click)="deleteEntireWorkout(i)">Delete</button>
               </div>
               <small class="text-muted">{{ workout.duration }}mins</small>
