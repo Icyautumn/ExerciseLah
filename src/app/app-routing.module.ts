@@ -6,6 +6,7 @@ import { EditworkoutComponent } from './editworkout/editworkout.component';
 import { FooterComponent } from './footer/footer.component';
 import { LoginComponent } from './login/login.component';
 import { NavComponent } from './nav/nav.component';
+import { RegisterComponent } from './register/register.component';
 import { ViewworkoutComponent } from './viewworkout/viewworkout.component';
 import { WorkoutCommentsComponent } from './workout-comments/workout-comments.component';
 import { WorkoutComponent } from './workout/workout.component';
@@ -20,6 +21,7 @@ const routes: Routes = [
   { path: 'editWorkout/:id', component: EditworkoutComponent},
   { path: 'viewWorkout/comments/:id', component: WorkoutCommentsComponent},
   { path: 'login', component: LoginComponent},
+  { path: 'register', component: RegisterComponent},
   { path: '', component: WorkoutComponent, pathMatch: 'full'}
 
 ];

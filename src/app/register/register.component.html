@@ -3,19 +3,18 @@
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-md-6 text-center mb-5">
-          <h2 class="heading-section">Login</h2>
+          <h2 class="heading-section">Register</h2>
         </div>
       </div>
       <div class="row justify-content-center">
         <div class="col-md-6 col-lg-4">
           <div class="login-wrap p-0">
-            <h3 class="mb-4 text-center">Have an account?</h3>
             <form class="signin-form">
               <div class="form-group">
                 <input
-                  type="text"
+                  type="email"
                   class="form-control"
-                  placeholder="Username"
+                  placeholder="Email Address"
                   required
                 />
               </div>
@@ -29,31 +28,49 @@
                 />
               </div>
               <div class="form-group">
+                <input
+                  id="password-field2"
+                  type="password"
+                  class="form-control"
+                  placeholder="Confirm Password"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <input
+                  id="password-field"
+                  type="username"
+                  class="form-control"
+                  placeholder="Username"
+                  required
+                />
+              </div>
+              <div class="form-group">
                 <button
                   type="submit"
                   class="form-control btn btn-primary submit px-3"
                 >
-                  Sign In
+                  Register
                 </button>
               </div>
               <div class="form-group text-center">
                 <div class=" text-center">
                   <div class="text-middle">
-                    <a style="color: #fff">Forgot Password</a>
+                    <!-- <a style="color: #fff">Forgot Password</a> -->
                   </div>
                 </div>
 
               </div>
             </form>
-            <p class="w-100 text-center">&mdash; No account? &mdash;</p>
+            <p class="w-100 text-center">&mdash; got account? &mdash;</p>
             <div class="form-group">
               <button
                 type="submit"
                 class="form-control btn btn-primary submit px-3"
-                routerLink="/register"
+                routerLink="/login"
                 routerLinkActive="active"
               >
-                Register
+                Login
               </button>
             </div>
           </div>
