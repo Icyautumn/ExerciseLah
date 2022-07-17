@@ -34,6 +34,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { WorkoutCommentsComponent } from './workout-comments/workout-comments.component';
 import { WorkoutOrCommentComponent } from './workout-or-comment/workout-or-comment.component';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import { LoginComponent } from './login/login.component';
 
 
 @NgModule({
@@ -48,6 +49,7 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
     EditworkoutComponent,
     WorkoutCommentsComponent,
     WorkoutOrCommentComponent,
+    LoginComponent,
   ],
   imports: [
     FormsModule,

@@ -4,6 +4,7 @@ import { CalorieTrackerComponent } from './calorie-tracker/calorie-tracker.compo
 import { CreateworkoutComponent } from './createworkout/createworkout.component';
 import { EditworkoutComponent } from './editworkout/editworkout.component';
 import { FooterComponent } from './footer/footer.component';
+import { LoginComponent } from './login/login.component';
 import { NavComponent } from './nav/nav.component';
 import { ViewworkoutComponent } from './viewworkout/viewworkout.component';
 import { WorkoutCommentsComponent } from './workout-comments/workout-comments.component';
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: 'calorie_tracker', component: CalorieTrackerComponent},
   { path: 'editWorkout/:id', component: EditworkoutComponent},
   { path: 'viewWorkout/comments/:id', component: WorkoutCommentsComponent},
+  { path: 'login', component: LoginComponent},
   { path: '', component: WorkoutComponent, pathMatch: 'full'}
 
 ];
