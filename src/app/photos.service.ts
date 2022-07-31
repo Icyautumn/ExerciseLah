@@ -11,4 +11,7 @@ export class PhotosService {
     changeToImage(base64String: any){
     return this.sanitizer.bypassSecurityTrustResourceUrl(base64String);
   }
+
+  
+
 }

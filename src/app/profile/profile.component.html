@@ -42,12 +42,14 @@
                           background-color: rgb(233, 236, 239);
                         "
                       >
-                        <img
-                          [src]="profileImage"
-                          width="140px"
-                          height="140px"
-                          alt=""
-                        />
+                        <div *ngIf="updateImage">
+                          <img
+                            [src]="updateImage | async"
+                            width="140px"
+                            height="140px"
+                            alt=""
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -55,21 +57,26 @@
                     class="col d-flex flex-column flex-sm-row justify-content-between mb-3"
                   >
                     <div class="text-center text-sm-left mb-2 mb-sm-0">
-                      <h4 class="pt-sm-2 pb-1 mb-0 text-nowrap">{{this.username}}</h4>
-                      <p class="mb-0">{{this.userEmail}}</p>
-                      <div class="text-muted">
-                      </div>
+                      <h4 class="pt-sm-2 pb-1 mb-0 text-nowrap">
+                        {{ this.username }}
+                      </h4>
+                      <p class="mb-0">{{ this.userEmail }}</p>
+                      <div class="text-muted"></div>
                       <div class="mt-2">
                         <button class="btn btn-primary" type="button">
                           <i class="fa fa-fw fa-camera"></i>
-                          <span>Change Photo</span>
+                          <span
+                            ><input
+                              type="file"
+                              (change)="onChange($event, 'edit')"
+                          /></span>
                         </button>
                       </div>
                     </div>
                     <div class="text-center text-sm-right">
-                      <span class="badge badge-secondary">{{this.role}}</span>
+                      <span class="badge badge-secondary">{{ this.role }}</span>
                       <div class="text-muted">
-                        <small>{{this.dateJoined}}</small>
+                        <small>{{ this.dateJoined }}</small>
                       </div>
                     </div>
                   </div>
@@ -93,7 +100,7 @@
                                   type="text"
                                   name="name"
                                   placeholder="full name"
-                                  formControlName="fullName"
+                                  formControlName="FullName"
                                 />
                               </div>
                             </div>
@@ -235,7 +242,7 @@
                       </div> -->
                       <div class="row">
                         <div class="col d-flex justify-content-end">
-                          <button class="btn btn-primary" type="submit">
+                          <button class="btn btn-primary" type="submit" (click)="onSubmit()">
                             Save Changes
                           </button>
                         </div>

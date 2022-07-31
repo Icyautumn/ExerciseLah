@@ -113,4 +113,10 @@ router.route("/profile").post(function (req, res2) {
     }
   )
 });
+
+router.route('/updateProfile').put(function (req, res) {
+  db.collection("users").updateOne(
+
+  )
+})
 module.exports = router;
