@@ -130,6 +130,7 @@ export class CreateworkoutComponent implements OnInit {
       },
     ];
     this.FoodData = [...this.FoodData];
+    this.addWorkoutDetails();
   }
 
   addFood(){

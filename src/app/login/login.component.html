@@ -10,12 +10,14 @@
         <div class="col-md-6 col-lg-4">
           <div class="login-wrap p-0">
             <h3 class="mb-4 text-center">Have an account?</h3>
-            <form class="signin-form">
+            <form class="signin-form" [formGroup]="myForm" novalidate (ngSubmit)="onSubmit()">
               <div class="form-group">
                 <input
                   type="text"
                   class="form-control"
-                  placeholder="Username"
+                  placeholder="email"
+                  formControlName="email"
+                  id="email"
                   required
                 />
               </div>
@@ -25,6 +27,8 @@
                   type="password"
                   class="form-control"
                   placeholder="Password"
+                  formControlName="password"
+                  id="password"
                   required
                 />
               </div>

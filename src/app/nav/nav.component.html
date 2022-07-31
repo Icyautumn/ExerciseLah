@@ -41,7 +41,16 @@
           <a class="nav-link" routerLink="/calorie_tracker" routerLinkActive="active">Calorie Tracker</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/login" routerLinkActive="active">Log In</a>
+          <a class="nav-link" routerLink="/login" routerLinkActive="active" *ngIf="this.loggedIn">Log In</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/profile/{{this.userUid}}" routerLinkActive="active" *ngIf="!this.loggedIn">Profile</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" type="button" routerLinkActive="active" (click)="onLogout()" *ngIf="!this.loggedIn">Log Out</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLinkActive="active" routerLink="/admin" *ngIf="this.isAdmin">admin</a>
         </li>
       </nav>
     </div>

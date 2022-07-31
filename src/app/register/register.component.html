@@ -9,12 +9,20 @@
       <div class="row justify-content-center">
         <div class="col-md-6 col-lg-4">
           <div class="login-wrap p-0">
-            <form class="signin-form">
+            <form class="signin-form" [formGroup]="myForm" novalidate (ngSubmit)="onSubmit()">
               <div class="form-group">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="full name"
+                  formControlName="fullName" id="fullName"
+                  required
+                />
                 <input
                   type="email"
                   class="form-control"
                   placeholder="Email Address"
+                  formControlName="email" id="email"
                   required
                 />
               </div>
@@ -24,6 +32,7 @@
                   type="password"
                   class="form-control"
                   placeholder="Password"
+                  formControlName="password" id="password"
                   required
                 />
               </div>
@@ -38,10 +47,19 @@
               </div>
               <div class="form-group">
                 <input
-                  id="password-field"
                   type="username"
                   class="form-control"
                   placeholder="Username"
+                  formControlName="username" id="username"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <input
+                  type="username"
+                  class="form-control"
+                  placeholder="role"
+                  formControlName="role" id="role"
                   required
                 />
               </div>

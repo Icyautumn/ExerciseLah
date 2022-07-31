@@ -10,6 +10,9 @@ import { RegisterComponent } from './register/register.component';
 import { ViewworkoutComponent } from './viewworkout/viewworkout.component';
 import { WorkoutCommentsComponent } from './workout-comments/workout-comments.component';
 import { WorkoutComponent } from './workout/workout.component';
+import {AuthGuard} from './auth.guard';
+import { AdminComponent } from './admin/admin.component';
+import { ProfileComponent } from './profile/profile.component';
 
 const routes: Routes = [
   { path: 'nav', component: NavComponent},
@@ -17,11 +20,13 @@ const routes: Routes = [
   { path: 'workout', component: WorkoutComponent},
   { path: 'viewWorkout/:id', component: ViewworkoutComponent},
   { path: 'createworkout', component: CreateworkoutComponent},
-  { path: 'calorie_tracker', component: CalorieTrackerComponent},
+  { path: 'calorie_tracker', component: CalorieTrackerComponent, canActivate: [AuthGuard], data: {permission: {only: ["user", "admin"]}}},
   { path: 'editWorkout/:id', component: EditworkoutComponent},
   { path: 'viewWorkout/comments/:id', component: WorkoutCommentsComponent},
   { path: 'login', component: LoginComponent},
   { path: 'register', component: RegisterComponent},
+  { path: 'admin', component: AdminComponent, canActivate: [AuthGuard], data: {permission: {only: ["admin"]}}},
+  { path: 'profile/:uid', component: ProfileComponent, canActivate: [AuthGuard], data: {permission: {only: ["user"]}}},
   { path: '', component: WorkoutComponent, pathMatch: 'full'}
 
 ];

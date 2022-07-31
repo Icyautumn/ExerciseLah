@@ -6,7 +6,6 @@ import { AppComponent } from './app.component';
 import { NavComponent } from './nav/nav.component';
 import { FooterComponent } from './footer/footer.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ContactsService } from './contacts.service';
 import { WorkoutComponent } from './workout/workout.component';
 import { WorkoutService } from './workout.service';
 import { CommonModule } from '@angular/common';
@@ -36,7 +35,11 @@ import { WorkoutOrCommentComponent } from './workout-or-comment/workout-or-comme
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
-
+import { AuthService } from './auth.service';
+import {AuthGuard} from './auth.guard';
+import { AdminComponent } from './admin/admin.component';
+import { ProfileComponent } from './profile/profile.component';
+import { PhotosService } from './photos.service';
 
 @NgModule({
   declarations: [
@@ -52,6 +55,8 @@ import { RegisterComponent } from './register/register.component';
     WorkoutOrCommentComponent,
     LoginComponent,
     RegisterComponent,
+    AdminComponent,
+    ProfileComponent,
   ],
   imports: [
     FormsModule,
@@ -76,7 +81,7 @@ import { RegisterComponent } from './register/register.component';
     MatButtonToggleModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  providers: [ContactsService, WorkoutService, DatePipe, PostsService],
+  providers: [WorkoutService, DatePipe, PostsService, AuthService, PhotosService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

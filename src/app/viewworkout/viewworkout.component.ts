@@ -4,6 +4,7 @@ import { foodDetails, listofworkout, Workouts } from '../workout';
 import { WorkoutService } from '../workout.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatTableDataSource } from '@angular/material/table';
+import { PhotosService } from '../photos.service';
 
 
 @Component({
@@ -37,14 +38,14 @@ export class ViewworkoutComponent implements OnInit {
 
   displayedColumns: string[] = ['name', 'serving_size_g', 'calories', 'carbohydrates', 'protein', 'sodium', 'sugar_g'];
 
-  constructor(private workoutService: WorkoutService, private route: ActivatedRoute, private sanitizer: DomSanitizer) { }
+  constructor(private workoutService: WorkoutService, private route: ActivatedRoute, private sanitizer: DomSanitizer, private photosService: PhotosService) { }
 
   ngOnInit(): void {
     // get id from route
     this.route.params.subscribe(params => {
       this.id = params["id"];
       this.workout = this.workoutService.getSpecificWorkout(this.id);
-      this.image = this.changeToImage(this.workout.workout_photo);
+      this.image = this.photosService.changeToImage(this.workout.workout_photo);
       this.summary = this.workout.summary;
       this.calories_burnt = this.workout.calories_burnt;
       this.workout_type = this.workout.workout_type;
