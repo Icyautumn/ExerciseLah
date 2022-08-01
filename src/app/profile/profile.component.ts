@@ -6,6 +6,7 @@ import { DatePipe } from '@angular/common';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, observable, Subscriber } from 'rxjs';
 import { users } from '../users';
+import { passwordMatchValidator } from '../custom.validators';
 
 @Component({
   selector: 'app-profile',
@@ -28,6 +29,7 @@ export class ProfileComponent implements OnInit {
   createdImageBase64: string;
   updateImageBase64: string;
   chosenUpdatedImage: File;
+  passwordForm: FormGroup;
 
 
 
@@ -38,6 +40,16 @@ export class ProfileComponent implements OnInit {
       "FullName": ['', Validators.required],
       "bio": ''
     });
+    this.passwordForm = this.fb.group({
+      "currentPassword": ['', Validators.required],
+      pwSet: this.fb.group ({
+        'newPassword': ['', [Validators.required]],
+        'confirmPassword': ['', [Validators.required]],
+      },
+      {validators : passwordMatchValidator}
+      )
+    });
+
   }
 
   ngOnInit(): void {
@@ -135,10 +147,18 @@ export class ProfileComponent implements OnInit {
     this.user.userImage = this.updateImageBase64;
     this.user.username = this.profileForm.value.username;
     this.user.bio = this.profileForm.value.bio;
-    console.log(this.user);
     this.authService.updateUser(this.user, this.id).subscribe(results => {
       location.reload();
     });
+  }
+
+  onPasswordChange(){
+    if(this.passwordForm.controls.pwSet.hasError('notmatch')){
+      alert("password not match")
+    }
+    else{
+      alert("match")
+    }
   }
 
 }

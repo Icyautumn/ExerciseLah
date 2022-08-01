@@ -125,4 +125,36 @@ router.route('/profile/:id').put(function (req, res) {
     }
   );
 });
+
+router.route("/changePassword/:id").post(function (req, res2) {
+  var currentpassword = req.body.currentpassword;
+  var newpassword = req.body.newpassword;
+  db.collection("users").findOne(
+    { _id: ObjectId(req.params.id) },
+    { password: 1, role: 1, _id: 0 },
+    function (err, result) {
+      if (result == null) res2.send([{ auth: false }]);
+      else {
+        bcrypt.compare(currentpassword, result.password, function (err, res) {
+          if (err || res == false) {
+            res2.send([{ auth: false }]);
+          } else {
+            // change the password and set the bcrypt as the new password
+            bcrypt.hash(newpassword, BCRYPT_SALT_ROUNDS, function(err, hash) {
+              db.collection("users").updateOne(
+                { _id: ObjectId(req.params.id) },
+                {
+                  $set: {"password": hash}, // Update
+                },
+                (err, results) => {
+                  res.send(results);
+                }
+              )
+            })
+          }
+        });
+      }
+    }
+  );
+});
 module.exports = router;
