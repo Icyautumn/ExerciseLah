@@ -31,14 +31,14 @@ export class ProfileComponent implements OnInit {
 
 
 
-  constructor(private fb: FormBuilder, private route: ActivatedRoute,private authService: AuthService, private photosService: PhotosService, public DatePipe: DatePipe) {
+  constructor(private fb: FormBuilder, private route: ActivatedRoute, private authService: AuthService, private photosService: PhotosService, public DatePipe: DatePipe) {
     this.profileForm = this.fb.group({
       "username": ['', Validators.required],
       "email": ['', Validators.required],
       "FullName": ['', Validators.required],
       "bio": ''
     });
-   }
+  }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -129,12 +129,16 @@ export class ProfileComponent implements OnInit {
 
   user: users;
 
-  onSubmit(){
+  onSubmit() {
     this.user = new users();
     this.user.fullName = this.profileForm.value.FullName;
     this.user.userImage = this.updateImageBase64;
     this.user.username = this.profileForm.value.username;
+    this.user.bio = this.profileForm.value.bio;
     console.log(this.user);
+    this.authService.updateUser(this.user, this.id).subscribe(results => {
+      location.reload();
+    });
   }
 
 }

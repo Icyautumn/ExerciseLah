@@ -114,9 +114,15 @@ router.route("/profile").post(function (req, res2) {
   )
 });
 
-router.route('/updateProfile').put(function (req, res) {
+router.route('/profile/:id').put(function (req, res) {
   db.collection("users").updateOne(
-
-  )
-})
+    { _id: ObjectId(req.params.id) },
+    {
+      $set: req.body,
+    },
+    (err, results) => {
+      res.send(results);
+    }
+  );
+});
 module.exports = router;

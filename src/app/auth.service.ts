@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
+import { users } from './users';
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +28,15 @@ export class AuthService {
     return this.http.post<any[]>(this.authuser, {
       'email': email,
       'password': pw
+    });
+  }
+
+  updateUser(user: users, id: string){
+    return this.http.put<any[]>(this.profile + id, {
+      "fullName": user.fullName,
+      "username": user.username,
+      "userImage": user.userImage,
+      "bio": user.bio,
     });
   }
 
