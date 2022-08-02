@@ -1,0 +1,8 @@
+.legend-item.ng-star-inserted {
+  margin-top: 10px;
+}
+
+
+:host ::ng-deep .legend-item.ng-star-inserted  {
+  margin-top: 10px !important;
+}

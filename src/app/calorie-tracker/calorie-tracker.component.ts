@@ -14,6 +14,7 @@ import { DatePipe } from '@angular/common';
 import { PostsService } from '../posts.service';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../auth.service';
+import { Double } from 'mongodb';
 
 @Component({
   selector: 'app-calorie-tracker',
@@ -21,6 +22,8 @@ import { AuthService } from '../auth.service';
   styleUrls: ['./calorie-tracker.component.css']
 })
 export class CalorieTrackerComponent implements OnInit {
+
+  dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
 
   myForm!: FormGroup;
   posts: any = [];
@@ -48,11 +51,25 @@ export class CalorieTrackerComponent implements OnInit {
   name: string;
   potassium_mg: number;
 
+  colorScheme = {
+    domain: ['#704FC4', '#4B852C', '#B67A3D', '#5B6FC8', '#25706F']
+  };
+  gradient: boolean = false;
+
+  linearUnits: string = 'Calories';
+
   id: string;
+
+  FoodData: any[] = [];
+  data: any[] = [];
+  foodData_calories: number = 0;
+  foodData_carbohydrates_total_g: number = 0;
+  foodData_protein_g: number = 0;
+  foodData_sodium_mg: number = 0;
+  foodData_sugar_g: number = 0;
 
   displayedColumns: string[] = ['name', 'serving_size_g', 'calories', 'carbohydrates', 'protein', 'sodium', 'sugar_g', 'Delete'];
 
-  dataSource: any[] = [];
 
   multiplierArray: FormGroup;
 
@@ -63,26 +80,65 @@ export class CalorieTrackerComponent implements OnInit {
     private foodDetailsService: FoodDetailsService, public changeDetectorRef: ChangeDetectorRef,
     private foodEatenService: FoodEatenService, public DatePipe: DatePipe, private postsService: PostsService, private route: ActivatedRoute, private authService: AuthService) {
 
-      this.route.params.subscribe(params => {
-        this.id = params["id"];
-        this.authService.getFoodCalories(this.id).subscribe(data => {
-
-          this.results = data;
-          console.log(this.results[0].foodCalories, "result");
-          console.log(this.results[0].foodCalories[0].date, "date");
-        });
+    this.route.params.subscribe(params => {
+      this.id = params["id"];
+      this.authService.getFoodCalories(this.id).subscribe(data => {
+        this.results = data;
+        this.displayitems();
       });
+    });
 
+    // try {
+    //   this.dataSource = this.dataSource.concat(this.foodEatenService.getListofFoodEaten(this.DatePipe.transform(this.datepickedbyuser)).foodTakenDetails);
+    // } catch (err: unknown) {
+    //   this.foodeaten = new FoodEaten();
+    //   this.foodeaten.foodDateIntake = new Date(this.DatePipe.transform(this.datepickedbyuser, 'yyyy-MM-dd'))
+    //   this.foodEatenService.createNewListOfFoodEaten(this.foodeaten)
+    // }
 
-    this.foodEatenService.checkList();
-    try {
-      this.dataSource = this.dataSource.concat(this.foodEatenService.getListofFoodEaten(this.DatePipe.transform(this.datepickedbyuser)).foodTakenDetails);
-    } catch (err: unknown) {
-      this.foodeaten = new FoodEaten();
-      this.foodeaten.foodDateIntake = new Date(this.DatePipe.transform(this.datepickedbyuser))
-      this.foodEatenService.createNewListOfFoodEaten(this.foodeaten)
+  }
+
+  displayitems(){
+    // find the correct date to fit to the table
+    for (let i = 0; i < this.results[0].foodCalories.length; i++) {
+      if (this.DatePipe.transform(this.datepickedbyuser, 'dd-MM-yyyy') == this.results[0].foodCalories[i].date) {
+        this.data = (this.results[0].foodCalories[i].foodItems);
+        for (var j = 0; j < this.data.length; j++) {
+          this.foodData_calories += parseInt(this.data[j].calories);
+          this.foodData_carbohydrates_total_g += parseInt(this.data[j].carbohydrates_total_g);
+          this.foodData_protein_g += parseInt(this.data[j].protein_g);
+          this.foodData_sodium_mg += parseInt(this.data[j].sodium_mg);
+          this.foodData_sugar_g += parseInt(this.data[j].sugar_g);
+        }
+      }
+      else {
+        // create new food calories list in mongodb
+      }
+      this.updateTable();
     }
+  }
 
+  updateTable() {
+    // update the tables
+    this.dataSource.data = this.data;
+    this.FoodData = [
+      {
+        name: 'carbohydrates_total_g',
+        value: this.foodData_carbohydrates_total_g
+      },
+      {
+        name: 'protein_g',
+        value: this.foodData_protein_g
+      },
+      {
+        name: 'sodium_mg',
+        value: this.foodData_sodium_mg
+      },
+      {
+        name: 'sugar_g',
+        value: this.foodData_sugar_g
+      },
+    ];
   }
 
   ngOnInit(): void {
@@ -105,35 +161,25 @@ export class CalorieTrackerComponent implements OnInit {
       'sugar_g': '',
     })
 
-    // sample code
-    this.myForm = this.fb.group({
-      name: '',
-      post: ''
-    });
+    this.FoodData = [
+      {
+        name: 'carbohydrates_total_g',
+        value: this.foodData_carbohydrates_total_g
+      },
+      {
+        name: 'protein_g',
+        value: this.foodData_protein_g
+      },
+      {
+        name: 'sodium_mg',
+        value: this.foodData_sodium_mg
+      },
+      {
+        name: 'sugar_g',
+        value: this.foodData_sugar_g
+      },
+    ];
 
-  }
-
-  onSubmit() {
-    this.postsService.insertUser(this.myForm.value.name, this.myForm.value.post).subscribe(result => {
-      location.reload();
-    })
-  }
-
-  deletePost(_id: number) {
-    this.postsService.deletePost(_id).subscribe(results => {
-      location.reload();
-    });
-  }
-
-  updatePost(_id: number) {
-    var name = (document.getElementById(_id + '_name') as
-      HTMLInputElement).value;
-    var newpost = (document.getElementById(_id + '_post') as
-      HTMLInputElement).value;
-    this.postsService.updatePost(_id, name,
-      parseInt(newpost)).subscribe(results => {
-        location.reload();
-      });
   }
 
   showDate() {
@@ -142,6 +188,10 @@ export class CalorieTrackerComponent implements OnInit {
 
   get foodTakeDetails() {
     return this.createFoodTaken.controls["foodTakenDetails"] as FormArray;
+  }
+
+  addFood() {
+
   }
 
   addFoodTakenDetails() {
@@ -186,14 +236,14 @@ export class CalorieTrackerComponent implements OnInit {
       'sugar_g': this.sugar_g * multiplier,
     })
 
-    if (this.dataSource[0].name == "" || this.dataSource[0].name == null) {
-      this.dataSource.pop();
-      this.dataSource = this.dataSource.concat(this.multiplierArray.value);
-    } else {
-      // fit the details in the table
-      this.dataSource = this.dataSource.concat(this.multiplierArray.value);
-    }
-    console.log(this.dataSource);
+    // if (this.dataSource[0].name == "" || this.dataSource[0].name == null) {
+    //   this.dataSource.pop();
+    //   this.dataSource = this.dataSource.concat(this.multiplierArray.value);
+    // } else {
+    //   // fit the details in the table
+    //   this.dataSource = this.dataSource.concat(this.multiplierArray.value);
+    // }
+    // console.log(this.dataSource);
 
 
 
@@ -223,27 +273,50 @@ export class CalorieTrackerComponent implements OnInit {
     this.datepickedbyuser.setDate(this.datepickedbyuser.getDate() - 1);
     console.log("yesterday date", this.datepickedbyuser);
   }
+  resetGraphData(){
+    this.foodData_calories = 0;
+    this.foodData_carbohydrates_total_g = 0;
+    this.foodData_protein_g = 0;
+    this.foodData_sodium_mg = 0;
+    this.foodData_sugar_g = 0;
+  }
 
   addEvent(event: MatDatepickerInputEvent<Date>) {
     this.datepickedbyuser = event.value;
     console.log("date", this.datepickedbyuser);
+    this.resetGraphData();
 
-    try {
-      this.dataSource = this.dataSource.concat(this.foodEatenService.getListofFoodEaten(this.DatePipe.transform(this.datepickedbyuser, 'yyyy-MM-dd')).foodTakenDetails);
-    } catch (error) {
-      this.foodeaten = new Object();
-      this.foodeaten.foodDateIntake = new Date(this.DatePipe.transform(this.datepickedbyuser))
-      this.foodeaten.foodTakenDetails = this.multiplierArray.value;
-      console.log("this is what i am creating", this.foodeaten);
-      this.foodEatenService.createNewListOfFoodEaten(this.foodeaten)
-      this.foodEatenService.checkList();
-    }
+    this.displayitems();
+    // this.dataSource.splice(0);
+
+    // for (let i = 0; i < this.results[0].foodCalories.length; i++){
+    //   if (this.DatePipe.transform(this.datepickedbyuser, 'dd-MM-yyyy') == this.results[0].foodCalories[i].date) {
+    //     console.log("true");
+    //     this.dataSource = this.dataSource.concat(this.results[0].foodCalories[i].foodItems);
+    //   }
+    //   else{
+    //     // create new food calories list in mongodb
+    //   }
+    // }
+
+
+
+    // try {
+    //   this.dataSource = this.dataSource.concat(this.foodEatenService.getListofFoodEaten(this.DatePipe.transform(this.datepickedbyuser, 'yyyy-MM-dd')).foodTakenDetails);
+    // } catch (error) {
+    //   this.foodeaten = new Object();
+    //   this.foodeaten.foodDateIntake = new Date(this.DatePipe.transform(this.datepickedbyuser))
+    //   this.foodeaten.foodTakenDetails = this.multiplierArray.value;
+    //   console.log("this is what i am creating", this.foodeaten);
+    //   this.foodEatenService.createNewListOfFoodEaten(this.foodeaten)
+    //   this.foodEatenService.checkList();
+    // }
     // clear the table
-    this.dataSource.splice(0);
 
-    console.log(this.dataSource = this.dataSource.concat(this.foodEatenService.getListofFoodEaten(this.DatePipe.transform(this.datepickedbyuser)).foodTakenDetails));
-    console.log("today's food", this.dataSource);
-    console.log(this.datepickedbyuser);
+
+    // console.log(this.dataSource = this.dataSource.concat(this.foodEatenService.getListofFoodEaten(this.DatePipe.transform(this.datepickedbyuser)).foodTakenDetails));
+    // console.log("today's food", this.dataSource);
+    // console.log(this.datepickedbyuser);
 
     this.foodEatenService.checkList();
   }
