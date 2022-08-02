@@ -153,11 +153,20 @@ export class ProfileComponent implements OnInit {
   }
 
   onPasswordChange(){
+
     if(this.passwordForm.controls.pwSet.hasError('notmatch')){
       alert("password not match")
     }
     else{
-      alert("match")
+      console.log(this.id);
+      console.log(this.passwordForm.value.currentPassword);
+      console.log(this.passwordForm.value.pwSet.newPassword);
+      this.authService.changePassword(this.passwordForm.value.currentPassword, this.passwordForm.value.pwSet.newPassword, this.id).subscribe(
+        data=>{
+
+        }
+      );
+      this.passwordForm.reset();
     }
   }
 

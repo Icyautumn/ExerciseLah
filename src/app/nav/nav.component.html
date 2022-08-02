@@ -38,7 +38,7 @@
           <a class="nav-link" routerLink="/workout" routerLinkActive="active">Workouts</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/calorie_tracker" routerLinkActive="active">Calorie Tracker</a>
+          <a class="nav-link" routerLink="/calorie_tracker/{{this.userUid}}" routerLinkActive="active">Calorie Tracker</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" routerLink="/login" routerLinkActive="active" *ngIf="this.loggedIn">Log In</a>

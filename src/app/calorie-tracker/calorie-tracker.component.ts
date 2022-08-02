@@ -12,6 +12,8 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Variable } from '@angular/compiler/src/render3/r3_ast';
 import { DatePipe } from '@angular/common';
 import { PostsService } from '../posts.service';
+import { ActivatedRoute } from '@angular/router';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-calorie-tracker',
@@ -46,24 +48,32 @@ export class CalorieTrackerComponent implements OnInit {
   name: string;
   potassium_mg: number;
 
+  id: string;
+
   displayedColumns: string[] = ['name', 'serving_size_g', 'calories', 'carbohydrates', 'protein', 'sodium', 'sugar_g', 'Delete'];
 
   dataSource: any[] = [];
 
   multiplierArray: FormGroup;
 
+  results: any;
+
 
   constructor(private changeDetectorRefs: ChangeDetectorRef, private fb: FormBuilder,
     private foodDetailsService: FoodDetailsService, public changeDetectorRef: ChangeDetectorRef,
-    private foodEatenService: FoodEatenService, public DatePipe: DatePipe, private postsService: PostsService) {
-    this.postsService.getAllFood().subscribe(posts => {
-      this.posts = posts;
-    })
-    // console.log("user", this.DatePipe.transform(this.datepickedbyuser, 'yyyy-MM-dd'));
-    // console.log("food date",this.DatePipe.transform(this.foodEatenService.getListofFoodEaten(this.datepickedbyuser)[0].foodDateIntake, 'yyyy-MM-dd'));
+    private foodEatenService: FoodEatenService, public DatePipe: DatePipe, private postsService: PostsService, private route: ActivatedRoute, private authService: AuthService) {
+
+      this.route.params.subscribe(params => {
+        this.id = params["id"];
+        this.authService.getFoodCalories(this.id).subscribe(data => {
+
+          this.results = data;
+          console.log(this.results[0].foodCalories, "result");
+          console.log(this.results[0].foodCalories[0].date, "date");
+        });
+      });
 
 
-    // console.log(this.DatePipe.transform(this.foodEatenService.getListofFoodEaten(this.datepickedbyuser)[0].foodDateIntake) === this.DatePipe.transform(this.datepickedbyuser));
     this.foodEatenService.checkList();
     try {
       this.dataSource = this.dataSource.concat(this.foodEatenService.getListofFoodEaten(this.DatePipe.transform(this.datepickedbyuser)).foodTakenDetails);
