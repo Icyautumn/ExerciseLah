@@ -14,6 +14,7 @@ export class AuthService {
   profile: string = "http://localhost:3000/api/profile/";
   password: string = "http://localhost:3000/api/changePassword/";
   foodCalories: string = "http://localhost:3000/api/foodCalories/";
+  foodDetails: string = "http://localhost:3000/api/food/";
 
   constructor(private http: HttpClient) { }
   regUser(email: string, pw: string, username: string, role: string, fullName: string) {
@@ -66,12 +67,17 @@ export class AuthService {
   }
 
   updateFoodCalories(id: string, date: string, foodItem: any){
-    console.log(foodItem);
     return this.http.put<any[]>(this.foodCalories + "update", {
       "id": id,
       "date": date,
       'foodItems': foodItem
     });
+  }
+
+  getFoodDetails(foodItem: string){
+    return this.http.post<any[]>(this.foodDetails, {
+      "food": foodItem
+    })
   }
 
   profileInformation(_id: string){

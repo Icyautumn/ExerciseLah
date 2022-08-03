@@ -173,7 +173,7 @@ router.route("/foodCalories/update").put(function (req, res) {
   var date = req.body.date;
   var foodItems = req.body.foodItems;
   db.collection("users").updateOne(
-    { _id: ObjectId(id), foodCalories : {'$elemMatch' : {'date': date}} },
+    { _id: ObjectId(id), foodCalories: { $elemMatch: { date: date } } },
     { $set: { "foodCalories.$.foodItems": foodItems } },
     function (err, result) {
       if (result == null) res.send([{ auth: false }]);
@@ -221,17 +221,31 @@ router.route("/changePassword").put(function (req, res2) {
   );
 });
 
-const request = require('request');
-var query = 'chicken';
-request.get({
-  url: 'https://api.calorieninjas.com/v1/nutrition?query='+query,
-  headers: {
-    'X-Api-Key': '7497WxiknD46mNgYJl8jCg==rSjAlcAvGzn9pJ7t'
-  },
-}, function(error, response, body) {
-  if(error) return console.error('Request failed:', error);
-  else if(response.statusCode != 200) return console.error('Error:', response.statusCode, body.toString('utf8'));
-  else console.log(body)
+router.route("/food").post(function (req, res) {
+  const request = require("request");
+  var query = req.body.food;
+  request.get(
+    {
+      url: "https://api.calorieninjas.com/v1/nutrition?query=" + query,
+      headers: {
+        "X-Api-Key": "7497WxiknD46mNgYJl8jCg==rSjAlcAvGzn9pJ7t",
+      },
+    },
+    function (error, response, body) {
+      if (error) return console.error("Request failed:", error);
+      else if (response.statusCode != 200)
+        return console.error(
+          "Error:",
+          response.statusCode,
+          body.toString("utf8")
+        );
+      else {
+        console.log(body);
+        res.send(body);
+      }
+
+    }
+  );
 });
 
 module.exports = router;

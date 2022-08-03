@@ -101,7 +101,7 @@ export class CalorieTrackerComponent implements OnInit {
 
   }
 
-  displayitems(){
+  displayitems() {
     // find the correct date to fit to the table
     for (let i = 0; i < this.results[0].foodCalories.length; i++) {
       if (this.DatePipe.transform(this.datepickedbyuser, 'dd-MM-yyyy') == this.results[0].foodCalories[i].date) {
@@ -116,18 +116,18 @@ export class CalorieTrackerComponent implements OnInit {
         }
       }
     }
-    if(this.check_if_data_there != true){
+    if (this.check_if_data_there != true) {
       // create new food calories list in mongodb
       this.authService.createFoodCalories(this.id, this.DatePipe.transform(this.datepickedbyuser, 'dd-MM-yyyy')).subscribe(data => {
         this.results = data;
-      this.authService.getFoodCalories(this.id).subscribe(data => {
-        this.results = data;
-        console.log(this.results, "null");
-        this.displayitems();
+        this.authService.getFoodCalories(this.id).subscribe(data => {
+          this.results = data;
+          console.log(this.results, "null");
+          this.displayitems();
+        });
       });
-    });
 
-      }
+    }
     this.updateTable();
     this.check_if_data_there = false;
   }
@@ -196,136 +196,65 @@ export class CalorieTrackerComponent implements OnInit {
 
   }
 
-  showDate() {
-    this.datepickedbyuser;
-  }
-
-  get foodTakeDetails() {
-    return this.createFoodTaken.controls["foodTakenDetails"] as FormArray;
-  }
-
   addFood() {
     // get the values inputted by the user
     var foodInputted = (<HTMLSelectElement>document.getElementById('Food')).value;
     var gramsInputted = (<HTMLSelectElement>document.getElementById('Grams')).value;
 
-    // get the values from library
-    this.carbohydrates_total_g = this.foodDetailsService.getSpecificFood(foodInputted).carbohydrates_total_g;
-    this.calories = this.foodDetailsService.getSpecificFood(foodInputted).calories;
-    this.fat_total_g = this.foodDetailsService.getSpecificFood(foodInputted).fat_total_g;
-    this.protein_g = this.foodDetailsService.getSpecificFood(foodInputted).protein_g;
-    this.sodium_mg = this.foodDetailsService.getSpecificFood(foodInputted).sodium_mg;
-    this.sugar_g = this.foodDetailsService.getSpecificFood(foodInputted).sugar_g;
-    this.serving_size_g = this.foodDetailsService.getSpecificFood(foodInputted).serving_size_g;
-    this.name = this.foodDetailsService.getSpecificFood(foodInputted).name;
-    this.fiber_g = this.foodDetailsService.getSpecificFood(foodInputted).fiber_g;
-    this.potassium_mg = this.foodDetailsService.getSpecificFood(foodInputted).potassium_mg;
+    this.authService.getFoodDetails(foodInputted).subscribe(data => {
+      console.log(data['items'].length, "api");
+      for (let i = 0; i < data['items'].length; i++) {
+        // get the values from library
+        this.carbohydrates_total_g = data['items'][i].carbohydrates_total_g;
+        this.calories = data['items'][i].calories;
+        this.fat_total_g = data['items'][i].fat_total_g;
+        this.protein_g = data['items'][i].protein_g;
+        this.sodium_mg = data['items'][i].sodium_mg;
+        this.sugar_g = data['items'][i].sugar_g;
+        this.serving_size_g = data['items'][i].serving_size_g;
+        this.name = data['items'][i].name;
+        this.fiber_g = data['items'][i].fiber_g;
+        this.potassium_mg = data['items'][i].potassium_mg;
+        // multiply the grams which the user has inputted
+        var multiplier = parseInt(gramsInputted) / this.serving_size_g;
 
-    // multiply the grams which the user has inputted
-    var multiplier = parseInt(gramsInputted) / this.serving_size_g;
+        // input the multiplied values into the multiplier array
+        this.multiplierArray.patchValue({
+          "calories": (this.calories * multiplier).toFixed(2),
+          'carbohydrates_total_g': (this.carbohydrates_total_g * multiplier).toFixed(2),
+          'cholesterol_mg': (this.carbohydrates_total_g * multiplier).toFixed(2),
+          'fat_saturated_g': (this.fat_total_g * multiplier).toFixed(2),
+          'fat_total_g': (this.fat_total_g * multiplier).toFixed(2),
+          'fiber_g': (this.fiber_g * multiplier).toFixed(2),
+          'name': this.name,
+          'potassium_mg': (this.potassium_mg * multiplier).toFixed(2),
+          'protein_g': (this.protein_g * multiplier).toFixed(2),
+          'serving_size_g': (this.serving_size_g * multiplier).toFixed(2),
+          'sodium_mg': (this.sodium_mg * multiplier).toFixed(2),
+          'sugar_g': (this.sugar_g * multiplier).toFixed(2),
+        });
 
-    // input the multiplied values into the multiplier array
-    this.multiplierArray.patchValue({
-      "calories": this.calories * multiplier,
-      'carbohydrates_total_g': this.carbohydrates_total_g * multiplier,
-      'cholesterol_mg': this.carbohydrates_total_g * multiplier,
-      'fat_saturated_g': this.fat_total_g * multiplier,
-      'fat_total_g': this.fat_total_g * multiplier,
-      'fiber_g': this.fiber_g * multiplier,
-      'name': this.name,
-      'potassium_mg': this.potassium_mg * multiplier,
-      'protein_g': this.protein_g * multiplier,
-      'serving_size_g': this.serving_size_g * multiplier,
-      'sodium_mg': this.sodium_mg * multiplier,
-      'sugar_g': this.sugar_g * multiplier,
+        // add the values to its existing values
+        this.foodData_calories += (this.calories * multiplier);
+        this.foodData_carbohydrates_total_g += + (this.carbohydrates_total_g * multiplier)
+        this.foodData_protein_g += (this.protein_g * multiplier);
+        this.foodData_sodium_mg += (this.sodium_mg * multiplier);
+        this.foodData_sugar_g += (this.sugar_g * multiplier);
+        console.log(this.foodData_calories);
+
+
+        this.data.push(this.multiplierArray.value);
+        this.authService.updateFoodCalories(this.id, this.DatePipe.transform(this.datepickedbyuser, 'dd-MM-yyyy'), this.data).subscribe()
+        this.updateTable();
+      }
     });
 
-    // add the values to its existing values
-    this.foodData_calories += (this.calories * multiplier);
-    this.foodData_carbohydrates_total_g += + (this.carbohydrates_total_g * multiplier)
-    this.foodData_protein_g += (this.protein_g * multiplier);
-    this.foodData_sodium_mg += (this.sodium_mg * multiplier);
-    this.foodData_sugar_g += (this.sugar_g * multiplier);
 
-    this.displayitems();
-    this.data.push(this.multiplierArray.value);
-    this.authService.updateFoodCalories(this.id, this.DatePipe.transform(this.datepickedbyuser, 'dd-MM-yyyy'), this.data).subscribe()
-    this.updateTable();
 
     // reset the form
     (<HTMLSelectElement>document.getElementById('Food')).value = '';
     (<HTMLSelectElement>document.getElementById('Grams')).value = '';
   }
-
-  addFoodTakenDetails() {
-    const FoodTakenDetailsForm = this.fb.group({
-      name: ['', Validators.required],
-      serving_size_g: ['', Validators.required],
-    });
-    this.foodTakeDetails.push(FoodTakenDetailsForm);
-  }
-
-  getFoodData(idInTheArray: number) {
-    // get name of food
-    this.nameOfFood = this.createFoodTaken.value.foodTakenDetails[idInTheArray].name;
-    // get grams of food
-    this.gramsOfFood = this.createFoodTaken.value.foodTakenDetails[idInTheArray].serving_size_g;
-
-    this.carbohydrates_total_g = this.foodDetailsService.getSpecificFood(this.nameOfFood).carbohydrates_total_g;
-    this.calories = this.foodDetailsService.getSpecificFood(this.nameOfFood).calories;
-    this.fat_total_g = this.foodDetailsService.getSpecificFood(this.nameOfFood).fat_total_g;
-    this.protein_g = this.foodDetailsService.getSpecificFood(this.nameOfFood).protein_g;
-    this.sodium_mg = this.foodDetailsService.getSpecificFood(this.nameOfFood).sodium_mg;
-    this.sugar_g = this.foodDetailsService.getSpecificFood(this.nameOfFood).sugar_g;
-    this.serving_size_g = this.foodDetailsService.getSpecificFood(this.nameOfFood).serving_size_g;
-    this.name = this.foodDetailsService.getSpecificFood(this.nameOfFood).name;
-    this.fiber_g = this.foodDetailsService.getSpecificFood(this.nameOfFood).fiber_g;
-    this.potassium_mg = this.foodDetailsService.getSpecificFood(this.nameOfFood).potassium_mg;
-
-    var multiplier = this.gramsOfFood / this.serving_size_g;
-
-    this.multiplierArray.patchValue({
-      "calories": this.calories * multiplier,
-      'carbohydrates_total_g': this.carbohydrates_total_g * multiplier,
-      'cholesterol_mg': this.carbohydrates_total_g * multiplier,
-      'fat_saturated_g': this.fat_total_g * multiplier,
-      'fat_total_g': this.fat_total_g * multiplier,
-      'fiber_g': this.fiber_g * multiplier,
-      'name': this.name,
-      'potassium_mg': this.potassium_mg * multiplier,
-      'protein_g': this.protein_g * multiplier,
-      'serving_size_g': this.serving_size_g * multiplier,
-      'sodium_mg': this.sodium_mg * multiplier,
-      'sugar_g': this.sugar_g * multiplier,
-    })
-
-    // if (this.dataSource[0].name == "" || this.dataSource[0].name == null) {
-    //   this.dataSource.pop();
-    //   this.dataSource = this.dataSource.concat(this.multiplierArray.value);
-    // } else {
-    //   // fit the details in the table
-    //   this.dataSource = this.dataSource.concat(this.multiplierArray.value);
-    // }
-    // console.log(this.dataSource);
-
-
-
-
-
-    this.foodeaten = new Object();
-    this.foodeaten.foodDateIntake = new Date(this.DatePipe.transform(this.datepickedbyuser, 'yyyy-MM-dd'),)
-    this.foodeaten.foodTakenDetails = this.dataSource;
-    this.foodEatenService.updateFoodEaten(this.foodeaten);
-    console.log(this.foodeaten);
-
-    // this.foodEatenService.addToListOfFoodEaten();
-
-  }
-  // ChangeTheValues(foodArray, foodServingMulitplier){
-  //   for(const [k,v] of Object.entries(foodArray)){
-
-  //   }
-  // }
 
   nextDay() {
     this.datepickedbyuser.setDate(this.datepickedbyuser.getDate() + 1);
@@ -336,7 +265,7 @@ export class CalorieTrackerComponent implements OnInit {
     this.datepickedbyuser.setDate(this.datepickedbyuser.getDate() - 1);
     console.log("yesterday date", this.datepickedbyuser);
   }
-  resetGraphData(){
+  resetGraphData() {
     this.foodData_calories = 0;
     this.foodData_carbohydrates_total_g = 0;
     this.foodData_protein_g = 0;
@@ -350,38 +279,6 @@ export class CalorieTrackerComponent implements OnInit {
     this.resetGraphData();
 
     this.displayitems();
-    // this.dataSource.splice(0);
-
-    // for (let i = 0; i < this.results[0].foodCalories.length; i++){
-    //   if (this.DatePipe.transform(this.datepickedbyuser, 'dd-MM-yyyy') == this.results[0].foodCalories[i].date) {
-    //     console.log("true");
-    //     this.dataSource = this.dataSource.concat(this.results[0].foodCalories[i].foodItems);
-    //   }
-    //   else{
-    //     // create new food calories list in mongodb
-    //   }
-    // }
-
-
-
-    // try {
-    //   this.dataSource = this.dataSource.concat(this.foodEatenService.getListofFoodEaten(this.DatePipe.transform(this.datepickedbyuser, 'yyyy-MM-dd')).foodTakenDetails);
-    // } catch (error) {
-    //   this.foodeaten = new Object();
-    //   this.foodeaten.foodDateIntake = new Date(this.DatePipe.transform(this.datepickedbyuser))
-    //   this.foodeaten.foodTakenDetails = this.multiplierArray.value;
-    //   console.log("this is what i am creating", this.foodeaten);
-    //   this.foodEatenService.createNewListOfFoodEaten(this.foodeaten)
-    //   this.foodEatenService.checkList();
-    // }
-    // clear the table
-
-
-    // console.log(this.dataSource = this.dataSource.concat(this.foodEatenService.getListofFoodEaten(this.DatePipe.transform(this.datepickedbyuser)).foodTakenDetails));
-    // console.log("today's food", this.dataSource);
-    // console.log(this.datepickedbyuser);
-
-    this.foodEatenService.checkList();
   }
 
 
