@@ -222,7 +222,7 @@ router.route("/changePassword").put(function (req, res2) {
 });
 
 const request = require('request');
-var query = '3lb carrots and a chicken sandwich';
+var query = 'chicken';
 request.get({
   url: 'https://api.calorieninjas.com/v1/nutrition?query='+query,
   headers: {
