@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
 import { users } from './users';
+import { itemDetails } from './foodDetails';
 
 @Injectable({
   providedIn: 'root'
@@ -61,6 +62,15 @@ export class AuthService {
     return this.http.put<any[]>(this.foodCalories + "create", {
       "id": id,
       "date": date
+    });
+  }
+
+  updateFoodCalories(id: string, date: string, foodItem: any){
+    console.log(foodItem);
+    return this.http.put<any[]>(this.foodCalories + "update", {
+      "id": id,
+      "date": date,
+      'foodItems': foodItem
     });
   }
 

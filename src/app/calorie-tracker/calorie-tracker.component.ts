@@ -19,7 +19,7 @@ import { Double } from 'mongodb';
 @Component({
   selector: 'app-calorie-tracker',
   templateUrl: './calorie-tracker.component.html',
-  styleUrls: ['./calorie-tracker.component.css']
+  styleUrls: ['./calorie-tracker.component.scss']
 })
 export class CalorieTrackerComponent implements OnInit {
 
@@ -205,7 +205,56 @@ export class CalorieTrackerComponent implements OnInit {
   }
 
   addFood() {
+    // get the values inputted by the user
+    var foodInputted = (<HTMLSelectElement>document.getElementById('Food')).value;
+    var gramsInputted = (<HTMLSelectElement>document.getElementById('Grams')).value;
 
+    // get the values from library
+    this.carbohydrates_total_g = this.foodDetailsService.getSpecificFood(foodInputted).carbohydrates_total_g;
+    this.calories = this.foodDetailsService.getSpecificFood(foodInputted).calories;
+    this.fat_total_g = this.foodDetailsService.getSpecificFood(foodInputted).fat_total_g;
+    this.protein_g = this.foodDetailsService.getSpecificFood(foodInputted).protein_g;
+    this.sodium_mg = this.foodDetailsService.getSpecificFood(foodInputted).sodium_mg;
+    this.sugar_g = this.foodDetailsService.getSpecificFood(foodInputted).sugar_g;
+    this.serving_size_g = this.foodDetailsService.getSpecificFood(foodInputted).serving_size_g;
+    this.name = this.foodDetailsService.getSpecificFood(foodInputted).name;
+    this.fiber_g = this.foodDetailsService.getSpecificFood(foodInputted).fiber_g;
+    this.potassium_mg = this.foodDetailsService.getSpecificFood(foodInputted).potassium_mg;
+
+    // multiply the grams which the user has inputted
+    var multiplier = parseInt(gramsInputted) / this.serving_size_g;
+
+    // input the multiplied values into the multiplier array
+    this.multiplierArray.patchValue({
+      "calories": this.calories * multiplier,
+      'carbohydrates_total_g': this.carbohydrates_total_g * multiplier,
+      'cholesterol_mg': this.carbohydrates_total_g * multiplier,
+      'fat_saturated_g': this.fat_total_g * multiplier,
+      'fat_total_g': this.fat_total_g * multiplier,
+      'fiber_g': this.fiber_g * multiplier,
+      'name': this.name,
+      'potassium_mg': this.potassium_mg * multiplier,
+      'protein_g': this.protein_g * multiplier,
+      'serving_size_g': this.serving_size_g * multiplier,
+      'sodium_mg': this.sodium_mg * multiplier,
+      'sugar_g': this.sugar_g * multiplier,
+    });
+
+    // add the values to its existing values
+    this.foodData_calories += (this.calories * multiplier);
+    this.foodData_carbohydrates_total_g += + (this.carbohydrates_total_g * multiplier)
+    this.foodData_protein_g += (this.protein_g * multiplier);
+    this.foodData_sodium_mg += (this.sodium_mg * multiplier);
+    this.foodData_sugar_g += (this.sugar_g * multiplier);
+
+    this.displayitems();
+    this.data.push(this.multiplierArray.value);
+    this.authService.updateFoodCalories(this.id, this.DatePipe.transform(this.datepickedbyuser, 'dd-MM-yyyy'), this.data).subscribe()
+    this.updateTable();
+
+    // reset the form
+    (<HTMLSelectElement>document.getElementById('Food')).value = '';
+    (<HTMLSelectElement>document.getElementById('Grams')).value = '';
   }
 
   addFoodTakenDetails() {
@@ -337,13 +386,16 @@ export class CalorieTrackerComponent implements OnInit {
 
 
   deleteSpecificFood(index: number) {
-    // this.dataSource.splice(index, 1);
-    // console.log("delete", this.dataSource);
-    // this.foodeaten = new FoodEaten();
-    // this.foodeaten.foodDateIntake = new Date(this.DatePipe.transform(this.datepickedbyuser))
-    // this.foodeaten.foodTakenDetails = this.dataSource;
-    // this.foodEatenService.updateFoodEaten(this.foodeaten);
-    this.foodEatenService.checkList();
+    // minus out the current values
+    this.foodData_calories -= (this.data[index].calories);
+    this.foodData_carbohydrates_total_g -= (this.data[index].carbohydrates_total_g)
+    this.foodData_protein_g -= (this.data[index].protein_g);
+    this.foodData_sodium_mg -= (this.data[index].sodium_mg);
+    this.foodData_sugar_g -= (this.data[index].sugar_g);
+    // take out the food the user clicked on
+    this.data.splice(index, 1);
+    this.updateTable();
+    this.authService.updateFoodCalories(this.id, this.DatePipe.transform(this.datepickedbyuser, 'dd-MM-yyyy'), this.data).subscribe()
   }
 
 }

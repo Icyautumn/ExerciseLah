@@ -98,6 +98,7 @@ router.route("/reguser").post(function (req, res) {
         userImage: userImage,
         fullName: fullName,
         bio: "",
+        foodCalories: [],
       },
       (err, result) => {
         if (err) return console.log(err);
@@ -167,6 +168,21 @@ router.route("/foodCalories/create").put(function (req, res) {
   );
 });
 
+router.route("/foodCalories/update").put(function (req, res) {
+  var id = req.body.id;
+  var date = req.body.date;
+  var foodItems = req.body.foodItems;
+  db.collection("users").updateOne(
+    { _id: ObjectId(id), foodCalories : {'$elemMatch' : {'date': date}} },
+    { $set: { "foodCalories.$.foodItems": foodItems } },
+    function (err, result) {
+      if (result == null) res.send([{ auth: false }]);
+      else {
+        res.send([{ auth: true, foodCalories: result }]);
+      }
+    }
+  );
+});
 router.route("/changePassword").put(function (req, res2) {
   var id = req.body.id;
   console.log("meow");
@@ -203,6 +219,19 @@ router.route("/changePassword").put(function (req, res2) {
       }
     }
   );
+});
+
+const request = require('request');
+var query = '3lb carrots and a chicken sandwich';
+request.get({
+  url: 'https://api.calorieninjas.com/v1/nutrition?query='+query,
+  headers: {
+    'X-Api-Key': '7497WxiknD46mNgYJl8jCg==rSjAlcAvGzn9pJ7t'
+  },
+}, function(error, response, body) {
+  if(error) return console.error('Request failed:', error);
+  else if(response.statusCode != 200) return console.error('Error:', response.statusCode, body.toString('utf8'));
+  else console.log(body)
 });
 
 module.exports = router;
