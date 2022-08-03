@@ -87,10 +87,18 @@ router.route("/reguser").post(function (req, res) {
   var role = req.body.role;
   var fullName = req.body.fullName;
 
-
   bcrypt.hash(password, BCRYPT_SALT_ROUNDS, function (err, hash) {
     db.collection("users").insertOne(
-      { email: email, password: hash, username: username, role: role, dateJoined: dateJoined, userImage: userImage, fullName: fullName, bio: "" },
+      {
+        email: email,
+        password: hash,
+        username: username,
+        role: role,
+        dateJoined: dateJoined,
+        userImage: userImage,
+        fullName: fullName,
+        bio: "",
+      },
       (err, result) => {
         if (err) return console.log(err);
         console.log("user registered");
@@ -103,18 +111,26 @@ router.route("/reguser").post(function (req, res) {
 router.route("/profile").post(function (req, res2) {
   var _id = req.body._id;
   let o_id = new ObjectId(_id);
-  db.collection("users").findOne(
-    {"_id" : o_id },
-    function(err, result){
-      if (result == null) res2.send([{ auth: false }]);
-      else{
-        res2.send([{ auth: true, username: result.username, email: result.email, userImage: result.userImage, role: result.role, dateJoined: result.dateJoined, fullName: result.fullName, bio: result.bio}]);
-      }
+  db.collection("users").findOne({ _id: o_id }, function (err, result) {
+    if (result == null) res2.send([{ auth: false }]);
+    else {
+      res2.send([
+        {
+          auth: true,
+          username: result.username,
+          email: result.email,
+          userImage: result.userImage,
+          role: result.role,
+          dateJoined: result.dateJoined,
+          fullName: result.fullName,
+          bio: result.bio,
+        },
+      ]);
     }
-  )
+  });
 });
 
-router.route('/profile/:id').put(function (req, res) {
+router.route("/profile/:id").put(function (req, res) {
   db.collection("users").updateOne(
     { _id: ObjectId(req.params.id) },
     {
@@ -128,15 +144,27 @@ router.route('/profile/:id').put(function (req, res) {
 
 router.route("/foodCalories").post(function (req, res) {
   var id = req.body.id;
-  db.collection("users").findOne(
-    {"_id": ObjectId(id)},
-    function(err, result){
+  db.collection("users").findOne({ _id: ObjectId(id) }, function (err, result) {
+    if (result == null) res.send([{ auth: false }]);
+    else {
+      res.send([{ auth: true, foodCalories: result.foodCalories }]);
+    }
+  });
+});
+
+router.route("/foodCalories/create").put(function (req, res) {
+  var id = req.body.id;
+  var date = req.body.date;
+  db.collection("users").updateOne(
+    { _id: ObjectId(id) },
+    { $push: { foodCalories: { date: date, foodItems: [] } } },
+    function (err, result) {
       if (result == null) res.send([{ auth: false }]);
-      else{
-        res.send([{ auth: true, foodCalories: result.foodCalories}]);
+      else {
+        res.send([{ auth: true, foodCalories: result }]);
       }
     }
-  )
+  );
 });
 
 router.route("/changePassword").put(function (req, res2) {
@@ -159,23 +187,22 @@ router.route("/changePassword").put(function (req, res2) {
           } else {
             console.log("worked");
             // change the password and set the bcrypt as the new password
-            bcrypt.hash(newpassword, BCRYPT_SALT_ROUNDS, function(err, hash) {
+            bcrypt.hash(newpassword, BCRYPT_SALT_ROUNDS, function (err, hash) {
               db.collection("users").updateOne(
                 { _id: ObjectId(id) },
                 {
-                  $set: {"password": hash}, // Update
+                  $set: { password: hash }, // Update
                 },
                 (err, results) => {
                   res2.send(results);
                 }
-              )
-            })
+              );
+            });
           }
         });
       }
     }
   );
 });
-
 
 module.exports = router;

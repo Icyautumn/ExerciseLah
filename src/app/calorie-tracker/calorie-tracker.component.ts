@@ -75,6 +75,8 @@ export class CalorieTrackerComponent implements OnInit {
 
   results: any;
 
+  check_if_data_there = false;
+
 
   constructor(private changeDetectorRefs: ChangeDetectorRef, private fb: FormBuilder,
     private foodDetailsService: FoodDetailsService, public changeDetectorRef: ChangeDetectorRef,
@@ -84,6 +86,7 @@ export class CalorieTrackerComponent implements OnInit {
       this.id = params["id"];
       this.authService.getFoodCalories(this.id).subscribe(data => {
         this.results = data;
+        console.log(this.results);
         this.displayitems();
       });
     });
@@ -103,6 +106,7 @@ export class CalorieTrackerComponent implements OnInit {
     for (let i = 0; i < this.results[0].foodCalories.length; i++) {
       if (this.DatePipe.transform(this.datepickedbyuser, 'dd-MM-yyyy') == this.results[0].foodCalories[i].date) {
         this.data = (this.results[0].foodCalories[i].foodItems);
+        this.check_if_data_there = true;
         for (var j = 0; j < this.data.length; j++) {
           this.foodData_calories += parseInt(this.data[j].calories);
           this.foodData_carbohydrates_total_g += parseInt(this.data[j].carbohydrates_total_g);
@@ -111,11 +115,21 @@ export class CalorieTrackerComponent implements OnInit {
           this.foodData_sugar_g += parseInt(this.data[j].sugar_g);
         }
       }
-      else {
-        // create new food calories list in mongodb
-      }
-      this.updateTable();
     }
+    if(this.check_if_data_there != true){
+      // create new food calories list in mongodb
+      this.authService.createFoodCalories(this.id, this.DatePipe.transform(this.datepickedbyuser, 'dd-MM-yyyy')).subscribe(data => {
+        this.results = data;
+      this.authService.getFoodCalories(this.id).subscribe(data => {
+        this.results = data;
+        console.log(this.results, "null");
+        this.displayitems();
+      });
+    });
+
+      }
+    this.updateTable();
+    this.check_if_data_there = false;
   }
 
   updateTable() {

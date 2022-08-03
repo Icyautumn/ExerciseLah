@@ -57,6 +57,13 @@ export class AuthService {
     });
   }
 
+  createFoodCalories(id: string, date: string){
+    return this.http.put<any[]>(this.foodCalories + "create", {
+      "id": id,
+      "date": date
+    });
+  }
+
   profileInformation(_id: string){
     return this.http.post<any[]>(this.profile, {
       '_id': _id
