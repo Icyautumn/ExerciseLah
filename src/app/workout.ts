@@ -9,6 +9,7 @@ export class Workouts{
   equipment: string;
   workout: listofworkout[];
   foodDetails: foodDetails[];
+  commentOfUser: commentOfUser[];
 }
 
 export class listofworkout {
@@ -30,6 +31,12 @@ export class foodDetails {
   cholesterol_mg: number;
   protein_g: number;
   carbohydrates_total_g: number;
+}
+
+export class commentOfUser{
+  username: string;
+  message: string;
+  rating: number;
 }
 
 

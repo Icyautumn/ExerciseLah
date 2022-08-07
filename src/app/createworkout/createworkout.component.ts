@@ -11,6 +11,8 @@ import { FoodDetailsService } from '../food-details.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { CommentsService } from '../comments.service';
 import { comments } from '../comments';
+import { AuthService } from '../auth.service';
+import { FoodService } from '../food.service';
 
 
 /** Error when invalid control is dirty, touched, or submitted. */
@@ -80,7 +82,7 @@ export class CreateworkoutComponent implements OnInit {
     private workoutService: WorkoutService,
     private router: Router,
     private foodDetailsService: FoodDetailsService,
-    private commentsService: CommentsService) {
+    private commentsService: CommentsService, private authService: AuthService, private foodService: FoodService) {
     this.listOfWorkouts = this.workoutService.getWorkouts();
     this.setid = this.listOfWorkouts.length;
    }
@@ -140,70 +142,57 @@ export class CreateworkoutComponent implements OnInit {
     var gramsInputted = (<HTMLSelectElement>document.getElementById('Grams')).value;
 
     // get the values from library
-    this.carbohydrates_total_g = this.foodDetailsService.getSpecificFood(foodInputted).carbohydrates_total_g;
-    this.calories = this.foodDetailsService.getSpecificFood(foodInputted).calories;
-    this.fat_total_g = this.foodDetailsService.getSpecificFood(foodInputted).fat_total_g;
-    this.protein_g = this.foodDetailsService.getSpecificFood(foodInputted).protein_g;
-    this.sodium_mg = this.foodDetailsService.getSpecificFood(foodInputted).sodium_mg;
-    this.sugar_g = this.foodDetailsService.getSpecificFood(foodInputted).sugar_g;
-    this.serving_size_g = this.foodDetailsService.getSpecificFood(foodInputted).serving_size_g;
-    this.name = this.foodDetailsService.getSpecificFood(foodInputted).name;
-    this.fiber_g = this.foodDetailsService.getSpecificFood(foodInputted).fiber_g;
-    this.potassium_mg = this.foodDetailsService.getSpecificFood(foodInputted).potassium_mg;
-    // multiply the grams which the user has inputted
-    var multiplier = parseInt(gramsInputted) / this.serving_size_g;
+    this.foodService.getFoodDetails(foodInputted).subscribe(data => {
+      console.log(data['items'].length, "api");
+      for (let i = 0; i < data['items'].length; i++) {
+        // get the values from library
+        this.carbohydrates_total_g = data['items'][i].carbohydrates_total_g;
+        this.calories = data['items'][i].calories;
+        this.fat_total_g = data['items'][i].fat_total_g;
+        this.protein_g = data['items'][i].protein_g;
+        this.sodium_mg = data['items'][i].sodium_mg;
+        this.sugar_g = data['items'][i].sugar_g;
+        this.serving_size_g = data['items'][i].serving_size_g;
+        this.name = data['items'][i].name;
+        this.fiber_g = data['items'][i].fiber_g;
+        this.potassium_mg = data['items'][i].potassium_mg;
+        // multiply the grams which the user has inputted
+        var multiplier = parseInt(gramsInputted) / this.serving_size_g;
 
-    // input the multiplied values into the multiplier array
-    this.multiplierArray.patchValue({
-      "calories": this.calories * multiplier,
-      'carbohydrates_total_g': this.carbohydrates_total_g * multiplier,
-      'cholesterol_mg': this.carbohydrates_total_g * multiplier,
-      'fat_saturated_g': this.fat_total_g * multiplier,
-      'fat_total_g': this.fat_total_g * multiplier,
-      'fiber_g': this.fiber_g * multiplier,
-      'name': this.name,
-      'potassium_mg': this.potassium_mg * multiplier,
-      'protein_g': this.protein_g * multiplier,
-      'serving_size_g': this.serving_size_g * multiplier,
-      'sodium_mg': this.sodium_mg * multiplier,
-      'sugar_g': this.sugar_g * multiplier,
+        // input the multiplied values into the multiplier array
+        this.multiplierArray.patchValue({
+          "calories": (this.calories * multiplier).toFixed(2),
+          'carbohydrates_total_g': (this.carbohydrates_total_g * multiplier).toFixed(2),
+          'cholesterol_mg': (this.carbohydrates_total_g * multiplier).toFixed(2),
+          'fat_saturated_g': (this.fat_total_g * multiplier).toFixed(2),
+          'fat_total_g': (this.fat_total_g * multiplier).toFixed(2),
+          'fiber_g': (this.fiber_g * multiplier).toFixed(2),
+          'name': this.name,
+          'potassium_mg': (this.potassium_mg * multiplier).toFixed(2),
+          'protein_g': (this.protein_g * multiplier).toFixed(2),
+          'serving_size_g': (this.serving_size_g * multiplier).toFixed(2),
+          'sodium_mg': (this.sodium_mg * multiplier).toFixed(2),
+          'sugar_g': (this.sugar_g * multiplier).toFixed(2),
+        });
+
+        // add the values to its existing values
+        this.foodData_calories += (this.calories * multiplier);
+        this.foodData_carbohydrates_total_g += + (this.carbohydrates_total_g * multiplier)
+        this.foodData_protein_g += (this.protein_g * multiplier);
+        this.foodData_sodium_mg += (this.sodium_mg * multiplier);
+        this.foodData_sugar_g += (this.sugar_g * multiplier);
+
+
+        this.data.push(this.multiplierArray.value);
+        this.updateTable();
+      }
     });
 
-    // add the values to its existing values
 
-    this.foodData_calories += (this.calories * multiplier);
-    console.log(this.foodData_calories);
-    this.foodData_carbohydrates_total_g += + (this.carbohydrates_total_g * multiplier)
-    this.foodData_protein_g += (this.protein_g * multiplier);
-    this.foodData_sodium_mg += (this.sodium_mg * multiplier);
-    this.foodData_sugar_g += (this.sugar_g * multiplier);
 
-    // set the values for the food inputted
-    this.FoodData = [
-      {
-        name: 'carbohydrates_total_g',
-        value: this.foodData_carbohydrates_total_g
-      },
-      {
-        name: 'protein_g',
-        value: this.foodData_protein_g
-      },
-      {
-        name: 'sodium_mg',
-        value: this.foodData_sodium_mg
-      },
-      {
-        name: 'sugar_g',
-        value: this.foodData_sugar_g
-      },
-    ];
-    // push value into the tables
-    this.data.push(this.multiplierArray.value);
-    this.updateTable();
     // reset the form
     (<HTMLSelectElement>document.getElementById('Food')).value = '';
-    (<HTMLSelectElement>document.getElementById('Grams')).value  = '';
-    console.log("photo",this.createdImageBase64);
+    (<HTMLSelectElement>document.getElementById('Grams')).value = '';
   }
 
 
@@ -237,11 +226,28 @@ export class CreateworkoutComponent implements OnInit {
     this.updateTable();
   }
 
-  updateTable(){
+  updateTable() {
     // update the tables
     this.dataSource.data = this.data;
+    this.FoodData = [
+      {
+        name: 'carbohydrates_total_g',
+        value: this.foodData_carbohydrates_total_g
+      },
+      {
+        name: 'protein_g',
+        value: this.foodData_protein_g
+      },
+      {
+        name: 'sodium_mg',
+        value: this.foodData_sodium_mg
+      },
+      {
+        name: 'sugar_g',
+        value: this.foodData_sugar_g
+      },
+    ];
   }
-
   // user selects an image
   onChange = (event: Event, create_or_edit: string) => {
     const target= event.target as HTMLInputElement;
@@ -321,6 +327,7 @@ export class CreateworkoutComponent implements OnInit {
     this.newWorkout.equipment = this.createWorkout.value.equipment;
     this.newWorkout.workout = this.createWorkout.value.workout;
     this.newWorkout.foodDetails = this.dataSource.data;
+    this.newWorkout.commentOfUser = [];
     // console.log("created workout", this.newWorkout);
     this.workoutService.addWorkout(this.newWorkout);
     console.log(this.newWorkout);
@@ -333,10 +340,10 @@ export class CreateworkoutComponent implements OnInit {
     this.workouts.clear();
 
     // create an empty commment for new workout
-    this.newComment = new comments();
-    this.newComment._idOfWorkout = this.setid;
-    this.newComment.comments = [];
-    this.commentsService.newCommentTable(this.newComment);
+    // this.newComment = new comments();
+    // this.newComment._idOfWorkout = this.setid;
+    // this.newComment.comments = [];
+    // this.commentsService.newCommentTable(this.newComment);
 
     this.router.navigate(['/workout']);
     }else{

@@ -15,6 +15,7 @@ import { PostsService } from '../posts.service';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { Double } from 'mongodb';
+import { FoodService } from '../food.service';
 
 @Component({
   selector: 'app-calorie-tracker',
@@ -62,11 +63,11 @@ export class CalorieTrackerComponent implements OnInit {
 
   FoodData: any[] = [];
   data: any[] = [];
-  foodData_calories: number = 0;
-  foodData_carbohydrates_total_g: number = 0;
-  foodData_protein_g: number = 0;
-  foodData_sodium_mg: number = 0;
-  foodData_sugar_g: number = 0;
+  foodData_calories: number = 0.0;
+  foodData_carbohydrates_total_g: number = 0.0;
+  foodData_protein_g: number = 0.0;
+  foodData_sodium_mg: number = 0.0;
+  foodData_sugar_g: number = 0.0;
 
   displayedColumns: string[] = ['name', 'serving_size_g', 'calories', 'carbohydrates', 'protein', 'sodium', 'sugar_g', 'Delete'];
 
@@ -80,11 +81,12 @@ export class CalorieTrackerComponent implements OnInit {
 
   constructor(private changeDetectorRefs: ChangeDetectorRef, private fb: FormBuilder,
     private foodDetailsService: FoodDetailsService, public changeDetectorRef: ChangeDetectorRef,
-    private foodEatenService: FoodEatenService, public DatePipe: DatePipe, private postsService: PostsService, private route: ActivatedRoute, private authService: AuthService) {
+    private foodEatenService: FoodEatenService, public DatePipe: DatePipe, private postsService: PostsService, private route: ActivatedRoute, private authService: AuthService,
+    private foodService: FoodService) {
 
     this.route.params.subscribe(params => {
       this.id = params["id"];
-      this.authService.getFoodCalories(this.id).subscribe(data => {
+      this.foodService.getFoodCalories(this.id).subscribe(data => {
         this.results = data;
         console.log(this.results);
         this.displayitems();
@@ -118,9 +120,9 @@ export class CalorieTrackerComponent implements OnInit {
     }
     if (this.check_if_data_there != true) {
       // create new food calories list in mongodb
-      this.authService.createFoodCalories(this.id, this.DatePipe.transform(this.datepickedbyuser, 'dd-MM-yyyy')).subscribe(data => {
+      this.foodService.createFoodCalories(this.id, this.DatePipe.transform(this.datepickedbyuser, 'dd-MM-yyyy')).subscribe(data => {
         this.results = data;
-        this.authService.getFoodCalories(this.id).subscribe(data => {
+        this.foodService.getFoodCalories(this.id).subscribe(data => {
           this.results = data;
           console.log(this.results, "null");
           this.displayitems();
@@ -201,7 +203,7 @@ export class CalorieTrackerComponent implements OnInit {
     var foodInputted = (<HTMLSelectElement>document.getElementById('Food')).value;
     var gramsInputted = (<HTMLSelectElement>document.getElementById('Grams')).value;
 
-    this.authService.getFoodDetails(foodInputted).subscribe(data => {
+    this.foodService.getFoodDetails(foodInputted).subscribe(data => {
       console.log(data['items'].length, "api");
       for (let i = 0; i < data['items'].length; i++) {
         // get the values from library
@@ -240,11 +242,10 @@ export class CalorieTrackerComponent implements OnInit {
         this.foodData_protein_g += (this.protein_g * multiplier);
         this.foodData_sodium_mg += (this.sodium_mg * multiplier);
         this.foodData_sugar_g += (this.sugar_g * multiplier);
-        console.log(this.foodData_calories);
 
 
         this.data.push(this.multiplierArray.value);
-        this.authService.updateFoodCalories(this.id, this.DatePipe.transform(this.datepickedbyuser, 'dd-MM-yyyy'), this.data).subscribe()
+        this.foodService.updateFoodCalories(this.id, this.DatePipe.transform(this.datepickedbyuser, 'dd-MM-yyyy'), this.data).subscribe()
         this.updateTable();
       }
     });
@@ -292,7 +293,7 @@ export class CalorieTrackerComponent implements OnInit {
     // take out the food the user clicked on
     this.data.splice(index, 1);
     this.updateTable();
-    this.authService.updateFoodCalories(this.id, this.DatePipe.transform(this.datepickedbyuser, 'dd-MM-yyyy'), this.data).subscribe()
+    this.foodService.updateFoodCalories(this.id, this.DatePipe.transform(this.datepickedbyuser, 'dd-MM-yyyy'), this.data).subscribe()
   }
 
 }

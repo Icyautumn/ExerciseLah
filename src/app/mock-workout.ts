@@ -21,6 +21,19 @@ export const listOfWorkouts: Workouts[] = [
       rep: 15
     },
   ],
+  commentOfUser: [
+    {
+    username: 'Icyautumn',
+    message: "good workout",
+    rating: 5
+  },
+  {
+    username: 'stone',
+    message: "not bad",
+    rating: 3
+  },
+
+],
   foodDetails: [
     {
       "sugar_g": 1.2,
@@ -71,6 +84,19 @@ export const listOfWorkouts: Workouts[] = [
       rep: 13
     },
   ],
+  commentOfUser: [
+    {
+    username: 'Icyautumn',
+    message: "good workout",
+    rating: 5
+  },
+  {
+    username: 'stone',
+    message: "not bad",
+    rating: 3
+  },
+
+],
   foodDetails: [
     {
       "sugar_g": 5.7,

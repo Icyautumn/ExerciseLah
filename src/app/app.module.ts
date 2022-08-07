@@ -40,6 +40,8 @@ import {AuthGuard} from './auth.guard';
 import { AdminComponent } from './admin/admin.component';
 import { ProfileComponent } from './profile/profile.component';
 import { PhotosService } from './photos.service';
+import { FoodService } from './food.service';
+
 
 @NgModule({
   declarations: [
@@ -81,7 +83,7 @@ import { PhotosService } from './photos.service';
     MatButtonToggleModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  providers: [WorkoutService, DatePipe, PostsService, AuthService, PhotosService],
+  providers: [WorkoutService, DatePipe, PostsService, AuthService, PhotosService, FoodService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

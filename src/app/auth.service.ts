@@ -53,33 +53,6 @@ export class AuthService {
     });
   }
 
-  getFoodCalories(id: string){
-    return this.http.post<any[]>(this.foodCalories, {
-      "id": id
-    });
-  }
-
-  createFoodCalories(id: string, date: string){
-    return this.http.put<any[]>(this.foodCalories + "create", {
-      "id": id,
-      "date": date
-    });
-  }
-
-  updateFoodCalories(id: string, date: string, foodItem: any){
-    return this.http.put<any[]>(this.foodCalories + "update", {
-      "id": id,
-      "date": date,
-      'foodItems': foodItem
-    });
-  }
-
-  getFoodDetails(foodItem: string){
-    return this.http.post<any[]>(this.foodDetails, {
-      "food": foodItem
-    })
-  }
-
   profileInformation(_id: string){
     return this.http.post<any[]>(this.profile, {
       '_id': _id

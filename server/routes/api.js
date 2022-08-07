@@ -240,7 +240,6 @@ router.route("/food").post(function (req, res) {
           body.toString("utf8")
         );
       else {
-        console.log(body);
         res.send(body);
       }
 
