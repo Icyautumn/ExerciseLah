@@ -13,8 +13,6 @@ export class AuthService {
   authuser: string = "http://localhost:3000/api/authuser/";
   profile: string = "http://localhost:3000/api/profile/";
   password: string = "http://localhost:3000/api/changePassword/";
-  foodCalories: string = "http://localhost:3000/api/foodCalories/";
-  foodDetails: string = "http://localhost:3000/api/food/";
 
   constructor(private http: HttpClient) { }
   regUser(email: string, pw: string, username: string, role: string, fullName: string) {
@@ -61,8 +59,15 @@ export class AuthService {
   setSecureToken(secure_token: string) {
     sessionStorage.setItem("LoggedIn", secure_token)
   }
+
+  setUsername(username: string) {
+    sessionStorage.setItem("username", username)
+  }
   getSecureToken() {
     return sessionStorage.getItem("LoggedIn")
+  }
+  getUsername() {
+    return sessionStorage.getItem("username")
   }
   setUserRole(role: string) {
     sessionStorage.setItem("UserRole", role);

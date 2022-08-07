@@ -24,40 +24,8 @@ MongoClient.connect(
     db = database.db("ExerciseLah");
   }
 );
-// // create new post
-// router.route("/users").post(function (req, res) {
-//   db.collection("users").insertOne(req.body, (err, results) => {
-//     if (err) return console.log(err);
-//     console.log("saved to database");
-//     res.send(results);
-//   });
-// });
 
-// // retrieve all posts
-// router.route('/users').get(function (req, res) {
-//   db.collection('users').find().toArray(function (err, results) {
-//     if(err) return console.log(err);
-//     console.log(results);
-//     res.send(results);
-//   });
-// });
-
-// //delete posts based on id
-// router.route('/users/:_id').delete(function(req, res) {
-//   db.collection('users').deleteOne({"_id": ObjectId(req.params._id)}, (err, results) =>{
-//     res.send(results);
-//   })
-// })
-
-// // update post based on id
-// router.route('/users/:_id').put(function (req, res) {
-//   db.collection('users').updateOne( {"_id": ObjectId(req.params._id)}, {
-//     $set: req.body
-//   }, (err, results) =>{
-//     res.send(results);
-//   })
-// })
-
+// profile
 router.route("/authuser").post(function (req, res2) {
   var email = req.body.email;
   var password = req.body.password;
@@ -71,7 +39,7 @@ router.route("/authuser").post(function (req, res2) {
           if (err || res == false) {
             res2.send([{ auth: false }]);
           } else {
-            res2.send([{ auth: true, role: result.role, uid: result._id }]);
+            res2.send([{ auth: true, role: result.role, uid: result._id, username: result.username }]);
           }
         });
       }
@@ -143,6 +111,42 @@ router.route("/profile/:id").put(function (req, res) {
   );
 });
 
+router.route("/changePassword").put(function (req, res2) {
+  var id = req.body.id;
+  var password = req.body.currentPassword;
+  var newpassword = req.body.newPassword;
+  db.collection("users").findOne(
+    { _id: ObjectId(id) },
+    { password: 1, role: 1, _id: 0 },
+    function (err, result) {
+      if (result == null) res2.send([{ auth: false }]);
+      else {
+        bcrypt.compare(password, result.password, function (err, res) {
+          if (err || res == false) {
+            console.log("did not work");
+            res2.send([{ auth: false }]);
+          } else {
+            console.log("worked");
+            // change the password and set the bcrypt as the new password
+            bcrypt.hash(newpassword, BCRYPT_SALT_ROUNDS, function (err, hash) {
+              db.collection("users").updateOne(
+                { _id: ObjectId(id) },
+                {
+                  $set: { password: hash }, // Update
+                },
+                (err, results) => {
+                  res2.send(results);
+                }
+              );
+            });
+          }
+        });
+      }
+    }
+  );
+});
+
+// food
 router.route("/foodCalories").post(function (req, res) {
   var id = req.body.id;
   db.collection("users").findOne({ _id: ObjectId(id) }, function (err, result) {
@@ -183,43 +187,6 @@ router.route("/foodCalories/update").put(function (req, res) {
     }
   );
 });
-router.route("/changePassword").put(function (req, res2) {
-  var id = req.body.id;
-  console.log("meow");
-  var password = req.body.currentPassword;
-  console.log(password);
-  var newpassword = req.body.newPassword;
-  console.log(newpassword);
-  db.collection("users").findOne(
-    { _id: ObjectId(id) },
-    { password: 1, role: 1, _id: 0 },
-    function (err, result) {
-      if (result == null) res2.send([{ auth: false }]);
-      else {
-        bcrypt.compare(password, result.password, function (err, res) {
-          if (err || res == false) {
-            console.log("did not work");
-            res2.send([{ auth: false }]);
-          } else {
-            console.log("worked");
-            // change the password and set the bcrypt as the new password
-            bcrypt.hash(newpassword, BCRYPT_SALT_ROUNDS, function (err, hash) {
-              db.collection("users").updateOne(
-                { _id: ObjectId(id) },
-                {
-                  $set: { password: hash }, // Update
-                },
-                (err, results) => {
-                  res2.send(results);
-                }
-              );
-            });
-          }
-        });
-      }
-    }
-  );
-});
 
 router.route("/food").post(function (req, res) {
   const request = require("request");
@@ -242,9 +209,45 @@ router.route("/food").post(function (req, res) {
       else {
         res.send(body);
       }
-
     }
   );
 });
+
+// workout
+router.route("/workout/add").put(function (req, res) {
+  console.log("workout works");
+  var workout_photo = req.body.workout_photo;
+  var summary = req.body.summary;
+  var calories_burnt = req.body.calories_burnt;
+  var workout_type = req.body.workout_type;
+  var duration = req.body.duration;
+  var equipment = req.body.equipment;
+  var listOfWorkout = req.body.listOfWorkout;
+  var foodDetails = req.body.foodDetails;
+  var commentOfUser = req.body.commentOfUser;
+  var username = req.body.username;
+
+  db.collection("workout").insertOne(
+    {
+      createdBy: username,
+      workout_photo: workout_photo,
+      summary: summary,
+      calories_burnt: calories_burnt,
+      workout_type: workout_type,
+      duration: duration,
+      equipment: equipment,
+      workout: listOfWorkout,
+      foodDetails: foodDetails,
+      commentOfUser: commentOfUser,
+    },
+    (err, result) => {
+      if (err) return console.log(err);
+      console.log("workout registered");
+      res.send(result);
+    }
+  );
+});
+
+
 
 module.exports = router;

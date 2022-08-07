@@ -100,7 +100,7 @@ export class EditworkoutComponent implements OnInit {
     // takes the id in the route
     this.route.params.subscribe(params => {
       this.id = params["id"];
-      this.workoutchosen = this.workoutService.getSpecificWorkout(this.id);
+      // this.workoutchosen = this.workoutService.getSpecificWorkout(this.id);
       this.chosenUpdatedImage = this.convertDataUrlToBlob(this.workoutchosen.workout_photo);
 
 
@@ -146,7 +146,7 @@ export class EditworkoutComponent implements OnInit {
       }
 
       this.updateForm.patchValue({
-        _id: this.workoutchosen._id,
+        // _id: this.workoutchosen._id,
         summary: this.workoutchosen.summary,
         calories_burnt: this.workoutchosen.calories_burnt,
         workout_type: this.workoutchosen.workout_type,
@@ -357,7 +357,7 @@ export class EditworkoutComponent implements OnInit {
   onUpdate() {
     this.newWorkout = new Workouts();
     console.log("id", this.updateForm.value._id);
-    this.newWorkout._id = this.updateForm.value._id;
+    // this.newWorkout._id = this.updateForm.value._id;
     this.newWorkout.workout_photo = this.updateImageBase64;
     this.newWorkout.summary = this.updateForm.value.summary;
     this.newWorkout.calories_burnt = this.updateForm.value.calories_burnt;
@@ -367,7 +367,7 @@ export class EditworkoutComponent implements OnInit {
     this.newWorkout.workout = this.updateForm.value.workout;
     this.newWorkout.foodDetails = this.data;
 
-    this.workoutService.updateWorkout(this.newWorkout, this.newWorkout._id);
+    // this.workoutService.updateWorkout(this.newWorkout, this.newWorkout._id);
     this.updateForm.reset();
     // clear the image
     // this.updateimage = [];

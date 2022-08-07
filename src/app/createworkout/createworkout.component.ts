@@ -84,7 +84,6 @@ export class CreateworkoutComponent implements OnInit {
     private foodDetailsService: FoodDetailsService,
     private commentsService: CommentsService, private authService: AuthService, private foodService: FoodService) {
     this.listOfWorkouts = this.workoutService.getWorkouts();
-    this.setid = this.listOfWorkouts.length;
    }
 
   ngOnInit(): void {
@@ -314,11 +313,9 @@ export class CreateworkoutComponent implements OnInit {
   onSubmit() {
 
     if(this.createWorkout.valid && this.createdImage != null){
-      // just to get the length of list of workouts
-    this.listOfWorkouts = this.workoutService.getWorkouts();
-    this.setid = this.listOfWorkouts.length;
+
     this.newWorkout = new Workouts();
-    this.newWorkout._id = this.setid;
+    this.newWorkout.username = this.authService.getUsername();
     this.newWorkout.workout_photo = this.createdImageBase64;
     this.newWorkout.summary = this.createWorkout.value.summary;
     this.newWorkout.calories_burnt = this.createWorkout.value.calories_burnt;
@@ -329,7 +326,7 @@ export class CreateworkoutComponent implements OnInit {
     this.newWorkout.foodDetails = this.dataSource.data;
     this.newWorkout.commentOfUser = [];
     // console.log("created workout", this.newWorkout);
-    this.workoutService.addWorkout(this.newWorkout);
+    this.workoutService.addWorkout(this.newWorkout).subscribe();
     console.log(this.newWorkout);
     this.createWorkout.reset();
     // clear the image

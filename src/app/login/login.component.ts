@@ -33,6 +33,7 @@ export class LoginComponent implements OnInit {
           console.log(this.results);
           this.authService.setSecureToken(this.results[0].uid);
           this.authService.setUserRole(this.results[0].role);
+          this.authService.setUsername(this.results[0].username)
           // bring user to user's page
           this.router.navigateByUrl('/workout');
         } else {

@@ -2,6 +2,7 @@ export class Workouts{
   _id: number;
   // workout_photo: File;
   workout_photo: string;
+  username: string;
   summary : string;
   calories_burnt: number;
   workout_type: string;
