@@ -12,12 +12,12 @@ export class WorkoutService {
 
   constructor(private http: HttpClient) { }
 
-  getWorkouts(): Workouts[] {
-    return listOfWorkouts;
+  getWorkouts() {
+    return this.http.post<any[]>(this.workout +'get', {
+    })
   }
 
   addWorkout(item: Workouts){
-    console.log(item);
     return this.http.put<any[]>(this.workout + "add", {
       'username': item.username,
       'workout_photo': item.workout_photo,

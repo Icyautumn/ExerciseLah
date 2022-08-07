@@ -47,9 +47,13 @@ export class WorkoutComponent implements OnInit {
   constructor(private workoutService: WorkoutService,
     private modalService: NgbModal,
     private fb: FormBuilder, private sanitizer: DomSanitizer, private commentsService: CommentsService) {
-    this.listOfWorkouts = this.workoutService.getWorkouts();
-    this.setid = this.listOfWorkouts.length;
-    this.filteredWorkout = this.listOfWorkouts;
+    this.workoutService.getWorkouts().subscribe(data => {
+      // get workout
+      this.listOfWorkouts = data[0]["result"]
+      console.log(this.listOfWorkouts);
+      this.filteredWorkout = this.listOfWorkouts;
+    });
+
 
   }
 
@@ -129,32 +133,32 @@ export class WorkoutComponent implements OnInit {
     return this.sanitizer.bypassSecurityTrustResourceUrl(base64String);
   }
 
-  onSubmit() {
-    // just to get the length of list of workouts
-    this.listOfWorkouts = this.workoutService.getWorkouts();
-    this.setid = this.listOfWorkouts.length;
+  // onSubmit() {
+  //   // just to get the length of list of workouts
+  //   this.listOfWorkouts = this.workoutService.getWorkouts();
+  //   this.setid = this.listOfWorkouts.length;
 
 
-    this.newWorkout = new Workouts();
-    this.newWorkout._id = this.setid;
-    this.newWorkout.workout_photo = this.createdImageBase64;
-    this.newWorkout.summary = this.createWorkout.value.summary;
-    this.newWorkout.calories_burnt = this.createWorkout.value.calories_burnt;
-    this.newWorkout.workout_type = this.createWorkout.value.workout_type;
-    this.newWorkout.duration = this.createWorkout.value.duration;
-    this.newWorkout.equipment = this.createWorkout.value.equipment;
-    this.newWorkout.workout = this.createWorkout.value.workout;
-    // console.log("created workout", this.newWorkout);
-    this.workoutService.addWorkout(this.newWorkout);
-    this.createWorkout.reset();
-    // clear the image
-    this.createdImageBase64= '';
-    // this.readFile(null, null);
-    this.convertToBase64(null, null);
-    // clear workout details form
-    this.workouts.clear();
+  //   this.newWorkout = new Workouts();
+  //   this.newWorkout._id = this.setid;
+  //   this.newWorkout.workout_photo = this.createdImageBase64;
+  //   this.newWorkout.summary = this.createWorkout.value.summary;
+  //   this.newWorkout.calories_burnt = this.createWorkout.value.calories_burnt;
+  //   this.newWorkout.workout_type = this.createWorkout.value.workout_type;
+  //   this.newWorkout.duration = this.createWorkout.value.duration;
+  //   this.newWorkout.equipment = this.createWorkout.value.equipment;
+  //   this.newWorkout.workout = this.createWorkout.value.workout;
+  //   // console.log("created workout", this.newWorkout);
+  //   this.workoutService.addWorkout(this.newWorkout);
+  //   this.createWorkout.reset();
+  //   // clear the image
+  //   this.createdImageBase64= '';
+  //   // this.readFile(null, null);
+  //   this.convertToBase64(null, null);
+  //   // clear workout details form
+  //   this.workouts.clear();
 
-  }
+  // }
 
   openModalview(contents: any, workout: Workouts) {
     this.modalService.open(contents, { windowClass: 'my-class' });

@@ -432,31 +432,33 @@
 
     <div class="row">
       <div class="col-md-4" *ngFor="let workout of this.filteredWorkout; let i = index">
-        <div class="card mb-4 shadow-sm">
-          <img [src]="changeToImage(workout.workout_photo)" class="bd-placeholder-img card-img-top" width="100%" height="225">
-          <title>Placeholder</title>
-          <div class="card-body">
-            <p class="card-text">
-              <div class="row">
-                <h5 class="card-title col-md-8">
-                  {{ workout.workout_type }}
-                </h5>
-              </div>
 
-              <p class="card-text">Description : {{ workout.summary }}</p>
-              <p>Calorie Burned: {{ workout.calories_burnt }}</p>
-              <p>Equipment: {{ workout.equipment }}</p>
-            <div class="d-flex justify-content-between align-items-center">
-              <div class="btn-group">
-                <!-- <button type="button" class="btn btn-sm btn-outline-secondary" (click)="openModalview(contents, workout)" data-toggle="modal" data-target="#Modal1">View</button> -->
-                <button type="button" class="btn btn-sm btn-outline-secondary" routerLink="/viewWorkout/{{workout._id}}" data-toggle="modal" data-target="#Modal1">View</button>
-                <button type="button" class="btn btn-sm btn-outline-secondary" routerLink="/editWorkout/{{workout._id}}">Edit</button>
-                <button type="button" class="btn btn-sm btn-outline-secondary" (click)="deleteEntireWorkout(i)">Delete</button>
+          <div class="card mb-4 shadow-sm">
+            <img [src]="changeToImage(workout.workout_photo)" class="bd-placeholder-img card-img-top" width="100%" height="225">
+            <title>Placeholder</title>
+            <div class="card-body">
+              <p class="card-text">
+                <div class="row">
+                  <h5 class="card-title col-md-8">
+                    {{ workout.workout_type }}
+                  </h5>
+                </div>
+
+                <p class="card-text">Description : {{ workout.summary }}</p>
+                <p>Calorie Burned: {{ workout.calories_burnt }}</p>
+                <p>Equipment: {{ workout.equipment }}</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <!-- <button type="button" class="btn btn-sm btn-outline-secondary" (click)="openModalview(contents, workout)" data-toggle="modal" data-target="#Modal1">View</button> -->
+                  <button type="button" class="btn btn-sm btn-outline-secondary" routerLink="/viewWorkout/{{workout._id}}" data-toggle="modal" data-target="#Modal1">View</button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary" routerLink="/editWorkout/{{workout._id}}">Edit</button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary" (click)="deleteEntireWorkout(i)">Delete</button>
+                </div>
+                <small class="text-muted">{{ workout.duration }}mins</small>
               </div>
-              <small class="text-muted">{{ workout.duration }}mins</small>
             </div>
           </div>
-        </div>
+
       </div>
     </div>
 

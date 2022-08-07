@@ -82,9 +82,7 @@ export class CreateworkoutComponent implements OnInit {
     private workoutService: WorkoutService,
     private router: Router,
     private foodDetailsService: FoodDetailsService,
-    private commentsService: CommentsService, private authService: AuthService, private foodService: FoodService) {
-    this.listOfWorkouts = this.workoutService.getWorkouts();
-   }
+    private commentsService: CommentsService, private authService: AuthService, private foodService: FoodService) {}
 
   ngOnInit(): void {
     this.createWorkout = this.fb.group({

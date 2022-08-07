@@ -39,7 +39,14 @@ router.route("/authuser").post(function (req, res2) {
           if (err || res == false) {
             res2.send([{ auth: false }]);
           } else {
-            res2.send([{ auth: true, role: result.role, uid: result._id, username: result.username }]);
+            res2.send([
+              {
+                auth: true,
+                role: result.role,
+                uid: result._id,
+                username: result.username,
+              },
+            ]);
           }
         });
       }
@@ -215,7 +222,6 @@ router.route("/food").post(function (req, res) {
 
 // workout
 router.route("/workout/add").put(function (req, res) {
-  console.log("workout works");
   var workout_photo = req.body.workout_photo;
   var summary = req.body.summary;
   var calories_burnt = req.body.calories_burnt;
@@ -242,12 +248,19 @@ router.route("/workout/add").put(function (req, res) {
     },
     (err, result) => {
       if (err) return console.log(err);
-      console.log("workout registered");
+
       res.send(result);
     }
   );
 });
 
-
+router.route("/workout/get").post(function (req, res) {
+  db.collection("workout").find({}).toArray(function (err, result) {
+    if(err) throw err;
+    else {
+      res.send([{ result: result }]);
+    }
+  });
+});
 
 module.exports = router;
