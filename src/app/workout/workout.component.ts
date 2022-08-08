@@ -49,7 +49,7 @@ export class WorkoutComponent implements OnInit {
     private fb: FormBuilder, private sanitizer: DomSanitizer, private commentsService: CommentsService) {
     this.workoutService.getWorkouts().subscribe(data => {
       // get workout
-      this.listOfWorkouts = data[0]["result"]
+      this.listOfWorkouts = data[0]["result"];
       console.log(this.listOfWorkouts);
       this.filteredWorkout = this.listOfWorkouts;
     });
@@ -289,7 +289,7 @@ export class WorkoutComponent implements OnInit {
     this.newWorkout.equipment = this.updateForm.value.equipment;
     this.newWorkout.workout = this.updateForm.value.workout;
 
-    this.workoutService.updateWorkout(this.newWorkout, this.newWorkout._id);
+
     this.updateForm.reset();
     // clear the image
     // this.updateimage = [];

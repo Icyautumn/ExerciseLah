@@ -22,6 +22,8 @@ MongoClient.connect(
   (err, database) => {
     if (err) return console.log(err);
     db = database.db("ExerciseLah");
+
+
   }
 );
 
@@ -284,6 +286,19 @@ router.route("/workout/delete/:id").delete(function (req, res) {
       res.send([{ result: result }]);
     }
   });
+});
+
+router.route("/workout/update/:id").put(function (req, res) {
+  console.log(req.params.id);
+  db.collection("workout").updateOne(
+    { _id: ObjectId(req.params.id) },
+    {
+      $set: req.body,
+    },
+    (err, results) => {
+      res.send(results);
+    }
+  );
 });
 
 module.exports = router;

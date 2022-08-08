@@ -59,3 +59,21 @@ body {
   border: 0;
   margin-bottom: 1rem;
 }
+
+.legend-item.ng-star-inserted {
+  margin-top: 10px;
+}
+
+
+:host ::ng-deep .legend-item  {
+  margin-top: 10px !important;
+}
+
+:host ::ng-deep .total-label  {
+  visibility: hidden !important;
+}
+
+
+:host ::ng-deep .total-value  {
+  visibility: hidden !important;
+}

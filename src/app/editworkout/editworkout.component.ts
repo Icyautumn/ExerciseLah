@@ -7,6 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import { FoodEatenService } from '../food-eaten.service';
 import { FoodDetailsService } from '../food-details.service';
 import { MatTableDataSource } from '@angular/material/table';
+import { FoodService } from '../food.service';
 
 
 @Component({
@@ -16,7 +17,7 @@ import { MatTableDataSource } from '@angular/material/table';
 })
 export class EditworkoutComponent implements OnInit {
 
-  workoutchosen: Workouts;
+  workoutchosen: any;
   updateForm: FormGroup;
   createdImage!: Observable<any>;
   createdImageBase64: string;
@@ -58,9 +59,88 @@ export class EditworkoutComponent implements OnInit {
   multiplierArray: FormGroup;
 
 
-  id: number;
+  id: string;
   constructor(private fb: FormBuilder, private workoutService: WorkoutService, private route: ActivatedRoute,
-    private foodDetailsService: FoodDetailsService) { }
+    private foodDetailsService: FoodDetailsService, private foodService: FoodService) {
+       // takes the id in the route
+    this.route.params.subscribe(params => {
+      this.id = params["id"];
+      this.workoutService.getSpecificWorkout(this.id).subscribe(data => {
+        this.workoutchosen = data[0]['result'];
+        console.log(this.workoutchosen);
+        this.chosenUpdatedImage = this.convertDataUrlToBlob(this.workoutchosen.workout_photo);
+
+
+        // set image in the web app
+        this.updateImage = new Observable((Subscriber: Subscriber<any>) => {
+          this.readFile(this.chosenUpdatedImage, Subscriber, 'edit')
+        })
+
+
+        this.data = this.workoutchosen.foodDetails;
+        this.updateTable();
+
+        // get the values and store into a variable
+        for (var i = 0; i < this.data.length; i++) {
+          this.foodData_calories += Number(this.data[i].calories);
+          this.foodData_carbohydrates_total_g += Number(this.data[i].carbohydrates_total_g);
+          this.foodData_protein_g += Number(this.data[i].protein_g);
+          this.foodData_sodium_mg += Number(this.data[i].sodium_mg);
+          this.foodData_sugar_g += Number(this.data[i].sugar_g);
+        }
+        // set the variable
+        this.FoodData = [
+          {
+            name: 'carbohydrates_total_g',
+            value: this.foodData_carbohydrates_total_g
+          },
+          {
+            name: 'protein_g',
+            value: this.foodData_protein_g
+          },
+          {
+            name: 'sodium_mg',
+            value: this.foodData_sodium_mg
+          },
+          {
+            name: 'sugar_g',
+            value: this.foodData_sugar_g
+          },
+        ];
+        // fill in the details in the formarray
+        for (const workout of this.workoutchosen.workout) {
+          this.addUpdateWorkoutDetailsmodal(workout.workout, workout.set, workout.rep);
+        }
+
+        this.updateForm.patchValue({
+          // _id: this.workoutchosen._id,
+          summary: this.workoutchosen.summary,
+          calories_burnt: this.workoutchosen.calories_burnt,
+          workout_type: this.workoutchosen.workout_type,
+          duration: this.workoutchosen.duration,
+          equipment: this.workoutchosen.equipment,
+          workout: [this.workoutchosen.workout]
+        });
+
+
+        this.multiplierArray = this.fb.group({
+          "calories": '',
+          'carbohydrates_total_g': '',
+          'cholesterol_mg': '',
+          'fat_saturated_g': '',
+          'fat_total_g': '',
+          'fiber_g': '',
+          'name': "",
+          'potassium_mg': '',
+          'protein_g': '',
+          'serving_size_g': '',
+          'sodium_mg': '',
+          'sugar_g': '',
+        });
+
+      });
+    });
+     }
 
   // when user change photo
   onChange = (event: Event, create_or_edit: string) => {
@@ -97,81 +177,9 @@ export class EditworkoutComponent implements OnInit {
       foodDetails: this.fb.array([]),
 
     });
-    // takes the id in the route
-    this.route.params.subscribe(params => {
-      this.id = params["id"];
-      // this.workoutchosen = this.workoutService.getSpecificWorkout(this.id);
-      this.chosenUpdatedImage = this.convertDataUrlToBlob(this.workoutchosen.workout_photo);
 
 
-      // set image in the web app
-      this.updateImage = new Observable((Subscriber: Subscriber<any>) => {
-        this.readFile(this.chosenUpdatedImage, Subscriber, 'edit')
-      })
 
-
-      this.data = this.workoutchosen.foodDetails;
-      this.updateTable();
-
-      // get the values and store into a variable
-      for (var i = 0; i < this.data.length; i++) {
-        this.foodData_calories += this.data[i].calories;
-        this.foodData_carbohydrates_total_g += this.data[i].carbohydrates_total_g;
-        this.foodData_protein_g += this.data[i].protein_g;
-        this.foodData_sodium_mg += this.data[i].sodium_mg;
-        this.foodData_sugar_g += this.data[i].sugar_g;
-      }
-      // set the variable
-      this.FoodData = [
-        {
-          name: 'carbohydrates_total_g',
-          value: this.foodData_carbohydrates_total_g
-        },
-        {
-          name: 'protein_g',
-          value: this.foodData_protein_g
-        },
-        {
-          name: 'sodium_mg',
-          value: this.foodData_sodium_mg
-        },
-        {
-          name: 'sugar_g',
-          value: this.foodData_sugar_g
-        },
-      ];
-      // fill in the details in the formarray
-      for (const workout of this.workoutchosen.workout) {
-        this.addUpdateWorkoutDetailsmodal(workout.workout, workout.set, workout.rep);
-      }
-
-      this.updateForm.patchValue({
-        // _id: this.workoutchosen._id,
-        summary: this.workoutchosen.summary,
-        calories_burnt: this.workoutchosen.calories_burnt,
-        workout_type: this.workoutchosen.workout_type,
-        duration: this.workoutchosen.duration,
-        equipment: this.workoutchosen.equipment,
-        workout: [this.workoutchosen.workout]
-      });
-
-
-      this.multiplierArray = this.fb.group({
-        "calories": '',
-        'carbohydrates_total_g': '',
-        'cholesterol_mg': '',
-        'fat_saturated_g': '',
-        'fat_total_g': '',
-        'fiber_g': '',
-        'name': "",
-        'potassium_mg': '',
-        'protein_g': '',
-        'serving_size_g': '',
-        'sodium_mg': '',
-        'sugar_g': '',
-      });
-
-    });
   }
 
 
@@ -183,66 +191,51 @@ export class EditworkoutComponent implements OnInit {
     var gramsInputted = (<HTMLSelectElement>document.getElementById('Grams')).value;
 
     // get the values from library
-    this.carbohydrates_total_g = this.foodDetailsService.getSpecificFood(foodInputted).carbohydrates_total_g;
-    this.calories = this.foodDetailsService.getSpecificFood(foodInputted).calories;
-    this.fat_total_g = this.foodDetailsService.getSpecificFood(foodInputted).fat_total_g;
-    this.protein_g = this.foodDetailsService.getSpecificFood(foodInputted).protein_g;
-    this.sodium_mg = this.foodDetailsService.getSpecificFood(foodInputted).sodium_mg;
-    this.sugar_g = this.foodDetailsService.getSpecificFood(foodInputted).sugar_g;
-    this.serving_size_g = this.foodDetailsService.getSpecificFood(foodInputted).serving_size_g;
-    this.name = this.foodDetailsService.getSpecificFood(foodInputted).name;
-    this.fiber_g = this.foodDetailsService.getSpecificFood(foodInputted).fiber_g;
-    this.potassium_mg = this.foodDetailsService.getSpecificFood(foodInputted).potassium_mg;
-    // multiply the grams which the user has inputted
-    var multiplier = parseInt(gramsInputted) / this.serving_size_g;
+    this.foodService.getFoodDetails(foodInputted).subscribe(data => {
+      console.log(data['items'].length, "api");
+      for (let i = 0; i < data['items'].length; i++) {
+        // get the values from library
+        this.carbohydrates_total_g = data['items'][i].carbohydrates_total_g;
+        this.calories = data['items'][i].calories;
+        this.fat_total_g = data['items'][i].fat_total_g;
+        this.protein_g = data['items'][i].protein_g;
+        this.sodium_mg = data['items'][i].sodium_mg;
+        this.sugar_g = data['items'][i].sugar_g;
+        this.serving_size_g = data['items'][i].serving_size_g;
+        this.name = data['items'][i].name;
+        this.fiber_g = data['items'][i].fiber_g;
+        this.potassium_mg = data['items'][i].potassium_mg;
+        // multiply the grams which the user has inputted
+        var multiplier = parseInt(gramsInputted) / this.serving_size_g;
 
-    // input the multiplied values into the multiplier array
-    this.multiplierArray.patchValue({
-      "calories": this.calories * multiplier,
-      'carbohydrates_total_g': this.carbohydrates_total_g * multiplier,
-      'cholesterol_mg': this.carbohydrates_total_g * multiplier,
-      'fat_saturated_g': this.fat_total_g * multiplier,
-      'fat_total_g': this.fat_total_g * multiplier,
-      'fiber_g': this.fiber_g * multiplier,
-      'name': this.name,
-      'potassium_mg': this.potassium_mg * multiplier,
-      'protein_g': this.protein_g * multiplier,
-      'serving_size_g': this.serving_size_g * multiplier,
-      'sodium_mg': this.sodium_mg * multiplier,
-      'sugar_g': this.sugar_g * multiplier,
+        // input the multiplied values into the multiplier array
+        this.multiplierArray.patchValue({
+          "calories": (this.calories * multiplier).toFixed(2),
+          'carbohydrates_total_g': (this.carbohydrates_total_g * multiplier).toFixed(2),
+          'cholesterol_mg': (this.carbohydrates_total_g * multiplier).toFixed(2),
+          'fat_saturated_g': (this.fat_total_g * multiplier).toFixed(2),
+          'fat_total_g': (this.fat_total_g * multiplier).toFixed(2),
+          'fiber_g': (this.fiber_g * multiplier).toFixed(2),
+          'name': this.name,
+          'potassium_mg': (this.potassium_mg * multiplier).toFixed(2),
+          'protein_g': (this.protein_g * multiplier).toFixed(2),
+          'serving_size_g': (this.serving_size_g * multiplier).toFixed(2),
+          'sodium_mg': (this.sodium_mg * multiplier).toFixed(2),
+          'sugar_g': (this.sugar_g * multiplier).toFixed(2),
+        });
+
+        // add the values to its existing values
+        this.foodData_calories += (this.calories * multiplier);
+        this.foodData_carbohydrates_total_g += + (this.carbohydrates_total_g * multiplier)
+        this.foodData_protein_g += (this.protein_g * multiplier);
+        this.foodData_sodium_mg += (this.sodium_mg * multiplier);
+        this.foodData_sugar_g += (this.sugar_g * multiplier);
+
+
+        this.data.push(this.multiplierArray.value);
+        this.updateTable();
+      }
     });
-
-    // add the values to its existing values
-
-    this.foodData_calories += (this.calories * multiplier);
-    console.log(this.foodData_calories);
-    this.foodData_carbohydrates_total_g += + (this.carbohydrates_total_g * multiplier)
-    this.foodData_protein_g += (this.protein_g * multiplier);
-    this.foodData_sodium_mg += (this.sodium_mg * multiplier);
-    this.foodData_sugar_g += (this.sugar_g * multiplier);
-
-    // set the values for the food inputted
-    this.FoodData = [
-      {
-        name: 'carbohydrates_total_g',
-        value: this.foodData_carbohydrates_total_g
-      },
-      {
-        name: 'protein_g',
-        value: this.foodData_protein_g
-      },
-      {
-        name: 'sodium_mg',
-        value: this.foodData_sodium_mg
-      },
-      {
-        name: 'sugar_g',
-        value: this.foodData_sugar_g
-      },
-    ];
-    // push value into the tables
-    this.data.push(this.multiplierArray.value);
-    this.updateTable();
     // reset the form
     (<HTMLSelectElement>document.getElementById('Food')).value = '';
     (<HTMLSelectElement>document.getElementById('Grams')).value = '';
@@ -356,7 +349,7 @@ export class EditworkoutComponent implements OnInit {
 
   onUpdate() {
     this.newWorkout = new Workouts();
-    console.log("id", this.updateForm.value._id);
+
     // this.newWorkout._id = this.updateForm.value._id;
     this.newWorkout.workout_photo = this.updateImageBase64;
     this.newWorkout.summary = this.updateForm.value.summary;
@@ -367,7 +360,7 @@ export class EditworkoutComponent implements OnInit {
     this.newWorkout.workout = this.updateForm.value.workout;
     this.newWorkout.foodDetails = this.data;
 
-    // this.workoutService.updateWorkout(this.newWorkout, this.newWorkout._id);
+    this.workoutService.updateWorkout(this.newWorkout, this.id).subscribe();
     this.updateForm.reset();
     // clear the image
     // this.updateimage = [];

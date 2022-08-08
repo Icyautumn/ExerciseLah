@@ -38,9 +38,7 @@ export class ViewworkoutComponent implements OnInit {
 
   displayedColumns: string[] = ['name', 'serving_size_g', 'calories', 'carbohydrates', 'protein', 'sodium', 'sugar_g'];
 
-  constructor(private workoutService: WorkoutService, private route: ActivatedRoute, private sanitizer: DomSanitizer, private photosService: PhotosService) { }
-
-  ngOnInit(): void {
+  constructor(private workoutService: WorkoutService, private route: ActivatedRoute, private sanitizer: DomSanitizer, private photosService: PhotosService) {
     // get id from route
     this.route.params.subscribe(params => {
       this.id = params["id"];
@@ -83,6 +81,10 @@ export class ViewworkoutComponent implements OnInit {
         ]
       });
     });
+
+   }
+
+  ngOnInit(): void {
 
 
 

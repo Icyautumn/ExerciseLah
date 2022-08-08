@@ -43,9 +43,17 @@ export class WorkoutService {
     })
   }
 
-  updateWorkout(item: Workouts, itemid: number): void{
-    const target = listOfWorkouts.find((item) =>item._id === itemid);
-    Object.assign(target, item);
+  updateWorkout(item: Workouts, itemid: string){
+    return this.http.put<any[]>(this.workout + "update/" + itemid, {
+      "workout_photo": item.workout_photo,
+      "summary": item.summary,
+      "calories_burn": item.calories_burnt,
+      "workout_type": item.workout_type,
+      "duration": item.duration,
+      "equipment": item.equipment,
+      "workout": item.workout,
+      "foodDetails": item.foodDetails
+    })
   }
 
 
