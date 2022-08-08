@@ -13,8 +13,8 @@ import { PhotosService } from '../photos.service';
   styleUrls: ['./viewworkout.component.css']
 })
 export class ViewworkoutComponent implements OnInit {
-  workout: Workouts;
-  id: number;
+  workout: any;
+  id: string;
   image: any;
   summary: string;
   calories_burnt: number;
@@ -44,50 +44,55 @@ export class ViewworkoutComponent implements OnInit {
     // get id from route
     this.route.params.subscribe(params => {
       this.id = params["id"];
-      this.workout = this.workoutService.getSpecificWorkout(this.id);
-      this.image = this.photosService.changeToImage(this.workout.workout_photo);
-      this.summary = this.workout.summary;
-      this.calories_burnt = this.workout.calories_burnt;
-      this.workout_type = this.workout.workout_type;
-      this.duration = this.workout.duration;
-      this.workoutDetails = this.workout.workout;
-      this.foodDetails = this.workout.foodDetails;
-      this.dataSource.data = this.foodDetails;
-
-      // get the total of food details
-      for (var i = 0; i < this.foodDetails.length; i++){
-        this.foodData_calories += this.foodDetails[i].calories;
-        this.foodData_carbohydrates_total_g += this.foodDetails[i].carbohydrates_total_g;
-        this.foodData_protein_g += this.foodDetails[i].protein_g;
-        this.foodData_sodium_mg += this.foodDetails[i].sodium_mg;
-        this.foodData_sugar_g += this.foodDetails[i].sugar_g;
-      }
-      this.FoodData = [
-        {
-          name: 'carbohydrates_total_g',
-          value: this.foodData_carbohydrates_total_g
-        },
-        {
-          name: 'protein_g',
-          value: this.foodData_protein_g
-        },
-        {
-          name: 'sodium_mg',
-          value: this.foodData_sodium_mg
-        },
-        {
-          name: 'sugar_g',
-          value: this.foodData_sugar_g
-        },
-      ]
+      this.workoutService.getSpecificWorkout(this.id).subscribe(data => {
+        this.workout = data[0]["result"]
+        console.log(this.workout);
+        this.image = this.photosService.changeToImage(this.workout.workout_photo);
+        this.summary = this.workout.summary;
+        this.calories_burnt = this.workout.calories_burnt;
+        this.workout_type = this.workout.workout_type;
+        this.duration = this.workout.duration;
+        this.workoutDetails = this.workout.workout;
+        this.foodDetails = this.workout.foodDetails;
+        this.dataSource.data = this.foodDetails;
+        // get the total of food details
+        for (var i = 0; i < this.foodDetails.length; i++) {
+          this.foodData_calories += Number(this.foodDetails[i].calories);
+          this.foodData_carbohydrates_total_g += Number(this.foodDetails[i].carbohydrates_total_g);
+          this.foodData_protein_g += Number(this.foodDetails[i].protein_g);
+          this.foodData_sodium_mg += Number(this.foodDetails[i].sodium_mg);
+          this.foodData_sugar_g += Number(this.foodDetails[i].sugar_g);
+        }
+        this.FoodData = [
+          {
+            name: 'carbohydrates_total_g',
+            value: this.foodData_carbohydrates_total_g
+          },
+          {
+            name: 'protein_g',
+            value: this.foodData_protein_g
+          },
+          {
+            name: 'sodium_mg',
+            value: this.foodData_sodium_mg
+          },
+          {
+            name: 'sugar_g',
+            value: this.foodData_sugar_g
+          },
+        ]
+      });
     });
-  }
 
+
+
+  }
   colorScheme = {
     domain: ['#704FC4', '#4B852C', '#B67A3D', '#5B6FC8', '#25706F']
   };
 
-  changeToImage(base64String: any){
+  changeToImage(base64String: any) {
     return this.sanitizer.bypassSecurityTrustResourceUrl(base64String);
   }
+
 }

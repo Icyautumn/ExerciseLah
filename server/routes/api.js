@@ -263,4 +263,27 @@ router.route("/workout/get").post(function (req, res) {
   });
 });
 
+router.route("/workout/specific").post(function (req, res) {
+  var id = req.body.id;
+  db.collection("workout").findOne(
+    { _id: ObjectId(id) },
+    function (err, result) {
+    if (result == null) res.send([{ auth: false }]);
+    else {
+      res.send([{ result: result }]);
+    }
+  });
+});
+
+router.route("/workout/delete/:id").delete(function (req, res) {
+  db.collection("workout").deleteOne(
+    { _id: ObjectId(req.params.id) },
+    function (err, result) {
+    if (result == null) res.send([{ auth: false }]);
+    else {
+      res.send([{ result: result }]);
+    }
+  });
+});
+
 module.exports = router;

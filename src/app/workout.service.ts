@@ -17,6 +17,12 @@ export class WorkoutService {
     })
   }
 
+  getSpecificWorkout(id: string) {
+    return this.http.post<any[]>(this.workout+ "specific", {
+      "id": id
+    })
+  }
+
   addWorkout(item: Workouts){
     return this.http.put<any[]>(this.workout + "add", {
       'username': item.username,
@@ -32,8 +38,9 @@ export class WorkoutService {
     });
   }
 
-  deleteWorkout(id: number){
-    listOfWorkouts.splice(id, 1);
+  deleteWorkout(id: string){
+    return this.http.delete<any[]>(this.workout+ "delete/" + id, {
+    })
   }
 
   updateWorkout(item: Workouts, itemid: number): void{
@@ -41,8 +48,5 @@ export class WorkoutService {
     Object.assign(target, item);
   }
 
-  getSpecificWorkout(id: number){
-    const target = listOfWorkouts.find((item) =>item._id == id);
-    return target;
-  }
+
 }
