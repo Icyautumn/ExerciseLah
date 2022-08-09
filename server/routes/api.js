@@ -7,6 +7,7 @@ const API = "https://jsonplaceholder.typicode.com";
 
 // brcrypt
 const bcrypt = require("bcryptjs");
+const { ObjectID } = require("bson");
 const BCRYPT_SALT_ROUNDS = 12;
 
 /* GET api listing. */
@@ -297,6 +298,45 @@ router.route("/workout/update/:id").put(function (req, res) {
     },
     (err, results) => {
       res.send(results);
+    }
+  );
+});
+
+//comments
+router.route("/comments/get").post(function (req, res2) {
+  var id = req.body.id;
+  let o_id = new ObjectId(id);
+  db.collection("users").findOne({ _id: o_id }, function (err, result) {
+    if (result == null) res2.send([{ auth: false }]);
+    else {
+      res2.send([
+        {
+          auth: true,
+          username: result.username,
+          userImage: result.userImage,
+
+        },
+      ]);
+    }
+  });
+});
+
+router.route("/comments/create").put(function (req, res) {
+
+  var workout_id = req.body.workout_Id;
+  console.log(workout_id);
+  var userId = req.body.user_id;
+  var rating = req.body.rating;
+  var comment = req.body.comment;
+  var objectId = new ObjectID();
+  db.collection("workout").updateOne(
+    { _id: ObjectId(workout_id) },
+    { $push: { commentOfUser: { commentid: objectId, userId: userId, comment: comment, rating: rating, replies: [] } } },
+    function (err, result) {
+      if (result == null) res.send([{ auth: false }]);
+      else {
+        res.send([{ auth: true, commentOfUser: result }]);
+      }
     }
   );
 });
