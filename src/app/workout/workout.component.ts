@@ -274,7 +274,6 @@ export class WorkoutComponent implements OnInit {
 
   deleteUpdateWorkout(workoutIndex: number) {
     this.updateworkouts.removeAt(workoutIndex);
-    this.commentsService.deleteEntireComment(workoutIndex);
   }
   // code not updated yet
   onUpdate() {

@@ -29,19 +29,22 @@ export class CommentsService {
     })
   }
 
-  UpdateComment(item: any, id: number){
-    const target = mocklistOfComments.find((x) => x._idOfWorkout == id);
-    console.log("target",target);
-    // Object.assign(target.comments, item);
-    // console.log(mocklistOfComments);
+  UpdateComment(comment: string, comment_id: string, rating: number, workout_id: string){
+    return this.http.put<any[]>(this.comment + "update", {
+      "comment": comment,
+      "comment_id": comment_id,
+      "rating": rating,
+      "workout_Id": workout_id
+    } )
   }
 
   newCommentTable(item: comments){
     mocklistOfComments.push(item);
   }
 
-  deleteEntireComment(id: number){
-    mocklistOfComments.splice(id, 1);
+  deleteComment(id: string, workout_Id: string){
+    return this.http.delete<any[]>(this.comment+ "delete/" + id + "/" + workout_Id, {
+    })
   }
 
 }

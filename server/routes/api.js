@@ -322,9 +322,7 @@ router.route("/comments/get").post(function (req, res2) {
 });
 
 router.route("/comments/create").put(function (req, res) {
-
   var workout_id = req.body.workout_Id;
-  console.log(workout_id);
   var userId = req.body.user_id;
   var rating = req.body.rating;
   var comment = req.body.comment;
@@ -339,6 +337,38 @@ router.route("/comments/create").put(function (req, res) {
       }
     }
   );
+});
+
+router.route("/comments/update").put(function (req, res) {
+  var workout_id = req.body.workout_Id;
+  console.log(workout_id);
+  var comment_id = req.body.comment_id;
+  var rating = req.body.rating;
+  var comment = req.body.comment;
+  db.collection("workout").updateOne(
+    { _id: ObjectId(workout_id), commentOfUser: { $elemMatch: {commentid: ObjectId(comment_id) } } },
+    { $set: { "commentOfUser.$.comment": comment, "commentOfUser.$.rating": rating } },
+    function (err, result) {
+      if (result == null) res.send([{ auth: false }]);
+      else {
+        res.send([{ auth: true, commentOfUser: result }]);
+      }
+    }
+  );
+});
+
+router.route("/comments/delete/:id/:workout_Id").delete(function (req, res) {
+  console.log("delete");
+  db.collection("workout").updateOne(
+    { _id: ObjectId(req.params.workout_Id) },
+    { $pull: {commentOfUser: {commentid : ObjectId(req.params.id) }}},
+    {multi: true},
+    function (err, result) {
+    if (result == null) res.send([{ auth: false }]);
+    else {
+      res.send([{ result: result }]);
+    }
+  });
 });
 
 module.exports = router;
