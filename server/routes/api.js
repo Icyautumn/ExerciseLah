@@ -72,7 +72,7 @@ router.route("/reguser").post(function (req, res) {
         password: hash,
         username: username,
         role: role,
-        dateJoined: dateJoined,
+        dateJoined: new Date(),
         userImage: userImage,
         fullName: fullName,
         bio: "",
@@ -358,7 +358,6 @@ router.route("/comments/update").put(function (req, res) {
 });
 
 router.route("/comments/delete/:id/:workout_Id").delete(function (req, res) {
-  console.log("delete");
   db.collection("workout").updateOne(
     { _id: ObjectId(req.params.workout_Id) },
     { $pull: {commentOfUser: {commentid : ObjectId(req.params.id) }}},

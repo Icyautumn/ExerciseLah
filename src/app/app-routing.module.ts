@@ -25,7 +25,8 @@ const routes: Routes = [
   { path: 'viewWorkout/comments/:id', component: WorkoutCommentsComponent},
   { path: 'login', component: LoginComponent},
   { path: 'register', component: RegisterComponent},
-  { path: 'admin', component: AdminComponent, canActivate: [AuthGuard], data: {permission: {only: ["admin"]}}},
+  // { path: 'admin', component: AdminComponent, canActivate: [AuthGuard], data: {permission: {only: ["admin"]}}},
+  { path: 'admin', component: AdminComponent},
   { path: 'profile/:uid', component: ProfileComponent, canActivate: [AuthGuard], data: {permission: {only: ["user"]}}},
   { path: '', component: WorkoutComponent, pathMatch: 'full'}
 

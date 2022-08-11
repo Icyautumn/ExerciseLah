@@ -1,4 +1,9 @@
-<body class="img js-fullheight" style="background-image: url(https://a-static.besthdwallpaper.com/hailee-steinfeld-fitness-workout-wallpaper-1920x540-43717_70.jpg)">
+<body
+  class="img js-fullheight"
+  style="
+    background-image: url(https://a-static.besthdwallpaper.com/hailee-steinfeld-fitness-workout-wallpaper-1920x540-43717_70.jpg);
+  "
+>
   <section class="ftco-section">
     <div class="container">
       <div class="row justify-content-center">
@@ -9,20 +14,29 @@
       <div class="row justify-content-center">
         <div class="col-md-6 col-lg-4">
           <div class="login-wrap p-0">
-            <form class="signin-form" [formGroup]="myForm" novalidate (ngSubmit)="onSubmit()">
+            <form
+              class="signin-form"
+              [formGroup]="myForm"
+              novalidate
+              (ngSubmit)="onSubmit()"
+            >
               <div class="form-group">
                 <input
                   type="text"
                   class="form-control"
                   placeholder="full name"
-                  formControlName="fullName" id="fullName"
+                  formControlName="fullName"
+                  id="fullName"
                   required
                 />
+              </div>
+              <div class="form-group">
                 <input
                   type="email"
                   class="form-control"
                   placeholder="Email Address"
-                  formControlName="email" id="email"
+                  formControlName="email"
+                  id="email"
                   required
                 />
               </div>
@@ -32,7 +46,8 @@
                   type="password"
                   class="form-control"
                   placeholder="Password"
-                  formControlName="password" id="password"
+                  formControlName="password"
+                  id="password"
                   required
                 />
               </div>
@@ -50,7 +65,8 @@
                   type="username"
                   class="form-control"
                   placeholder="Username"
-                  formControlName="username" id="username"
+                  formControlName="username"
+                  id="username"
                   required
                 />
               </div>
@@ -59,7 +75,8 @@
                   type="username"
                   class="form-control"
                   placeholder="role"
-                  formControlName="role" id="role"
+                  formControlName="role"
+                  id="role"
                   required
                 />
               </div>
@@ -72,12 +89,11 @@
                 </button>
               </div>
               <div class="form-group text-center">
-                <div class=" text-center">
+                <div class="text-center">
                   <div class="text-middle">
                     <!-- <a style="color: #fff">Forgot Password</a> -->
                   </div>
                 </div>
-
               </div>
             </form>
             <p class="w-100 text-center">&mdash; got account? &mdash;</p>
