@@ -11,6 +11,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import { Observable, observable, Subscriber } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
 import { CommentsService } from '../comments.service';
+import { AuthService } from '../auth.service';
 
 // import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 
@@ -43,13 +44,16 @@ export class WorkoutComponent implements OnInit {
 
   setid: number;
 
+  user: string;
+
 
   constructor(private workoutService: WorkoutService,
     private modalService: NgbModal,
-    private fb: FormBuilder, private sanitizer: DomSanitizer, private commentsService: CommentsService) {
+    private fb: FormBuilder, private sanitizer: DomSanitizer, private commentsService: CommentsService, private authService:AuthService) {
     this.workoutService.getWorkouts().subscribe(data => {
       // get workout
       this.listOfWorkouts = data[0]["result"];
+      this.user = this.authService.getSecureToken();
       console.log(this.listOfWorkouts);
       this.filteredWorkout = this.listOfWorkouts;
     });

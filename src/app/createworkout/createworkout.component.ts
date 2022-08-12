@@ -313,7 +313,7 @@ export class CreateworkoutComponent implements OnInit {
     if(this.createWorkout.valid && this.createdImage != null){
 
     this.newWorkout = new Workouts();
-    this.newWorkout.username = this.authService.getUsername();
+    this.newWorkout.username = this.authService.getSecureToken();
     this.newWorkout.workout_photo = this.createdImageBase64;
     this.newWorkout.summary = this.createWorkout.value.summary;
     this.newWorkout.calories_burnt = this.createWorkout.value.calories_burnt;

@@ -36,11 +36,14 @@ export class WorkoutCommentsComponent implements OnInit {
 
   userId: any;
 
+  user: string;
+
   id: string;
   constructor(private route: ActivatedRoute, private fb: FormBuilder, private sanitizer: DomSanitizer, private modalService: NgbModal,
     private commentsService: CommentsService, private workoutService: WorkoutService, private authService: AuthService) {
     this.route.params.subscribe(params => {
       this.id = params["id"];
+      this.user = this.authService.getSecureToken();
       this.workoutService.getSpecificWorkout(this.id).subscribe(data => {
         this.commentHolder = data[0]["result"].commentOfUser
         this.userId = this.authService.getSecureToken();
@@ -50,8 +53,8 @@ export class WorkoutCommentsComponent implements OnInit {
             comments: ['', Validators.required],
             rating: '',
             username: data[0].username,
-            // hard coded due to not taking from database
             userProfilePicture: data[0].userImage,
+
           });
           this.userProfilePicture = this.changeToImage(data[0].userImage);
         });
@@ -63,7 +66,8 @@ export class WorkoutCommentsComponent implements OnInit {
               rating: this.commentHolder[i].rating,
               username: data[0].username,
               userProfilePicture: data[0].userImage,
-              commentid: this.commentHolder[i].commentid
+              commentid: this.commentHolder[i].commentid,
+              id: this.commentHolder[i].userId
             });
             this.commentData.push(this.comment.value)
           })
@@ -81,7 +85,8 @@ export class WorkoutCommentsComponent implements OnInit {
       rating: '',
       username: '',
       userProfilePicture: '',
-      commentid: ''
+      commentid: '',
+      id: ''
     });
     this.userprofile = this.fb.group({
       comments: '',

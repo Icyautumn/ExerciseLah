@@ -28,6 +28,7 @@ export class NavComponent implements OnInit {
     this.authService.logout();
     this.loggedIn = true;
     this.router.navigateByUrl('/workout');
+    location.reload();
   }
 
 

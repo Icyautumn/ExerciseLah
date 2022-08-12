@@ -340,6 +340,7 @@ router.route("/workout/add").put(function (req, res) {
       workout: listOfWorkout,
       foodDetails: foodDetails,
       commentOfUser: commentOfUser,
+      createdDate: new Date()
     },
     (err, result) => {
       if (err) return console.log(err);
@@ -432,6 +433,7 @@ router.route("/comments/create").put(function (req, res) {
           comment: comment,
           rating: rating,
           replies: [],
+          date: new Date()
         },
       },
     },
