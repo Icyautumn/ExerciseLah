@@ -28,6 +28,33 @@ MongoClient.connect(
   }
 );
 
+//finds username
+router.route("/authuser/username").post(function(req, res) {
+  var username = req.body.username;
+  db.collection("users").findOne(
+    {username: username},
+     function (err, result) {
+      if (result == null) res.send([{ auth: false }]);
+      else {
+        res.send([{ auth: true }]);
+      }
+    }
+  )
+})
+
+router.route("/authuser/email").post(function(req, res) {
+  var email = req.body.email;
+  db.collection("users").findOne(
+    {email: email},
+     function (err, result) {
+      if (result == null) res.send([{ auth: false }]);
+      else {
+        res.send([{ auth: true }]);
+      }
+    }
+  )
+})
+
 // profile
 router.route("/authuser").post(function (req, res2) {
   var email = req.body.email;

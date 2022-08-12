@@ -25,9 +25,26 @@ export class RegisterComponent implements OnInit {
     });
   }
   onSubmit() {
-    this.authService.regUser(this.myForm.value.email,
-      this.myForm.value.password, this.myForm.value.username, this.myForm.value.role, this.myForm.value.fullName).subscribe();
-    this.router.navigateByUrl('/login');
+    this.authService.findUsername(this.myForm.value.username).subscribe(data => {
+      console.log(data[0].auth);
+      if (data[0].auth == false) {
+        this.authService.findUsername(this.myForm.value.username).subscribe(data => {
+          if (data[0].auth == false){
+            this.authService.regUser(this.myForm.value.email,
+              this.myForm.value.password, this.myForm.value.username, this.myForm.value.role, this.myForm.value.fullName).subscribe();
+            this.router.navigateByUrl('/login');
+          }
+           else{
+            alert("this email has already been registered")
+           }
+        });
+
+      }
+      else alert("this username has been taken");
+
+    });
+
+
   }
 
 

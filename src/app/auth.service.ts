@@ -27,6 +27,18 @@ export class AuthService {
       "bio": "",
     });
   }
+
+  findUsername(username: string){
+    return this.http.post<any[]>(this.authuser + "username", {
+      "username": username
+    })
+  }
+
+  findEmail(email: string){
+    return this.http.post<any[]>(this.authuser + "email", {
+      "email": email
+    })
+  }
   authUser(email: string, pw: string) {
     return this.http.post<any[]>(this.authuser, {
       'email': email,
