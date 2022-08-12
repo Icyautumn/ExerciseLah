@@ -41,6 +41,8 @@ import { AdminComponent } from './admin/admin.component';
 import { ProfileComponent } from './profile/profile.component';
 import { PhotosService } from './photos.service';
 import { FoodService } from './food.service';
+import { ForgetpasswordComponent } from './forgetpassword/forgetpassword.component';
+import { ResetpasswordComponent } from './resetpassword/resetpassword.component';
 
 
 @NgModule({
@@ -59,6 +61,8 @@ import { FoodService } from './food.service';
     RegisterComponent,
     AdminComponent,
     ProfileComponent,
+    ForgetpasswordComponent,
+    ResetpasswordComponent,
   ],
   imports: [
     FormsModule,

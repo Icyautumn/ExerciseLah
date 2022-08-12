@@ -158,9 +158,6 @@ export class ProfileComponent implements OnInit {
       alert("password not match")
     }
     else{
-      console.log(this.id);
-      console.log(this.passwordForm.value.currentPassword);
-      console.log(this.passwordForm.value.pwSet.newPassword);
       this.authService.changePassword(this.passwordForm.value.currentPassword, this.passwordForm.value.pwSet.newPassword, this.id).subscribe(
         data=>{
 

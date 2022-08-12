@@ -34,6 +34,12 @@ export class AuthService {
     })
   }
 
+  forgetPassword(email: string){
+    return this.http.post<any[]>(this.authUser+ "email", {
+      email: email
+    })
+  }
+
   findEmail(email: string){
     return this.http.post<any[]>(this.authuser + "email", {
       "email": email
@@ -61,6 +67,13 @@ export class AuthService {
       "currentPassword": currentPassword,
       "newPassword": newPassword,
     });
+  }
+
+  resetPassword(newPassword: string, user_id: string){
+    return this.http.put<any[]>(this.password + "reset", {
+      'newPassword': newPassword,
+      "user_id": user_id
+    })
   }
 
   profileInformation(_id: string){

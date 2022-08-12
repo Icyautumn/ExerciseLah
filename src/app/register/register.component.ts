@@ -28,7 +28,7 @@ export class RegisterComponent implements OnInit {
     this.authService.findUsername(this.myForm.value.username).subscribe(data => {
       console.log(data[0].auth);
       if (data[0].auth == false) {
-        this.authService.findUsername(this.myForm.value.username).subscribe(data => {
+        this.authService.findEmail(this.myForm.value.email).subscribe(data => {
           if (data[0].auth == false){
             this.authService.regUser(this.myForm.value.email,
               this.myForm.value.password, this.myForm.value.username, this.myForm.value.role, this.myForm.value.fullName).subscribe();

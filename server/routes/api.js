@@ -1,9 +1,20 @@
 const express = require("express");
 const router = express.Router();
+const jwt = require("jsonwebtoken");
 // declare axios for making http requests
 const axios = require("axios");
 const { devNull } = require("os");
 const API = "https://jsonplaceholder.typicode.com";
+
+const nodemailer = require("nodemailer");
+
+const transporter = nodemailer.createTransport({
+  service: "hotmail",
+  auth: {
+    user: "victorchua975972917@hotmail.com",
+    pass: "Eugene11",
+  },
+});
 
 // brcrypt
 const bcrypt = require("bcryptjs");
@@ -23,37 +34,65 @@ MongoClient.connect(
   (err, database) => {
     if (err) return console.log(err);
     db = database.db("ExerciseLah");
-
-
   }
 );
 
+// forget password
+const JWT_SECRET = "exerciseLahSecretKey";
+router.route("/authuser/email").post(function (req, res) {
+  var email = req.body.email;
+  db.collection("users").findOne({ email: email }, function (err, result) {
+    if (result == null) res.send([{ auth: false }]);
+    else {
+      const secret = JWT_SECRET + result.password;
+      const payload = {
+        email: result.email,
+        id: result._id,
+      };
+      const token = jwt.sign(payload, secret, { expiresIn: "15m" });
+      const link = `http://localhost:4200/reset-password/${result._id}/${token}`;
+      console.log(link);
+      res.send("Password reset link has been sent to your email");
+      const options = {
+        from: "victorchua975972917@hotmail.com",
+        to: result.email,
+        subject: "reseting password for exerciselah",
+        text: link,
+      };
+      transporter.sendMail(options, function (err, info) {
+        if (err) {
+          console.log(err);
+          return;
+        }
+        console.log("sent" + info.response);
+      });
+    }
+  });
+});
+
 //finds username
-router.route("/authuser/username").post(function(req, res) {
+router.route("/authuser/username").post(function (req, res) {
   var username = req.body.username;
   db.collection("users").findOne(
-    {username: username},
-     function (err, result) {
+    { username: username },
+    function (err, result) {
       if (result == null) res.send([{ auth: false }]);
       else {
         res.send([{ auth: true }]);
       }
     }
-  )
-})
+  );
+});
 
-router.route("/authuser/email").post(function(req, res) {
+router.route("/authuser/email").post(function (req, res) {
   var email = req.body.email;
-  db.collection("users").findOne(
-    {email: email},
-     function (err, result) {
-      if (result == null) res.send([{ auth: false }]);
-      else {
-        res.send([{ auth: true }]);
-      }
+  db.collection("users").findOne({ email: email }, function (err, result) {
+    if (result == null) res.send([{ auth: false }]);
+    else {
+      res.send([{ auth: true }]);
     }
-  )
-})
+  });
+});
 
 // profile
 router.route("/authuser").post(function (req, res2) {
@@ -183,6 +222,32 @@ router.route("/changePassword").put(function (req, res2) {
   );
 });
 
+router.route("/changePassword/reset").put(function (req, res2) {
+  var id = req.body.user_id;
+  var newpassword = req.body.newPassword;
+  db.collection("users").findOne(
+    { _id: ObjectId(id) },
+    { password: 1, role: 1, _id: 0 },
+    function (err, result) {
+      if (result == null) res2.send([{ auth: false }]);
+      else {
+        // change the password and set the bcrypt as the new password
+        bcrypt.hash(newpassword, BCRYPT_SALT_ROUNDS, function (err, hash) {
+          db.collection("users").updateOne(
+            { _id: ObjectId(id) },
+            {
+              $set: { password: hash }, // Update
+            },
+            (err, results) => {
+              res2.send(results);
+            }
+          );
+        });
+      }
+    }
+  );
+});
+
 // food
 router.route("/foodCalories").post(function (req, res) {
   var id = req.body.id;
@@ -285,12 +350,14 @@ router.route("/workout/add").put(function (req, res) {
 });
 
 router.route("/workout/get").post(function (req, res) {
-  db.collection("workout").find({}).toArray(function (err, result) {
-    if(err) throw err;
-    else {
-      res.send([{ result: result }]);
-    }
-  });
+  db.collection("workout")
+    .find({})
+    .toArray(function (err, result) {
+      if (err) throw err;
+      else {
+        res.send([{ result: result }]);
+      }
+    });
 });
 
 router.route("/workout/specific").post(function (req, res) {
@@ -298,22 +365,24 @@ router.route("/workout/specific").post(function (req, res) {
   db.collection("workout").findOne(
     { _id: ObjectId(id) },
     function (err, result) {
-    if (result == null) res.send([{ auth: false }]);
-    else {
-      res.send([{ result: result }]);
+      if (result == null) res.send([{ auth: false }]);
+      else {
+        res.send([{ result: result }]);
+      }
     }
-  });
+  );
 });
 
 router.route("/workout/delete/:id").delete(function (req, res) {
   db.collection("workout").deleteOne(
     { _id: ObjectId(req.params.id) },
     function (err, result) {
-    if (result == null) res.send([{ auth: false }]);
-    else {
-      res.send([{ result: result }]);
+      if (result == null) res.send([{ auth: false }]);
+      else {
+        res.send([{ result: result }]);
+      }
     }
-  });
+  );
 });
 
 router.route("/workout/update/:id").put(function (req, res) {
@@ -341,7 +410,6 @@ router.route("/comments/get").post(function (req, res2) {
           auth: true,
           username: result.username,
           userImage: result.userImage,
-
         },
       ]);
     }
@@ -356,7 +424,17 @@ router.route("/comments/create").put(function (req, res) {
   var objectId = new ObjectID();
   db.collection("workout").updateOne(
     { _id: ObjectId(workout_id) },
-    { $push: { commentOfUser: { commentid: objectId, userId: userId, comment: comment, rating: rating, replies: [] } } },
+    {
+      $push: {
+        commentOfUser: {
+          commentid: objectId,
+          userId: userId,
+          comment: comment,
+          rating: rating,
+          replies: [],
+        },
+      },
+    },
     function (err, result) {
       if (result == null) res.send([{ auth: false }]);
       else {
@@ -373,8 +451,16 @@ router.route("/comments/update").put(function (req, res) {
   var rating = req.body.rating;
   var comment = req.body.comment;
   db.collection("workout").updateOne(
-    { _id: ObjectId(workout_id), commentOfUser: { $elemMatch: {commentid: ObjectId(comment_id) } } },
-    { $set: { "commentOfUser.$.comment": comment, "commentOfUser.$.rating": rating } },
+    {
+      _id: ObjectId(workout_id),
+      commentOfUser: { $elemMatch: { commentid: ObjectId(comment_id) } },
+    },
+    {
+      $set: {
+        "commentOfUser.$.comment": comment,
+        "commentOfUser.$.rating": rating,
+      },
+    },
     function (err, result) {
       if (result == null) res.send([{ auth: false }]);
       else {
@@ -387,14 +473,15 @@ router.route("/comments/update").put(function (req, res) {
 router.route("/comments/delete/:id/:workout_Id").delete(function (req, res) {
   db.collection("workout").updateOne(
     { _id: ObjectId(req.params.workout_Id) },
-    { $pull: {commentOfUser: {commentid : ObjectId(req.params.id) }}},
-    {multi: true},
+    { $pull: { commentOfUser: { commentid: ObjectId(req.params.id) } } },
+    { multi: true },
     function (err, result) {
-    if (result == null) res.send([{ auth: false }]);
-    else {
-      res.send([{ result: result }]);
+      if (result == null) res.send([{ auth: false }]);
+      else {
+        res.send([{ result: result }]);
+      }
     }
-  });
+  );
 });
 
 module.exports = router;

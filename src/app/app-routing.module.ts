@@ -13,6 +13,8 @@ import { WorkoutComponent } from './workout/workout.component';
 import {AuthGuard} from './auth.guard';
 import { AdminComponent } from './admin/admin.component';
 import { ProfileComponent } from './profile/profile.component';
+import { ForgetpasswordComponent } from './forgetpassword/forgetpassword.component';
+import { ResetpasswordComponent } from './resetpassword/resetpassword.component';
 
 const routes: Routes = [
   { path: 'nav', component: NavComponent},
@@ -28,7 +30,11 @@ const routes: Routes = [
   // { path: 'admin', component: AdminComponent, canActivate: [AuthGuard], data: {permission: {only: ["admin"]}}},
   { path: 'admin', component: AdminComponent},
   { path: 'profile/:uid', component: ProfileComponent, canActivate: [AuthGuard], data: {permission: {only: ["user"]}}},
-  { path: '', component: WorkoutComponent, pathMatch: 'full'}
+  { path: '', component: WorkoutComponent, pathMatch: 'full'},
+  { path: 'forgetpassword', component: ForgetpasswordComponent},
+  { path: 'reset-password/:id/:token', component: ResetpasswordComponent}
+
+
 
 ];
 
