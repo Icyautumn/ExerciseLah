@@ -43,6 +43,9 @@ import { PhotosService } from './photos.service';
 import { FoodService } from './food.service';
 import { ForgetpasswordComponent } from './forgetpassword/forgetpassword.component';
 import { ResetpasswordComponent } from './resetpassword/resetpassword.component';
+import {MatRadioModule} from '@angular/material/radio';
+import {MatButtonModule} from '@angular/material/button';
+import { ReportService } from './report.service';
 
 
 @NgModule({
@@ -84,10 +87,12 @@ import { ResetpasswordComponent } from './resetpassword/resetpassword.component'
     MatTableModule,
     HttpClientModule,
     NgxChartsModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    MatRadioModule,
+    MatButtonModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  providers: [WorkoutService, DatePipe, PostsService, AuthService, PhotosService, FoodService],
+  providers: [WorkoutService, DatePipe, PostsService, AuthService, PhotosService, FoodService, ReportService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

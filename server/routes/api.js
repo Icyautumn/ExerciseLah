@@ -486,4 +486,27 @@ router.route("/comments/delete/:id/:workout_Id").delete(function (req, res) {
   );
 });
 
+// report
+router.route("/report/workout").put(function (req, res) {
+  var workout_Id = req.body.workout_Id;
+  var report_type = req.body.report_type;
+  var report = req.body.report;
+  var user_id = req.body.user_id;
+
+  db.collection("report_workout").insertOne(
+    {
+      dateCreated: new Date(),
+      workout_Id: ObjectId(workout_Id),
+      report_type: report_type,
+      report: report,
+      createdBy: ObjectId(user_id)
+    },
+    (err, result) => {
+      if (err) return console.log(err);
+
+      res.send(result);
+    }
+  );
+});
+
 module.exports = router;

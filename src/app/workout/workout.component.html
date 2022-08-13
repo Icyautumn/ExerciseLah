@@ -1,84 +1,73 @@
 <!--create a modal using ng-template directive -->
 <ng-template #contents let-modal>
   <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">view workout</h4>
+    <h4 class="modal-title" id="modal-basic-title">Report Workout</h4>
   </div>
   <div class="container">
-    <br />
-    <form>
-      <div class="row">
-        <div class="col-md-3">
-          <div class="row">
-            <img [src]="image" width="250" height="250">
-          </div>
-          <br />
-          <div class="row border">
-            <div
-              class="col-md-12"
-              *ngFor="let workoutDetail of this.workoutDetails"
-            >
-              <div class="row">
-                <div class="col-md-12 border">
-                  <h6>{{ workoutDetail.workout }}</h6>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-12">
-                  <h6>rep: {{ workoutDetail.rep }}</h6>
-                </div>
-                <div class="col-md-12">
-                  <h6>set: {{ workoutDetail.set }}</h6>
-                </div>
-              </div>
-            </div>
-          </div>
-          <br />
-          <br />
-        </div>
-        <div class="col-md-9">
-          <div class="row">
-            <div class="col-md-4">
-              <h6>summary of workout</h6>
-            </div>
-            <div class="col-md-8">
-              <p id="view_summary">{{ summary }}</p>
-            </div>
-          </div>
-          <br />
-          <div class="row">
-            <div class="col-md-4">
-              <h6>calories burnt</h6>
-            </div>
-            <div class="col-md-8">
-              <p id="view_calories_burnt">{{ calories_burnt }}</p>
-            </div>
-          </div>
-          <br />
-          <div class="row">
-            <div class="col-md-4">
-              <h6>type of workout</h6>
-            </div>
-            <div class="col-md-8">
-              <p id="view_workout_type">{{ workout_type }}</p>
-            </div>
-          </div>
-          <br />
-          <div class="row">
-            <div class="col-md-4">
-              <h6>duration of workout</h6>
-            </div>
-            <div class="col-md-8">
-              <p id="view_duration">{{ duration }}</p>
-            </div>
-          </div>
-          <br />
-        </div>
+    <form [formGroup]="reportworkout">
+      <mat-radio-group
+        formControlName="report_type"
+        aria-label="Select an option"
+        class="example-radio-group"
+      >
+        <mat-radio-button value="Sexual Content 1"
+          >Sexual Content</mat-radio-button
+        >
+        <mat-radio-button value="Violent or repulsive"
+          >Violent or repulsive</mat-radio-button
+        >
+        <mat-radio-button value="Hateful or abusive content"
+          >Hateful or abusive content</mat-radio-button
+        >
+        <mat-radio-button value="Harassment or bullying"
+          >Harassment or bullying</mat-radio-button
+        >
+        <mat-radio-button value="Harmful or dangerous acts"
+          >Harmful or dangerous acts</mat-radio-button
+        >
+        <mat-radio-button value="Child abuse">Child abuse</mat-radio-button>
+        <mat-radio-button value="Spam or misleading"
+          >Spam or misleading</mat-radio-button
+        >
+        <mat-radio-button value="infringes my rights"
+          >infringes my rights</mat-radio-button
+        >
+        <mat-radio-button value="caption issue">caption issue</mat-radio-button>
+      </mat-radio-group>
+      <mat-error
+        >{{
+          reportworkout.get("report_type").errors?.required &&
+          reportworkout.get("report_type").touched
+            ? "This field is required"
+            : ""
+        }}
+      </mat-error>
+      <mat-form-field appearance="fill" style="width: 100%">
+        <mat-label>Autosize textarea</mat-label>
+        <textarea
+          matInput
+          style="width: 100%"
+          formControlName="report"
+        ></textarea>
+        <mat-error
+          >{{
+            reportworkout.get("report").errors?.required &&
+            reportworkout.get("report").touched
+              ? "This field is required"
+              : ""
+          }}
+        </mat-error>
+      </mat-form-field>
+      <div class="text-right">
+        <button class="text-right" mat-raised-button (click)="submitReport()">Submit</button>
       </div>
     </form>
+
+    <br />
   </div>
 </ng-template>
 
-<ng-template #add let-modal let-c="close" let-d="dismiss">
+<!-- <ng-template #add let-modal let-c="close" let-d="dismiss">
   <div class="modal-header">
     <h4 class="modal-title" id="modal-basic-title">Add workout</h4>
     <button
@@ -90,7 +79,7 @@
       close
     </button>
   </div>
-  <!-- <form [formGroup]="createWorkout" (ngSubmit)="(onSubmit)"> -->
+    <form [formGroup]="createWorkout" (ngSubmit)="(onSubmit)">
   <form [formGroup]="createWorkout">
     <div class="container">
       <br />
@@ -264,7 +253,7 @@
       close
     </button>
   </div>
-  <!-- <form [formGroup]="createWorkout" (ngSubmit)="(onSubmit)"> -->
+  <form [formGroup]="createWorkout" (ngSubmit)="(onSubmit)">
   <form [formGroup]="updateForm">
     <div class="container">
       <br />
@@ -404,7 +393,7 @@
         </button>
       </div>
   </form>
-</ng-template>
+</ng-template> -->
 
 <div class="container text-right">
   <button mat-button [matMenuTriggerFor]="menu">Types of workout</button>
@@ -420,47 +409,84 @@
 <section class="jumbotron text-center">
   <div class="container">
     <h1>Singaporeans Rise Up</h1>
-    <p class="lead text-muted">Time to Lose off the weight and share your Workouts</p>
+    <p class="lead text-muted">
+      Time to Lose off the weight and share your Workouts
+    </p>
     <p>
-      <a class="btn btn-primary my-2" routerLink="/createworkout">Add Workout</a>
+      <a class="btn btn-primary my-2" routerLink="/createworkout"
+        >Add Workout</a
+      >
     </p>
   </div>
 </section>
 
 <div class="album py-5 bg-light">
   <div class="container">
-
     <div class="row">
-      <div class="col-md-4" *ngFor="let workout of this.filteredWorkout; let i = index">
+      <div
+        class="col-md-4"
+        *ngFor="let workout of this.filteredWorkout; let i = index"
+      >
+        <div class="card mb-4 shadow-sm">
+          <img
+            [src]="changeToImage(workout.workout_photo)"
+            class="bd-placeholder-img card-img-top"
+            width="100%"
+            height="225"
+          />
+          <title>Placeholder</title>
+          <div class="card-body">
+            <p class="card-text"></p>
+            <div class="row">
+              <h5 class="card-title col-md-8">
+                {{ workout.workout_type }}
+              </h5>
+            </div>
 
-          <div class="card mb-4 shadow-sm">
-            <img [src]="changeToImage(workout.workout_photo)" class="bd-placeholder-img card-img-top" width="100%" height="225">
-            <title>Placeholder</title>
-            <div class="card-body">
-              <p class="card-text">
-                <div class="row">
-                  <h5 class="card-title col-md-8">
-                    {{ workout.workout_type }}
-                  </h5>
-                </div>
+            <p class="card-text">Description : {{ workout.summary }}</p>
+            <p>Calorie Burned: {{ workout.calories_burnt }}</p>
+            <p>Equipment: {{ workout.equipment }}</p>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="btn-group">
+                <!-- <button type="button" class="btn btn-sm btn-outline-secondary" (click)="openModalview(contents, workout)" data-toggle="modal" data-target="#Modal1">View</button> -->
+                <button
+                  type="button"
+                  class="btn btn-sm btn-outline-secondary"
+                  routerLink="/viewWorkout/{{ workout._id }}"
+                  data-toggle="modal"
+                  data-target="#Modal1"
+                >
+                  View
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-sm btn-outline-secondary"
+                  routerLink="/editWorkout/{{ workout._id }}"
+                  *ngIf="workout.createdBy == this.user"
+                >
+                  Edit
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-sm btn-outline-secondary"
+                  (click)="deleteEntireWorkout(workout._id)"
+                  *ngIf="workout.createdBy == this.user"
+                >
+                  Delete
+                </button>
 
-                <p class="card-text">Description : {{ workout.summary }}</p>
-                <p>Calorie Burned: {{ workout.calories_burnt }}</p>
-                <p>Equipment: {{ workout.equipment }}</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <!-- <button type="button" class="btn btn-sm btn-outline-secondary" (click)="openModalview(contents, workout)" data-toggle="modal" data-target="#Modal1">View</button> -->
-                  <button type="button" class="btn btn-sm btn-outline-secondary" routerLink="/viewWorkout/{{workout._id}}" data-toggle="modal" data-target="#Modal1">View</button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary" routerLink="/editWorkout/{{workout._id}}" *ngIf="workout.createdBy == this.user">Edit</button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary" (click)="deleteEntireWorkout(workout._id)" *ngIf="workout.createdBy == this.user">Delete</button>
-                </div>
-                <small class="text-muted">{{ workout.duration }}mins</small>
+                <i
+                  class="material-icons btn"
+                  style="font-size: 18px"
+                  (click)="openModalview(contents, workout._id)"
+                  >flag</i
+                >
               </div>
+              <small class="text-muted">{{ workout.duration }}mins</small>
             </div>
           </div>
-
+        </div>
       </div>
     </div>
-
   </div>
 </div>

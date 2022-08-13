@@ -12,6 +12,9 @@ import { Observable, observable, Subscriber } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
 import { CommentsService } from '../comments.service';
 import { AuthService } from '../auth.service';
+import {MatRadioModule} from '@angular/material/radio';
+import { ThisReceiver } from '@angular/compiler';
+import { ReportService } from '../report.service';
 
 // import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 
@@ -41,16 +44,26 @@ export class WorkoutComponent implements OnInit {
   workoutDetails: listofworkout[];
   updateForm: FormGroup;
   createWorkout: FormGroup;
+  reportworkout: FormGroup;
 
   setid: number;
 
   user: string;
 
+  reportworkout_id: string;
+
 
   constructor(private workoutService: WorkoutService,
     private modalService: NgbModal,
-    private fb: FormBuilder, private sanitizer: DomSanitizer, private commentsService: CommentsService, private authService:AuthService) {
+    private fb: FormBuilder, private sanitizer: DomSanitizer, private commentsService: CommentsService, private authService:AuthService, private reportService: ReportService) {
+
     this.workoutService.getWorkouts().subscribe(data => {
+      this.reportworkout = this.fb.group({
+        workout_id: '',
+        report_type: ['', Validators.required],
+        report : ['', Validators.required],
+        user_id: ['', Validators.required]
+      })
       // get workout
       this.listOfWorkouts = data[0]["result"];
       this.user = this.authService.getSecureToken();
@@ -86,6 +99,13 @@ export class WorkoutComponent implements OnInit {
       equipment: '',
       workout: this.fb.array([])
     });
+
+    this.reportworkout = this.fb.group({
+      workout_id: '',
+      report_type: ['', Validators.required],
+      report : ['', Validators.required],
+      user_id: ['', Validators.required]
+    })
   }
 
   // user selects an image
@@ -164,14 +184,9 @@ export class WorkoutComponent implements OnInit {
 
   // }
 
-  openModalview(contents: any, workout: Workouts) {
-    this.modalService.open(contents, { windowClass: 'my-class' });
-    this.image = this.changeToImage(workout.workout_photo);
-    this.summary = workout.summary;
-    this.calories_burnt = workout.calories_burnt;
-    this.workout_type = workout.workout_type;
-    this.duration = workout.duration;
-    this.workoutDetails = workout.workout;
+  openModalview(contents: any, workout_id: string) {
+    this.reportworkout_id = workout_id;
+    this.modalService.open(contents);
     // console.log();
   }
 
@@ -313,6 +328,19 @@ export class WorkoutComponent implements OnInit {
 
   noFilter(){
     this.filteredWorkout = this.listOfWorkouts;
+  }
+
+
+  submitReport(){
+    this.reportworkout.patchValue({
+      workout_id : this.reportworkout_id,
+      report_type: this.reportworkout.value.report_type,
+      report: this.reportworkout.value.report,
+      user_id: this.authService.getSecureToken()
+    });
+    this.reportService.reportWorkout(this.reportworkout).subscribe();
+    this.modalService.dismissAll();
+    this.reportworkout.reset();
   }
 
 }
