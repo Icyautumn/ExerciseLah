@@ -540,4 +540,16 @@ router.route("/report/sendemail").post(function (req, res) {
   
 });
 
+router.route("/report/delete/:id").delete(function (req, res) {
+  db.collection("report_workout").deleteOne(
+    { _id: ObjectId(req.params.id) },
+    function (err, result) {
+      if (result == null) res.send([{ auth: false }]);
+      else {
+        res.send([{ result: result }]);
+      }
+    }
+  );
+});
+
 module.exports = router;

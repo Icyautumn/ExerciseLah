@@ -33,4 +33,9 @@ export class ReportService {
     })
 
   }
+
+  deleteReport(reportId: string){
+    return this.http.delete<any[]>(this.reporturl+ "delete/" + reportId, {
+    })
+  }
 }

@@ -46,6 +46,7 @@ export class AdminReportComponent implements OnInit {
               report_type: this.workout_report[i].report_type,
               createdBy: this.workout_report[i].createdBy,
               workoutCreatedBy: data[0].result.createdBy,
+              reportid: data[0].result._id
             });
             this.reported_workoutholder.push(this.workoutholder.value);
             console.log(this.reported_workoutholder);
@@ -57,6 +58,7 @@ export class AdminReportComponent implements OnInit {
   
   ngOnInit(): void {
     this.workoutholder = this.fb.group({
+      reportid: '',
       _id: '',
       workout_type: '',
       equipment: '',
@@ -117,6 +119,12 @@ export class AdminReportComponent implements OnInit {
     this.reportService.sendEmail(this.emailuser.value).subscribe();
     this.modalService.dismissAll();
     this.emailuser.reset();
+   }
+
+   deleteReport(reportId: string){
+    this.reportService.deleteReport(reportId).subscribe();
+    alert("report solved and removed");
+    location.reload();
    }
 
 

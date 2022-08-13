@@ -48,6 +48,7 @@ import {MatButtonModule} from '@angular/material/button';
 import { ReportService } from './report.service';
 import {MatTabsModule} from '@angular/material/tabs';
 import { AdminReportComponent } from './admin-report/admin-report.component';
+import { RegisteradminComponent } from './registeradmin/registeradmin.component';
 
 
 @NgModule({
@@ -69,6 +70,7 @@ import { AdminReportComponent } from './admin-report/admin-report.component';
     ForgetpasswordComponent,
     ResetpasswordComponent,
     AdminReportComponent,
+    RegisteradminComponent,
   ],
   imports: [
     FormsModule,

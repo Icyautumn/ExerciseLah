@@ -69,9 +69,22 @@
                 <button
                   type="button"
                   class="btn btn-sm btn-outline-secondary"
-                  (click)="deleteEntireWorkout(workout._id)"
+                  (click)="emailworkoutcreator(workout.createdBy)"
                 >
                   email user who reported
+                </button>
+              </div>
+            </div>
+            <br>
+            <div class="d-flex justify-content-center align-items-center">
+              <div class="btn-group">
+                <button
+                  style="width: 100%"
+                  type="button"
+                  class="btn btn-sm btn-outline-secondary"
+                  (click)="deleteReport(reportid)"
+                >
+                  Delete Report
                 </button>
               </div>
             </div>
