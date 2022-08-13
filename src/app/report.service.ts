@@ -11,7 +11,10 @@ export class ReportService {
 
   constructor(private http: HttpClient) {}
 
-
+  getreportworkout(){
+    return this.http.post<any[]>(this.reporturl + "get", {
+    })
+  }
 
   reportWorkout(report: any){
     return this.http.put<any[]>(this.reporturl + "workout", {
@@ -20,5 +23,14 @@ export class ReportService {
       "report": report.value.report,
       "user_id": report.value.user_id
     })
+  }
+  
+  sendEmail(email: any){
+    return this.http.post<any[]>(this.reporturl + 'sendemail', {
+      "to": email.to,
+      "subject": email.subject,
+      "report": email.report
+    })
+
   }
 }

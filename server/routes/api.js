@@ -488,7 +488,7 @@ router.route("/comments/delete/:id/:workout_Id").delete(function (req, res) {
 
 // report
 router.route("/report/workout").put(function (req, res) {
-  var workout_Id = req.body.workout_Id;
+  var workout_Id = req.body.workout_id;
   var report_type = req.body.report_type;
   var report = req.body.report;
   var user_id = req.body.user_id;
@@ -496,10 +496,10 @@ router.route("/report/workout").put(function (req, res) {
   db.collection("report_workout").insertOne(
     {
       dateCreated: new Date(),
-      workout_Id: ObjectId(workout_Id),
+      workout_Id: workout_Id,
       report_type: report_type,
       report: report,
-      createdBy: ObjectId(user_id)
+      createdBy: user_id
     },
     (err, result) => {
       if (err) return console.log(err);
@@ -507,6 +507,37 @@ router.route("/report/workout").put(function (req, res) {
       res.send(result);
     }
   );
+});
+
+router.route("/report/get").post(function (req, res) {
+  db.collection("report_workout")
+    .find({})
+    .toArray(function (err, result) {
+      if (err) throw err;
+      else {
+        res.send([{ result: result }]);
+      }
+    });
+});
+
+router.route("/report/sendemail").post(function (req, res) {
+  var email = req.body.to;
+  var subject = req.body.subject;
+  var report = req.body.report;
+      const options = {
+        from: "victorchua975972917@hotmail.com",
+        to: email,
+        subject: subject,
+        text: report,
+      };
+      transporter.sendMail(options, function (err, info) {
+        if (err) {
+          console.log(err);
+          return;
+        }
+        console.log("sent" + info.response);
+      });
+  
 });
 
 module.exports = router;

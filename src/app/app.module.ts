@@ -46,6 +46,8 @@ import { ResetpasswordComponent } from './resetpassword/resetpassword.component'
 import {MatRadioModule} from '@angular/material/radio';
 import {MatButtonModule} from '@angular/material/button';
 import { ReportService } from './report.service';
+import {MatTabsModule} from '@angular/material/tabs';
+import { AdminReportComponent } from './admin-report/admin-report.component';
 
 
 @NgModule({
@@ -66,6 +68,7 @@ import { ReportService } from './report.service';
     ProfileComponent,
     ForgetpasswordComponent,
     ResetpasswordComponent,
+    AdminReportComponent,
   ],
   imports: [
     FormsModule,
@@ -89,7 +92,8 @@ import { ReportService } from './report.service';
     NgxChartsModule,
     MatButtonToggleModule,
     MatRadioModule,
-    MatButtonModule
+    MatButtonModule,
+    MatTabsModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [WorkoutService, DatePipe, PostsService, AuthService, PhotosService, FoodService, ReportService],

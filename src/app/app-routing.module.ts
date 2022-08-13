@@ -15,6 +15,7 @@ import { AdminComponent } from './admin/admin.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ForgetpasswordComponent } from './forgetpassword/forgetpassword.component';
 import { ResetpasswordComponent } from './resetpassword/resetpassword.component';
+import { AdminReportComponent } from './admin-report/admin-report.component';
 
 const routes: Routes = [
   { path: 'nav', component: NavComponent},
@@ -32,7 +33,8 @@ const routes: Routes = [
   { path: 'profile/:uid', component: ProfileComponent, canActivate: [AuthGuard], data: {permission: {only: ["user"]}}},
   { path: '', component: WorkoutComponent, pathMatch: 'full'},
   { path: 'forgetpassword', component: ForgetpasswordComponent},
-  { path: 'reset-password/:id/:token', component: ResetpasswordComponent}
+  { path: 'reset-password/:id/:token', component: ResetpasswordComponent},
+  { path: 'admin-report', component: AdminReportComponent}
 
 
 

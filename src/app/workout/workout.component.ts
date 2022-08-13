@@ -52,6 +52,8 @@ export class WorkoutComponent implements OnInit {
 
   reportworkout_id: string;
 
+  reportworkout_workout_creator: string;
+
 
   constructor(private workoutService: WorkoutService,
     private modalService: NgbModal,
@@ -87,7 +89,8 @@ export class WorkoutComponent implements OnInit {
       workout_type: '',
       duration: '',
       equipment: '',
-      workout: this.fb.array([])
+      workout: this.fb.array([]),
+      createdBy: ''
     });
     this.createWorkout = this.fb.group({
       _id: '',
@@ -104,7 +107,9 @@ export class WorkoutComponent implements OnInit {
       workout_id: '',
       report_type: ['', Validators.required],
       report : ['', Validators.required],
-      user_id: ['', Validators.required]
+      user_id: ['', Validators.required],
+      user_email: ['', Validators.required],
+      workout_creator: ['', Validators.required]
     })
   }
 
@@ -184,8 +189,9 @@ export class WorkoutComponent implements OnInit {
 
   // }
 
-  openModalview(contents: any, workout_id: string) {
+  openModalview(contents: any, workout_id: string, workout_creator: string) {
     this.reportworkout_id = workout_id;
+    this.reportworkout_workout_creator = workout_creator
     this.modalService.open(contents);
     // console.log();
   }
@@ -336,7 +342,9 @@ export class WorkoutComponent implements OnInit {
       workout_id : this.reportworkout_id,
       report_type: this.reportworkout.value.report_type,
       report: this.reportworkout.value.report,
-      user_id: this.authService.getSecureToken()
+      user_id: this.authService.getSecureToken(),
+      // user_email
+
     });
     this.reportService.reportWorkout(this.reportworkout).subscribe();
     this.modalService.dismissAll();
