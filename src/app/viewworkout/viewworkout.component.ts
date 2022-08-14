@@ -44,7 +44,7 @@ export class ViewworkoutComponent implements OnInit {
       this.id = params["id"];
       this.workoutService.getSpecificWorkout(this.id).subscribe(data => {
         this.workout = data[0]["result"]
-        console.log(this.workout);
+        // console.log(this.workout);
         this.image = this.photosService.changeToImage(this.workout.workout_photo);
         this.summary = this.workout.summary;
         this.calories_burnt = this.workout.calories_burnt;

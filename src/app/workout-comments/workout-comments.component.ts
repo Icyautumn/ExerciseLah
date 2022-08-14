@@ -39,6 +39,8 @@ export class WorkoutCommentsComponent implements OnInit {
   user: string;
 
   id: string;
+
+  userrole: string;
   constructor(private route: ActivatedRoute, private fb: FormBuilder, private sanitizer: DomSanitizer, private modalService: NgbModal,
     private commentsService: CommentsService, private workoutService: WorkoutService, private authService: AuthService) {
     this.route.params.subscribe(params => {
@@ -46,6 +48,8 @@ export class WorkoutCommentsComponent implements OnInit {
       this.user = this.authService.getSecureToken();
       this.workoutService.getSpecificWorkout(this.id).subscribe(data => {
         this.commentHolder = data[0]["result"].commentOfUser
+        console.log(this.commentHolder);
+        this.userrole = this.authService.getUserRole();
         this.userId = this.authService.getSecureToken();
         console.log(this.commentHolder);
         this.commentsService.getSpecificComments(this.userId).subscribe(data => {
@@ -54,7 +58,6 @@ export class WorkoutCommentsComponent implements OnInit {
             rating: '',
             username: data[0].username,
             userProfilePicture: data[0].userImage,
-
           });
           this.userProfilePicture = this.changeToImage(data[0].userImage);
         });

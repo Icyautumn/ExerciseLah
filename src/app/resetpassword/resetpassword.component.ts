@@ -15,7 +15,7 @@ export class ResetpasswordComponent implements OnInit {
   constructor(private route: ActivatedRoute, private fb: FormBuilder, private authService:AuthService, private router: Router) {
     this.route.params.subscribe(params => {
       this.id = params["id"];
-      console.log(this.id);
+      // console.log(this.id);
     })
    }
 

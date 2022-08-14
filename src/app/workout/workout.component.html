@@ -59,7 +59,9 @@
         </mat-error>
       </mat-form-field>
       <div class="text-right">
-        <button class="text-right" mat-raised-button (click)="submitReport()">Submit</button>
+        <button class="text-right" mat-raised-button (click)="submitReport()">
+          Submit
+        </button>
       </div>
     </form>
 
@@ -441,6 +443,28 @@
               <h5 class="card-title col-md-8">
                 {{ workout.workout_type }}
               </h5>
+              <div *ngFor="let fav of this.favouriteList; let i = index"
+               
+              >
+                <ng-template ngIf="fav[i] == workout._id">
+                  <mat-icon
+                    type="button"
+                    (click)="favouriteworkout(i)"
+                    style="padding-left: 75px"
+                    >favorite</mat-icon
+                  >
+                </ng-template>
+
+                <ng-template ngIf="fav[i] != workout._id">
+                  <mat-icon
+                    type="button"
+                    (click)="favouriteworkout(i)"
+                    style="padding-left: 75px"
+                    >delete</mat-icon
+                  >
+                  hello
+                </ng-template>
+              </div>
             </div>
 
             <p class="card-text">Description : {{ workout.summary }}</p>
@@ -462,7 +486,7 @@
                   type="button"
                   class="btn btn-sm btn-outline-secondary"
                   routerLink="/editWorkout/{{ workout._id }}"
-                  *ngIf="workout.createdBy == this.user"
+                  *ngIf="workout.createdBy == this.user || this.userrole == 'admin'"
                 >
                   Edit
                 </button>
@@ -470,7 +494,7 @@
                   type="button"
                   class="btn btn-sm btn-outline-secondary"
                   (click)="deleteEntireWorkout(workout._id)"
-                  *ngIf="workout.createdBy == this.user"
+                  *ngIf="workout.createdBy == this.user || this.userrole == 'admin'"
                 >
                   Delete
                 </button>
@@ -478,7 +502,9 @@
                 <i
                   class="material-icons btn"
                   style="font-size: 18px"
-                  (click)="openModalview(contents, workout._id, workout.createdBy)"
+                  (click)="
+                    openModalview(contents, workout._id, workout.createdBy)
+                  "
                   >flag</i
                 >
               </div>

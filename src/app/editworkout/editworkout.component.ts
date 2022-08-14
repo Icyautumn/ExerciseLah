@@ -67,7 +67,7 @@ export class EditworkoutComponent implements OnInit {
       this.id = params["id"];
       this.workoutService.getSpecificWorkout(this.id).subscribe(data => {
         this.workoutchosen = data[0]['result'];
-        console.log(this.workoutchosen);
+        // console.log(this.workoutchosen);
         this.chosenUpdatedImage = this.convertDataUrlToBlob(this.workoutchosen.workout_photo);
 
 
@@ -192,7 +192,7 @@ export class EditworkoutComponent implements OnInit {
 
     // get the values from library
     this.foodService.getFoodDetails(foodInputted).subscribe(data => {
-      console.log(data['items'].length, "api");
+      // console.log(data['items'].length, "api");
       for (let i = 0; i < data['items'].length; i++) {
         // get the values from library
         this.carbohydrates_total_g = data['items'][i].carbohydrates_total_g;

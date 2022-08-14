@@ -52,7 +52,13 @@ export class WorkoutComponent implements OnInit {
 
   reportworkout_id: string;
 
+  favouriteList: any[] = [];
+
   reportworkout_workout_creator: string;
+
+  userSecuretoken: string;
+
+  userrole: string;
 
 
   constructor(private workoutService: WorkoutService,
@@ -69,9 +75,17 @@ export class WorkoutComponent implements OnInit {
       // get workout
       this.listOfWorkouts = data[0]["result"];
       this.user = this.authService.getSecureToken();
-      console.log(this.listOfWorkouts);
+      this.userrole = this.authService.getUserRole();
+      // console.log(this.listOfWorkouts);
       this.filteredWorkout = this.listOfWorkouts;
     });
+    this.userSecuretoken = this.authService.getSecureToken();
+    if(this.userSecuretoken != null){
+      this.authService.profileInformation(this.userSecuretoken).subscribe(data=>{
+        // console.log(data[0].favourite); 
+        this.favouriteList = data[0].favourite;
+      })
+    }
 
 
   }
@@ -243,16 +257,16 @@ export class WorkoutComponent implements OnInit {
 }
 
   openModalupdate(contents: any, workoutchosen: Workouts) {
-    console.log("Workout details", workoutchosen.workout);
+    // console.log("Workout details", workoutchosen.workout);
 
     var chosenUpdatedImage = this.convertDataUrlToBlob(workoutchosen.workout_photo)
 
     this.convertToBase64(chosenUpdatedImage, "edit");
     // fill in the details in the formarray
     for(const workout of workoutchosen.workout){
-      console.log("workout workout",workout.workout);
-      console.log("workout.set",workout.set);
-      console.log("workout.rep",workout.rep);
+      // console.log("workout workout",workout.workout);
+      // console.log("workout.set",workout.set);
+      // console.log("workout.rep",workout.rep);
       this.addUpdateWorkoutDetailsmodal(workout.workout, workout.set, workout.rep);
     }
     this.modalService.open(contents, { windowClass: 'my-class' });
@@ -269,7 +283,7 @@ export class WorkoutComponent implements OnInit {
       equipment: workoutchosen.equipment,
       workout: [workoutchosen.workout]
     });
-    console.log(this.updateForm);
+    // console.log(this.updateForm);
   }
 
 
@@ -349,6 +363,10 @@ export class WorkoutComponent implements OnInit {
     this.reportService.reportWorkout(this.reportworkout).subscribe();
     this.modalService.dismissAll();
     this.reportworkout.reset();
+  }
+
+  favouriteworkout(workout_id: string){
+    // add to favourite in 
   }
 
 }

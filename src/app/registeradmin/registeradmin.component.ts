@@ -25,7 +25,7 @@ export class RegisteradminComponent implements OnInit {
   }
   onSubmit() {
     this.authService.findUsername(this.myForm.value.username).subscribe(data => {
-      console.log(data[0].auth);
+      // console.log(data[0].auth);
       if (data[0].auth == false) {
         this.authService.findEmail(this.myForm.value.email).subscribe(data => {
           if (data[0].auth == false){

@@ -33,6 +33,7 @@ export class AdminReportComponent implements OnInit {
           // console.log(this.workout_report[i].createdBy);
           // console.log(data[0].result.createdBy);
           // await this.findcreatorEmail(data[0].result.createdBy)
+          // console.log(this.workout_report);
             this.workoutholder.patchValue({
               _id: this.workout_report[i].workout_Id,
               workout_type: data[0].result.workout_type,
@@ -46,10 +47,11 @@ export class AdminReportComponent implements OnInit {
               report_type: this.workout_report[i].report_type,
               createdBy: this.workout_report[i].createdBy,
               workoutCreatedBy: data[0].result.createdBy,
-              reportid: data[0].result._id
+              reportid: this.workout_report[i]._id
             });
+
             this.reported_workoutholder.push(this.workoutholder.value);
-            console.log(this.reported_workoutholder);
+            // console.log(this.reported_workoutholder);
         })
       }
     });
@@ -71,12 +73,13 @@ export class AdminReportComponent implements OnInit {
       report_type: '',
       createdBy: '',
       workoutCreatedBy: '',
+      workoutid: ''
     });
 
     this.emailuser = this.fb.group({
       to: '',
       subject: '',
-      email: ''
+      report: ''
     })
   }
 
@@ -89,7 +92,7 @@ export class AdminReportComponent implements OnInit {
     await this.workoutholder.patchValue({
       createdBy: data[0].email
     })
-    console.log(this.workoutholder.value);
+    // console.log(this.workoutholder.value);
     })
   }
 
@@ -98,7 +101,7 @@ export class AdminReportComponent implements OnInit {
      await this.workoutholder.patchValue({
       workoutCreatedBy: data[0].email
      })
-     console.log(this.workoutholder.value);
+    //  console.log(this.workoutholder.value);
      return(data[0].email);
      })
    }
@@ -106,7 +109,7 @@ export class AdminReportComponent implements OnInit {
 
    emailworkoutcreator(workoutcreatorId: string){
     this.authService.profileInformation(workoutcreatorId).subscribe(data =>{
-      console.log(data[0].email);
+      // console.log(data[0].email);
       this.emailuser.patchValue({
         'to': data[0].email
       });
@@ -116,12 +119,14 @@ export class AdminReportComponent implements OnInit {
 
 
    sendEmail(){
+    // console.log(this.emailuser.value);
     this.reportService.sendEmail(this.emailuser.value).subscribe();
     this.modalService.dismissAll();
     this.emailuser.reset();
    }
 
    deleteReport(reportId: string){
+    // console.log(reportId);
     this.reportService.deleteReport(reportId).subscribe();
     alert("report solved and removed");
     location.reload();

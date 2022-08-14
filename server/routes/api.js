@@ -39,7 +39,7 @@ MongoClient.connect(
 
 // forget password
 const JWT_SECRET = "exerciseLahSecretKey";
-router.route("/authuser/email").post(function (req, res) {
+router.route("/authuser/forgottenpassword").post(function (req, res) {
   var email = req.body.email;
   db.collection("users").findOne({ email: email }, function (err, result) {
     if (result == null) res.send([{ auth: false }]);
@@ -51,7 +51,8 @@ router.route("/authuser/email").post(function (req, res) {
       };
       const token = jwt.sign(payload, secret, { expiresIn: "15m" });
       const link = `http://localhost:4200/reset-password/${result._id}/${token}`;
-      console.log(link);
+      // const link = `http://localhost:4200/reset-password/${result._id}/${token}`;
+      // console.log(link);
       res.send("Password reset link has been sent to your email");
       const options = {
         from: "victorchua975972917@hotmail.com",
@@ -143,6 +144,7 @@ router.route("/reguser").post(function (req, res) {
         fullName: fullName,
         bio: "",
         foodCalories: [],
+        favourite: []
       },
       (err, result) => {
         if (err) return console.log(err);
@@ -169,6 +171,7 @@ router.route("/profile").post(function (req, res2) {
           dateJoined: result.dateJoined,
           fullName: result.fullName,
           bio: result.bio,
+          favourite: result.favourite
         },
       ]);
     }
@@ -199,10 +202,10 @@ router.route("/changePassword").put(function (req, res2) {
       else {
         bcrypt.compare(password, result.password, function (err, res) {
           if (err || res == false) {
-            console.log("did not work");
+            // console.log("did not work");
             res2.send([{ auth: false }]);
           } else {
-            console.log("worked");
+            // console.log("worked");
             // change the password and set the bcrypt as the new password
             bcrypt.hash(newpassword, BCRYPT_SALT_ROUNDS, function (err, hash) {
               db.collection("users").updateOne(
@@ -387,7 +390,7 @@ router.route("/workout/delete/:id").delete(function (req, res) {
 });
 
 router.route("/workout/update/:id").put(function (req, res) {
-  console.log(req.params.id);
+  // console.log(req.params.id);
   db.collection("workout").updateOne(
     { _id: ObjectId(req.params.id) },
     {
@@ -448,7 +451,7 @@ router.route("/comments/create").put(function (req, res) {
 
 router.route("/comments/update").put(function (req, res) {
   var workout_id = req.body.workout_Id;
-  console.log(workout_id);
+  // console.log(workout_id);
   var comment_id = req.body.comment_id;
   var rating = req.body.rating;
   var comment = req.body.comment;
@@ -524,6 +527,7 @@ router.route("/report/sendemail").post(function (req, res) {
   var email = req.body.to;
   var subject = req.body.subject;
   var report = req.body.report;
+  // console.log(this.report);
       const options = {
         from: "victorchua975972917@hotmail.com",
         to: email,

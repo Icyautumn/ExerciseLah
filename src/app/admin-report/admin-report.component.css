@@ -136,3 +136,43 @@ body{margin-top:20px;}
 mat-form-field {
   width: 100%;
 }
+
+.sidebar {
+  position: fixed;
+  width: 260px;
+  height: calc(100% - 60px);
+  background: #808080;
+  overflow-x: hidden;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  z-index: 2;
+}
+
+
+.sidebar ul li {
+  width: 260px;
+  list-style: none;
+  margin-left: -40px;
+}
+
+.sidebar ul li:hover {
+  background: #fff;
+}
+
+.sidebar ul li:hover a {
+  color: #299B63;
+}
+
+.sidebar ul li a {
+  width: 100%;
+  text-decoration: none;
+  color: #fff;
+  height: 60px;
+  display: flex;
+  align-items: center;
+}
+
+.sidebar ul li a i {
+  min-width: 60px;
+  font-size: 24px;
+  text-align: center;
+}

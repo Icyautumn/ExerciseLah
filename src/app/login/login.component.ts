@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
         this.results = data;
         // if true then set token and
         if (this.results[0].auth) {
-          console.log(this.results);
+          // console.log(this.results);
           this.authService.setSecureToken(this.results[0].uid);
           this.authService.setUserRole(this.results[0].role);
           this.authService.setUsername(this.results[0].username)

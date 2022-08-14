@@ -10,7 +10,7 @@ export class NavComponent implements OnInit {
 
   constructor(private authService: AuthService, private router:Router) { }
   loggedIn = true;
-  isAdmin = true;
+  isAdmin = false;
   userUid;
 
   ngOnInit(): void {

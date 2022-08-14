@@ -12,7 +12,7 @@ export class FoodEatenService {
 
   updateFoodEaten(items: FoodEaten): void{
     const target = listofFoodEaten.find((item) =>this.datePipe.transform(item.foodDateIntake, 'yyyy-MM-dd') == this.datePipe.transform(items.foodDateIntake, 'yyyy-MM-dd'));
-    console.log(target.foodTakenDetails = items.foodTakenDetails);
+    // console.log(target.foodTakenDetails = items.foodTakenDetails);
     // Object.assign(target, items);
     // console.log(listofFoodEaten);
     this.checkList();
@@ -27,7 +27,7 @@ export class FoodEatenService {
   }
 
   getListofFoodEaten(Datechosen: string){
-    console.log("before",listofFoodEaten);
+    // console.log("before",listofFoodEaten);
       var inlist = listofFoodEaten.find(c => this.datePipe.transform(c.foodDateIntake) == Datechosen);
       return inlist;
 
@@ -35,6 +35,6 @@ export class FoodEatenService {
   }
 
   checkList(){
-    console.log("checkList",listofFoodEaten);
+    // console.log("checkList",listofFoodEaten);
   }
 }

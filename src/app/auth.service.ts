@@ -25,6 +25,7 @@ export class AuthService {
       'dateJoined': new Date(),
       "fullName": fullName,
       "bio": "",
+      
     });
   }
 
@@ -39,6 +40,7 @@ export class AuthService {
       "fullName": fullName,
       "bio": "",
     });
+
   }
 
   findUsername(username: string){
@@ -48,7 +50,7 @@ export class AuthService {
   }
 
   forgetPassword(email: string){
-    return this.http.post<any[]>(this.authUser+ "email", {
+    return this.http.post<any[]>(this.authuser+ "forgottenpassword", {
       email: email
     })
   }

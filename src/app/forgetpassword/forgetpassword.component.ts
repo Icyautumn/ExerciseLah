@@ -22,7 +22,7 @@ export class ForgetpasswordComponent implements OnInit {
 
   onSubmit() {
     this.authService.findEmail(this.myForm.value.email).subscribe(data => {
-      if (data[0].auth == false) {
+      if (data[0].auth == true) {
         // user exist create a one time link for 15 minutes
         this.authService.forgetPassword(this.myForm.value.email).subscribe();
         alert("Email has been sent to your account")

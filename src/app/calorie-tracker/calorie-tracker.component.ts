@@ -88,7 +88,7 @@ export class CalorieTrackerComponent implements OnInit {
       this.id = params["id"];
       this.foodService.getFoodCalories(this.id).subscribe(data => {
         this.results = data;
-        console.log(this.results);
+        // console.log(this.results);
         this.displayitems();
       });
     });
@@ -124,7 +124,7 @@ export class CalorieTrackerComponent implements OnInit {
         this.results = data;
         this.foodService.getFoodCalories(this.id).subscribe(data => {
           this.results = data;
-          console.log(this.results, "null");
+          // console.log(this.results, "null");
           this.displayitems();
         });
       });
@@ -204,7 +204,7 @@ export class CalorieTrackerComponent implements OnInit {
     var gramsInputted = (<HTMLSelectElement>document.getElementById('Grams')).value;
 
     this.foodService.getFoodDetails(foodInputted).subscribe(data => {
-      console.log(data['items'].length, "api");
+      // console.log(data['items'], "api");
       for (let i = 0; i < data['items'].length; i++) {
         // get the values from library
         this.carbohydrates_total_g = data['items'][i].carbohydrates_total_g;
@@ -238,7 +238,7 @@ export class CalorieTrackerComponent implements OnInit {
 
         // add the values to its existing values
         this.foodData_calories += (this.calories * multiplier);
-        this.foodData_carbohydrates_total_g += + (this.carbohydrates_total_g * multiplier)
+        this.foodData_carbohydrates_total_g += (this.carbohydrates_total_g * multiplier)
         this.foodData_protein_g += (this.protein_g * multiplier);
         this.foodData_sodium_mg += (this.sodium_mg * multiplier);
         this.foodData_sugar_g += (this.sugar_g * multiplier);
@@ -259,12 +259,12 @@ export class CalorieTrackerComponent implements OnInit {
 
   nextDay() {
     this.datepickedbyuser.setDate(this.datepickedbyuser.getDate() + 1);
-    console.log("tmr date", this.datepickedbyuser);
+    // console.log("tmr date", this.datepickedbyuser);
   }
 
   previousDay(event: Event) {
     this.datepickedbyuser.setDate(this.datepickedbyuser.getDate() - 1);
-    console.log("yesterday date", this.datepickedbyuser);
+    // console.log("yesterday date", this.datepickedbyuser);
   }
   resetGraphData() {
     this.foodData_calories = 0;
@@ -276,7 +276,7 @@ export class CalorieTrackerComponent implements OnInit {
 
   addEvent(event: MatDatepickerInputEvent<Date>) {
     this.datepickedbyuser = event.value;
-    console.log("date", this.datepickedbyuser);
+    // console.log("date", this.datepickedbyuser);
     this.resetGraphData();
 
     this.displayitems();

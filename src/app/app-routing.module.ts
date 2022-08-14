@@ -16,6 +16,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { ForgetpasswordComponent } from './forgetpassword/forgetpassword.component';
 import { ResetpasswordComponent } from './resetpassword/resetpassword.component';
 import { AdminReportComponent } from './admin-report/admin-report.component';
+import { RegisteradminComponent } from './registeradmin/registeradmin.component';
 
 const routes: Routes = [
   { path: 'nav', component: NavComponent},
@@ -28,13 +29,14 @@ const routes: Routes = [
   { path: 'viewWorkout/comments/:id', component: WorkoutCommentsComponent},
   { path: 'login', component: LoginComponent},
   { path: 'register', component: RegisterComponent},
-  // { path: 'admin', component: AdminComponent, canActivate: [AuthGuard], data: {permission: {only: ["admin"]}}},
-  { path: 'admin', component: AdminComponent},
-  { path: 'profile/:uid', component: ProfileComponent, canActivate: [AuthGuard], data: {permission: {only: ["user"]}}},
+  { path: 'admin', component: AdminComponent, canActivate: [AuthGuard], data: {permission: {only: ["admin"]}}},
+  // { path: 'admin', component: AdminComponent},
+  { path: 'profile/:uid', component: ProfileComponent, canActivate: [AuthGuard], data: {permission: {only: ["user", "admin"]}}},
   { path: '', component: WorkoutComponent, pathMatch: 'full'},
   { path: 'forgetpassword', component: ForgetpasswordComponent},
   { path: 'reset-password/:id/:token', component: ResetpasswordComponent},
-  { path: 'admin-report', component: AdminReportComponent}
+  { path: 'admin-report', component: AdminReportComponent},
+  { path: 'admin-register', component: RegisteradminComponent}
 
 
 

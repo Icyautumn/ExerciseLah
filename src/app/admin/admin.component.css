@@ -80,13 +80,11 @@ img {
   z-index: 2;
 }
 
-.sidebar ul {
-  margin-top: 20px;
-}
 
 .sidebar ul li {
   width: 100%;
   list-style: none;
+  
 }
 
 .sidebar ul li:hover {
