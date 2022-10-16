@@ -50,8 +50,8 @@ router.route("/authuser/forgottenpassword").post(function (req, res) {
         id: result._id,
       };
       const token = jwt.sign(payload, secret, { expiresIn: "15m" });
-      const link = `http://localhost:4200/reset-password/${result._id}/${token}`;
       // const link = `http://localhost:4200/reset-password/${result._id}/${token}`;
+      const link = `https://exerciselah.azurewebsites.net/reset-password/${result._id}/${token}`;
       // console.log(link);
       res.send("Password reset link has been sent to your email");
       const options = {
@@ -541,7 +541,7 @@ router.route("/report/sendemail").post(function (req, res) {
         }
         console.log("sent" + info.response);
       });
-  
+
 });
 
 router.route("/report/delete/:id").delete(function (req, res) {

@@ -48,10 +48,10 @@ export class WorkoutCommentsComponent implements OnInit {
       this.user = this.authService.getSecureToken();
       this.workoutService.getSpecificWorkout(this.id).subscribe(data => {
         this.commentHolder = data[0]["result"].commentOfUser
-        console.log(this.commentHolder);
+        // console.log(this.commentHolder);
         this.userrole = this.authService.getUserRole();
         this.userId = this.authService.getSecureToken();
-        console.log(this.commentHolder);
+        // console.log(this.commentHolder);
         this.commentsService.getSpecificComments(this.userId).subscribe(data => {
           this.userprofile = this.fb.group({
             comments: ['', Validators.required],
@@ -110,13 +110,13 @@ export class WorkoutCommentsComponent implements OnInit {
 
   postComment() {
     // takes the user comment
-    console.log(this.userprofile.value.comments);
-    console.log(this.userprofile);
+    // console.log(this.userprofile.value.comments);
+    // console.log(this.userprofile);
       this.commentsService.newComment(this.userId, this.userprofile.value.comments, this.userprofile.value.rating, this.id).subscribe();
       location.reload();
 
 
-    console.log(this.commentData);
+    // console.log(this.commentData);
 
 
     // reset text area
@@ -145,7 +145,7 @@ export class WorkoutCommentsComponent implements OnInit {
   }
 
   editCommentSubmit() {
-    console.log(this.commentUpdate.value);
+    // console.log(this.commentUpdate.value);
     this.commentsService.UpdateComment(this.commentUpdate.value.comments, this.commentUpdate.value.commentid, this.commentUpdate.value.rating, this.id).subscribe();
     this.modalService.dismissAll();
     location.reload();

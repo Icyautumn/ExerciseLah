@@ -8,7 +8,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class WorkoutService {
 
-  workout: string = "http://localhost:3000/api/workout/";
+  workout: string = "http://localhost:1337/api/workout/";
 
   constructor(private http: HttpClient) { }
 

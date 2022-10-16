@@ -317,7 +317,7 @@ export class WorkoutComponent implements OnInit {
   // code not updated yet
   onUpdate() {
     this.newWorkout = new Workouts();
-    console.log("id",this.updateForm.value._id);
+    // console.log("id",this.updateForm.value._id);
     this.newWorkout._id = this.updateForm.value._id;
     this.newWorkout.workout_photo = this.updateImageBase64;
     this.newWorkout.summary = this.updateForm.value.summary;

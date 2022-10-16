@@ -7,7 +7,7 @@ import { stringify } from 'querystring';
 })
 export class ReportService {
 
-  reporturl: string = "http://localhost:3000/api/report/";
+  reporturl: string = "http://localhost:1337/api/report/";
 
   constructor(private http: HttpClient) {}
 
@@ -24,7 +24,7 @@ export class ReportService {
       "user_id": report.value.user_id
     })
   }
-  
+
   sendEmail(email: any){
     return this.http.post<any[]>(this.reporturl + 'sendemail', {
       "to": email.to,

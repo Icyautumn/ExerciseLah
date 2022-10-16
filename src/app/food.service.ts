@@ -6,8 +6,8 @@ import { HttpClient } from '@angular/common/http';
 })
 export class FoodService {
 
-  foodCalories: string = "http://localhost:3000/api/foodCalories/";
-  foodDetails: string = "http://localhost:3000/api/food/";
+  foodCalories: string = "http://localhost:1337/api/foodCalories/";
+  foodDetails: string = "http://localhost:1337/api/food/";
 
   constructor(private http: HttpClient) { }
 

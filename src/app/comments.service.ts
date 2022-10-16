@@ -9,7 +9,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class CommentsService {
 
-  comment: string = "http://localhost:3000/api/comments/";
+  comment: string = "http://localhost:1337/api/comments/";
 
   constructor(private http: HttpClient) { }
 

@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class PostsService {
-  url: string = 'http://localhost:3000/api/users'
+  url: string = 'http://localhost:1337/api/users'
 
   constructor(private http:HttpClient) { }
 

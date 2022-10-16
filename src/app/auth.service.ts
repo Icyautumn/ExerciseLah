@@ -9,10 +9,10 @@ import { itemDetails } from './foodDetails';
 })
 export class AuthService {
 
-  regUserUrl: string = "http://localhost:3000/api/reguser/";
-  authuser: string = "http://localhost:3000/api/authuser/";
-  profile: string = "http://localhost:3000/api/profile/";
-  password: string = "http://localhost:3000/api/changePassword/";
+  regUserUrl: string = "http://localhost:1337/api/reguser/";
+  authuser: string = "http://localhost:1337/api/authuser/";
+  profile: string = "http://localhost:1337/api/profile/";
+  password: string = "http://localhost:1337/api/changePassword/";
 
   constructor(private http: HttpClient) { }
   regUser(email: string, pw: string, username: string, role: string, fullName: string) {
@@ -25,7 +25,7 @@ export class AuthService {
       'dateJoined': new Date(),
       "fullName": fullName,
       "bio": "",
-      
+
     });
   }
 
